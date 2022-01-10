@@ -14,7 +14,33 @@ var rotateString = function(s, goal) {
     return false;
 };
 
-const s = "abcde";
-const goal = "cdeab";
+// const s = "abcde";
+// const goal = "cdeab";
 
-console.log(rotateString(s, goal));
+// console.log(rotateString(s, goal));
+
+var rotateStringClever = function(s, goal) {
+  
+originalStrLen = s.length;    
+totalString = s + s;
+totalString = totalString.split('');
+
+let i = 0;
+let j = originalStrLen;
+let k = 0;
+for(let i = 0; i < originalStrLen; i++){
+tempStr = totalString.slice(k, j);
+if(tempStr.join('') == goal) {
+    return true;
+} else {
+    k++;
+    j++;
+}
+}
+
+return false;
+};
+
+const s = "abcde";
+const goal = "abced";
+console.log(rotateStringClever(s, goal));
