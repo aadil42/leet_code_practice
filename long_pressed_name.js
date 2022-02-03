@@ -18,5 +18,5 @@ var isLongPressedName = function(name, typed) {
 
 
 const myName = 'aadil';
-const typed = 'aaaaadddillllk';
+const typed = 'aaaaadddillll';
 console.log(isLongPressedName(myName, typed));
