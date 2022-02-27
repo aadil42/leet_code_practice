@@ -25,8 +25,6 @@ var reorderList = function(head) {
         head = headNext;
         reverseHead = reverseNext;
     }
-    // head.next = null;
-    
     return ref;
 };
 
