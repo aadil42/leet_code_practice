@@ -16,14 +16,12 @@ var champagneTower = function(poured, query_row, query_glass) {
         for(let j = 0; j <= i; j++) {
             if(glassPyramid[i][j] >= 1) {
                 glassPyramid[i + 1][j] += (glassPyramid[i][j] - 1)/2;
-                // console.log(glassPyramid[i + 1][j], glassPyramid[i + 1][j + 1]);
                 glassPyramid[i + 1][j + 1] += (glassPyramid[i][j] - 1)/2;
                 glassPyramid[i][j] = 1;
             }
         }
     }
-    // console.log(glassPyramid);
-    console.log(glassPyramid[query_row][query_glass]);
+
     return glassPyramid[query_row][query_glass];
 };
 
