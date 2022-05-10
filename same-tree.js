@@ -10,7 +10,7 @@ var isSameTree = function(p, q) {
         
         if(p.val !== q.val) {
             return false;
-        }
+        }   
         
        return  (goRecursive(p.left, q.left) &&  goRecursive(p.right, q.right));
     }
