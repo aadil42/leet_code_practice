@@ -20,6 +20,7 @@ var orangesRotting = function(grid) {
     while(BFSQueue.length) {
 
         let size = BFSQueue.length;
+        //this for loop will work as a visited set. like we did in graph traversals
         for(let i = 0; i < size; i++) {
         let [row, column] = BFSQueue.shift();
         explore(row - 1, column);
