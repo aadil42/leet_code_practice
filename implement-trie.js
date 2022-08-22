@@ -3,10 +3,6 @@ var Trie = function() {
     this.endOfWord = false;
 };
 
-/** 
- * @param {string} word
- * @return {void}
- */
 Trie.prototype.insert = function(word) {
 
     let curr = this;
@@ -23,10 +19,6 @@ Trie.prototype.insert = function(word) {
     curr.endOfWord = true;
 };
 
-/** 
- * @param {string} word
- * @return {boolean}
- */
 Trie.prototype.search = function(word) {
 
 
@@ -43,10 +35,7 @@ Trie.prototype.search = function(word) {
     return curr.endOfWord;
 };
 
-/** 
- * @param {string} prefix
- * @return {boolean}
- */
+
 Trie.prototype.startsWith = function(prefix) {
   
     let curr = this;
