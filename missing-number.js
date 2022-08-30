@@ -11,7 +11,20 @@ var missingNumber = function(nums) {
     return origanalTotal - givenTotal;
 };
 
-const nums = [3,0,1];
-console.log(missingNumber(nums));
+// xor method
+var missingNumberXor = function(nums) {
+
+    let result = 0;
+    for(let i = 0; i <= nums.length; i++) {
+        result = result ^ i;
+    }
+    for(let i = 0; i < nums.length; i++) {
+        result = result ^ nums[i];
+    }
+    return result;
+};
+
+const nums = [9,6,4,2,3,5,7,0,1];
+console.log(missingNumberXor(nums));
 
 
