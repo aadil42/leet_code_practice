@@ -1,5 +1,5 @@
 // time complexity n^3 (not very good.)
-var longestPalindrome = function(s) {
+var longestPalindrome1 = function(s) {
     
     let longestPalindrome = '';
     
@@ -33,6 +33,46 @@ function getPalindrome(s) {
     return s;
 }
 
-const s = "abcdbbfcba";
+// overall time complexity is n^2  it is slightly efficint then the above algorithm
+function longestPalindrome(s) {
+
+    let longestPalindrome = '';
+
+    // this is for odd palindrome
+    for(let i = 0; i < s.length; i++) {
+        let left = i;
+        let right = i;
+        while(left >= 0 && 
+              right < s.length &&
+              s[left] === s[right]) {
+                const currentPalindrome = s.slice(left,right + 1);
+                if(currentPalindrome.length > longestPalindrome.length) {
+                    longestPalindrome = currentPalindrome;
+                }
+                left--;
+                right++;
+        }
+    } 
+
+    // this is for even palindrom
+    for(let i = 0; i < s.length; i++) {
+        let left = i;
+        let right = i + 1;
+        while(left >= 0 && 
+              right < s.length &&
+              s[left] === s[right]) {
+                const currentPalindrome = s.slice(left,right + 1);
+                if(currentPalindrome.length > longestPalindrome.length) {
+                    longestPalindrome = currentPalindrome;
+                }
+                left--;
+                right++;
+        }
+    } 
+    
+    return longestPalindrome;
+}
+
+const s = "abcdbbfcb";
 console.log(longestPalindrome(s));
 
