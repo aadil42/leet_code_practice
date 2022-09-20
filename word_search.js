@@ -20,7 +20,7 @@ var exist = function(board, word) {
                 return true;
             }
         }
-}       
+    }       
 
     return false;
 };
@@ -54,10 +54,5 @@ if(
 return false;
 }
 
-const grid = [["A","B","C","E"],
-              ["S","F","C","S"],
-              ["A","D","E","E"]];
-let word = "SEE";
-
-
-console.log(exist(grid, word));
+const board =  [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE";
+console.log(exist(board, word));
