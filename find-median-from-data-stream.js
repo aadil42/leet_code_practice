@@ -1,5 +1,5 @@
-// 17 out of 21 test cases are passing on leetcode it gives me error saying "output limit exeeded."
-// the code looks fine to me.
+// 20 out of 21 test cases are passing on leetcode it gives me error saying "output limit exeeded."
+// the code looks fine to
 var MedianFinder = function() {
     
     this.minHeap = new maxPriorityQueue();
@@ -215,3 +215,57 @@ console.log(median.findMedian());
  * obj.addNum(num)
  * var param_2 = obj.findMedian()
  */
+
+
+// solving the problem with leetcode inbuilt heap data structure. to run this code paste the below code in leetcode 
+// it will give you error as we don't have inbuilt MaxPriorityQueue and MinPriorityQueue in js.
+class MedianFinder {
+    
+    constructor () {
+      this.minHeap = new MaxPriorityQueue();
+      this.maxHeap = new MinPriorityQueue();   
+    }
+
+    addNum (num) {
+
+        this.minHeap.enqueue(num);
+        if(Math.abs(this.minHeap.size() - this.maxHeap.size()) > 1) {
+            if(this.minHeap.size() > this.maxHeap.size()) {
+                this.maxHeap.enqueue(this.minHeap.dequeue().element);
+            } else {
+                this.minHeap.enqueue(this.maxHeap.dequeue().element);
+            }
+        }
+
+        if(this.minHeap.front()?.element > this.maxHeap.front()?.element) {
+            this.maxHeap.enqueue(this.minHeap.dequeue().element);
+        }
+
+        if(Math.abs(this.minHeap.size() - this.maxHeap.size()) > 1) {
+            if(this.minHeap.size() > this.maxHeap.size()) {
+                this.maxHeap.enqueue(this.minHeap.dequeue().element);
+            } else {
+                this.minHeap.enqueue(this.maxHeap.dequeue().element);
+            }
+        }
+
+        if(this.minHeap.front()?.element > this.maxHeap.front()?.element) {
+            this.maxHeap.enqueue(this.minHeap.dequeue().element);
+        }
+    }
+
+
+    /* Time O(1) | Space (1) */
+    findMedian () {
+      if(this.minHeap.size() === this.maxHeap.size()) {
+        return (this.minHeap.front()?.element + this.maxHeap.front()?.element) / 2;
+      } else {
+        if(this.minHeap.size() > this.maxHeap.size()) {
+            return this.minHeap.front()?.element;
+        } else {
+            return this.maxHeap.front()?.element;
+        }
+      }
+    }
+}
+
