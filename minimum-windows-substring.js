@@ -8,9 +8,9 @@ const needHash = {};
 for(let k = 0; k < t.length;  k++) {
     let value = haveHash[t[k]];
     if(value) {
-        haveHash[t[k] + 1];
+        haveHash[t[k]] += 1;
     } else {
-        haveHash[1];
+        haveHash[t[k]] = 1;
     }
 }
 
@@ -32,10 +32,10 @@ while(right < s.length) {
         needHash[c] = 1;
     }
 
-    if(haveHash[c] && haveHash[c] === needHash[c]) {
+    if(needHash[c] && haveHash[c] === needHash[c]) {
         have++;
     }
-
+    
     while(have === need) {
         if(right - left + 1 < resultLen) {
             result[0] = left;
@@ -43,7 +43,7 @@ while(right < s.length) {
             resultLen = right - left + 1;
         }
 
-        needHash[c] -= 1 
+        needHash[s[left]] -= 1 
         if(haveHash[s[left]] && needHash[s[left]] < haveHash[s[left]]) {
             have--;
         }
@@ -52,13 +52,22 @@ while(right < s.length) {
     
     right++;
 }
-    console.log(result[0], result[1]);
+
+    // this  is a weird test case we need to take care of
+    if(result[0] == -1 && result[1] == -1) {
+        if(s.length < t.length) {
+            return '';
+        } else {
+            return s.substring(left, right+1);  
+        }
+    } 
+
     return s.substring(result[0], result[1] + 1);
 };
 
 
-const s = 'ADOBECODEBANC';
-const t = 'ABC';
+const s = 'aa';
+const t = 'aa';
 
 console.log(minWindow(s, t));
 
