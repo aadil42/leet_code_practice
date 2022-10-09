@@ -13,5 +13,4 @@ var maxDepth = function(s) {
     
     return max;
 };
-
-console.log(maxDepth("8*((1*(5+6))*(8/6))"));
+maxDepth("8*((1*(5+6))*(8/6))")
