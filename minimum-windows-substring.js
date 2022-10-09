@@ -32,7 +32,7 @@ while(right < s.length) {
         needHash[c] = 1;
     }
 
-    if(needHash[c] && haveHash[c] === needHash[c]) {
+    if(haveHash[c] && needHash[c] <= haveHash[c]) {
         have++;
     }
     
@@ -53,21 +53,12 @@ while(right < s.length) {
     right++;
 }
 
-    // this  is a weird test case we need to take care of
-    if(result[0] == -1 && result[1] == -1) {
-        if(s.length < t.length) {
-            return '';
-        } else {
-            return s.substring(left, right+1);  
-        }
-    } 
-
     return s.substring(result[0], result[1] + 1);
 };
 
 
-const s = 'aa';
-const t = 'aa';
+const s = 'ADOBECODEBANC';
+const t = 'ABC';
 
 console.log(minWindow(s, t));
 
