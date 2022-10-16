@@ -4,10 +4,6 @@ var WordDictionary = function() {
     this.endOfWord = false;
 };
 
-/** 
- * @param {string} word
- * @return {void}
- */
 WordDictionary.prototype.addWord = function(word) {
     let curr = this;
     let temp;
@@ -39,7 +35,7 @@ WordDictionary.prototype.search = function(word) {
         
         
         let curr = root;
-        // console.log(j);
+       
         for(let i = j; i < word.length; i++) {
            
             const char = word[i];
@@ -68,5 +64,3 @@ console.log(myDict.search("pad")); // return False
 console.log(myDict.search("bad")); // return True
 console.log(myDict.search(".ad")); // return True
 console.log(myDict.search("b.."));  // true
-
-// console.log(myDict.children);
