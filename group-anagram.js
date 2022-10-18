@@ -10,7 +10,7 @@ var groupAnagrams = function(strs) {
         [...word].forEach((char) => {
             // console.log(char.charCodeAt(0) - 'a'.charCodeAt(0));
             newHash[char.charCodeAt(0) - 'a'.charCodeAt(0)] += 1;
-            console.log(newHash);
+            
         });
         
         // making an array into string
@@ -33,11 +33,11 @@ var groupAnagrams = function(strs) {
     return result;
 };
 
-const strs = ["bdddddddddd","bbbbbbbbbbc"];
+const strs = ["eat","tea","tan","ate","nat","bat"];
 console.log(groupAnagrams(strs));
 
 
-// brute force with n^3 time complexity
+// brute force with n^3 time complexity // with brute force 109 out of 119 test cases are passing // the other are not passing because of stupid edge cases.
 var groupAnagramsBrute = function(strs) {
     const result = [];
     
@@ -47,7 +47,7 @@ var groupAnagramsBrute = function(strs) {
         current.push(strs[i]);
         
         for(let j = i + 1; j < strs.length; j++) {
-            console.log(i,j);
+            // console.log(i,j);
            if(isAnagramR(strs[i], strs[j]))  {
                extracted = strs.splice(j,1);
                current.push(...extracted);
@@ -91,3 +91,32 @@ var isAnagramR = function(s, t) {
      return true;
      
  };
+
+//  solved again for revision purpose
+var groupAnagramsR = function(strs) {
+    
+
+    const result = [];
+     const wordHash = new Map();
+      
+      for(let i = 0; i < strs.length; i++) {
+          let hash = new Array(26).fill(0);
+          
+          for(let j = 0; j < strs[i].length; j++) {
+              hash[strs[i][j].charCodeAt(0) - 97] += 1;
+          }
+          
+          hash = hash.join('-');
+          if(wordHash.has(hash)) {
+              wordHash.set(hash, [...wordHash.get(hash), strs[i]]);
+          } else {
+              wordHash.set(hash, [strs[i]]);
+          }
+      }
+      
+      for(let [key, value] of wordHash) {
+          result.push(value);
+      }
+      
+      return result;    
+  };
