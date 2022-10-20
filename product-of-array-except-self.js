@@ -19,5 +19,51 @@ return result;
 };
 
 
-const nums = [2,3,4,5];
-console.log(productExceptSelf(nums));
+const nums = [-1,1];
+
+// console.log(productExceptSelf(nums));
+
+// solving it second time
+var productExceptSelfR = function(nums) {
+    const preProduct = [];
+    const postProduct = [];
+ 
+    let current = 1; 
+    for(let i = 0; i < nums.length; i++) {
+        current = current * nums[i];
+        preProduct.push(current);
+    }
+
+    // takes O(n)
+    preProduct.unshift(nums[0]);
+    preProduct.pop();
+
+
+    // for post array 
+    current = 1;
+    for(let i = nums.length - 1; i > -1; i--) {
+        current = nums[i] * current;
+        postProduct[i] = current; 
+    }
+
+    // takes (n)
+    postProduct.shift();
+    postProduct.push(nums[nums.length - 1]);
+
+    // console.log(preProduct);
+    // console.log(postProduct);
+
+    const result = [];
+    // takes log(n);
+    result[0] = postProduct[0];
+    for(let i = 1; i < nums.length - 1; i++) {
+        result.push(postProduct[i]*preProduct[i]);
+    }
+
+    result.push(preProduct[preProduct.length - 1]);
+
+    return result;
+};
+
+
+console.log(productExceptSelfR(nums));
