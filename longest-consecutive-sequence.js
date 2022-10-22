@@ -1,31 +1,33 @@
+// by consecutive they mean things that are only increasing by 1. so 1 2 3 4 is valid but 100 200 300 is not.
+
 var longestConsecutive = function(nums) {
     
-if(nums.length == 0) return 0;
- const mySet = new Set();
+    if(!nums.length) return 0;
 
- nums.forEach((num) => {
+    const numberSet = new Set();
 
-    mySet.add(num);
- });
+    nums.forEach((number) => {
+        numberSet.add(number);
+    });
 
- let maxSequnce = 1;
- let curruntMax = 1;
-
- nums.forEach((num) => {
-    console.log(!mySet.has(num - 1));
-    if(!mySet.has(num - 1)) {
-        let currunt = num;
-        while(mySet.has(++currunt)) {
-            curruntMax++;
-            maxSequnce = Math.max(curruntMax, maxSequnce);
+    let currentMax = 1;
+    let maxSequence = 1;
+    nums.forEach((num) => {
+        if(!numberSet.has(num - 1)) { // this condition is pretty important look at it closly. 
+            let current = num;
+            while(numberSet.has(++current)) {
+                currentMax++;
+                maxSequence = Math.max(currentMax, maxSequence);
+            }
         }
-    }
-    curruntMax = 1;
- });
+        currentMax = 1;
+    });
 
-return maxSequnce;
+    return maxSequence;
 };
 // 1 2 3 4 5
-const nums = [0,3,7,2,5,8,4,6,0,1];
+const nums =   [100,4,200,1,3,2];
+// const nums = [0,-1];
 
 console.log(longestConsecutive(nums));
+
