@@ -29,5 +29,36 @@ return decode;
 }
 
 
-const Input =  ["we", "say", ":", "yes"];
-console.log(encode_decode_string(Input));
+const Input =  ["we23##", "##435say", "#$%:", "25yes"];
+// console.log(encode_decode_string(Input));
+
+// solving the problem second time
+var encode_decode_stringR = function (input) {
+
+    // encoding
+    let encode = '';
+    input.forEach((word) => {
+        encode += word.length + '#' + word;
+    });
+   
+    // decoding
+    const decode = [];
+
+    let i = 0;
+    while(i < encode.length) {
+        const wordLen = +encode[i];
+        let j = i + 2;
+        let currentWord = '';
+        while(j < i + 2 + wordLen) {
+            currentWord += encode[j];
+            j++;
+        }
+        decode.push(currentWord);
+        i = j;
+    }
+
+    return decode;
+}
+
+
+console.log(encode_decode_stringR(Input));
