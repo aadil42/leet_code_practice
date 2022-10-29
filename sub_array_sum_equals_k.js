@@ -2,6 +2,11 @@
 // here's the solution
 // https://www.youtube.com/watch?v=fFVZt-6sgyo
 
+// problem link
+// https://leetcode.com/problems/subarray-sum-equals-k/
+
+
+// time complexity O(n);
 var subarraySum = function(nums, k) {
     
 

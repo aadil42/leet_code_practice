@@ -1,3 +1,6 @@
+
+
+
 var removeElement = function(nums, val) {
  
     let i = 0;
@@ -10,7 +13,7 @@ var removeElement = function(nums, val) {
           i++;
       }
         
-    }while(i < nums.length)
+    } while(i < nums.length)
         
         return nums.length;
 };
