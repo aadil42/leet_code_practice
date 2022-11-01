@@ -16,5 +16,27 @@ var findMin = function(nums) {
     return nums[left];
 };
 
-const nums = [11,13,15,17];
-console.log(findMin(nums));
+const nums = [3,4,5,1,2];
+// console.log(findMin(nums));
+
+
+var findMinR = function(nums) {
+  
+    let left = 0;
+    let right = nums.length - 1;
+
+    while(left < right) {
+        const mid = Math.floor((left + right)/2);
+
+        if(nums[mid] > nums[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    // you can return nums[right] too.
+    return nums[left]; 
+};
+
+console.log(findMinR(nums))
