@@ -25,3 +25,52 @@ var mergeTwoLists = function(list1, list2) {
     
     return startingPoint.next;
 };
+
+
+// we are creating a new list but try to do it in place.
+var mergeTwoListsR = function(list1, list2) {
+
+    let dummyNode = new ListNode(null);
+    let startingPoint = dummyNode;
+    while(list1 && list2) {
+        if(list1.val < list2.val) {
+            dummyNode.next = new ListNode(list1.val);
+            dummyNode = dummyNode.next;
+            list1 = list1.next;
+        } else {
+            dummyNode.next = new ListNode(list2.val);
+            dummyNode = dummyNode.next;
+            list2 = list2.next;
+        }
+    }
+
+    if(list1) dummyNode.next = list1;
+    if(list2) dummyNode.next = list2;
+
+    return startingPoint.next;
+};
+
+
+// without making new list. We're just referancing the pointers.
+var mergeTwoListsRR = function(list1, list2) {
+
+    let currunt = new ListNode(null);
+    const start = currunt;
+    
+    while(list1 && list2) {
+        if(list1.val < list2.val) {
+            currunt.next = list1;
+            currunt = currunt.next;
+            list1 = list1.next;
+        } else {
+            currunt.next = list2;
+            currunt = currunt.next;
+            list2 = list2.next;
+        }
+    }
+
+    if(list1) currunt.next = list1;
+    if(list2) currunt.next = list2;
+    
+    return start.next;
+};

@@ -18,3 +18,19 @@ var detectCycle = function(head) {
     }
     return head;
 };
+
+// can be solved with set instead of hash
+var hasCycle = function(head) {
+   
+    const linkHash = new Set();
+    
+    while(head) {
+        if(linkHash.has(head)) {
+            return true;
+        }
+        linkHash.add(head);
+        head = head.next;
+    }
+    
+    return false;
+};
