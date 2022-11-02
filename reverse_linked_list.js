@@ -16,3 +16,21 @@ const reverseList = (head) => {
     
     return pre;
 }
+
+// solving reverse linked list again.
+var reverseListR = function(head) {
+    
+    let pre = null;
+    let temp = null;
+    while(head) {
+
+        temp = head;
+        head = head.next;
+        temp.next = pre;
+        pre = temp;  
+    }
+
+    // you can also return temp;
+    return pre;
+};
+
