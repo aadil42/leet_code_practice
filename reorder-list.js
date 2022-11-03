@@ -39,3 +39,35 @@ function reverseLinkList(head) {
     
     return pre;
 }
+
+
+// solving reorder-list second time.
+
+var reorderListR = function(head) {
+
+    let slowPointer = head;
+    let fastPointer = head;
+    const ref = head;
+    while(fastPointer && fastPointer.next) {
+        slowPointer = slowPointer.next;
+        fastPointer = fastPointer.next.next;
+    }
+
+
+    let reverseHead = reverseLinkList(slowPointer);
+
+    while(reverseHead && reverseHead.next) {
+
+        let reverseHeadNext = reverseHead.next;
+        let headNext = head.next;
+
+        head.next = reverseHead;
+        reverseHead.next = headNext;
+
+        head = headNext;
+        reverseHead = reverseHeadNext;
+    }
+
+    return ref;
+
+};
