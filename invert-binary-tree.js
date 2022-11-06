@@ -21,3 +21,22 @@ var invertTree = function(root) {
  
    return goRecursive(root);
 };
+
+
+// below solution is way more easy to grasp.
+var invertTreeR = function(root) {
+    
+    
+    function dfs(root) {
+        if(!root) return root;
+
+        dfs(root.left);
+        dfs(root.right);
+        swap(root);
+
+        return root;
+    }
+
+   return dfs(root);
+   
+};
