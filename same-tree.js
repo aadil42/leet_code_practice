@@ -17,3 +17,26 @@ var isSameTree = function(p, q) {
     
     return goRecursive(p, q);
 };
+
+
+// solved it second time.
+var isSameTreeR = function(p, q) {
+    
+
+    const pArray = [];
+    const qArray = [];
+
+    function dfs(root, currentA)  {
+        root ? currentA.push(root.val) : currentA.push('n');
+        if(!root) return;
+
+        dfs(root.left, currentA);
+        dfs(root.right, currentA);
+    }
+
+    dfs(p, pArray);
+    dfs(q, qArray);
+
+
+    return pArray.join('') === qArray.join('');
+};
