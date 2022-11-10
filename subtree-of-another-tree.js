@@ -1,4 +1,5 @@
 //  you need to have a proper  data structure for that. If you don't have a data structure paste code here https://leetcode.com/problems/subtree-of-another-tree/submissions/
+
 var isSameTree = function(p, q) {
     
     function goRecursive(p, q) {
@@ -16,6 +17,7 @@ var isSameTree = function(p, q) {
     return goRecursive(p, q);
 };
 
+// time complexity is (Numberof nodes in root * numberof nodes in subRoot)
 var isSubtree = function(root, subRoot) {
     
   function goRecursive(root, subRoot) {
@@ -26,4 +28,42 @@ var isSubtree = function(root, subRoot) {
   } 
     
     return goRecursive(root, subRoot);
+};
+
+
+// solved second time.
+var isSubtreeR = function(root, subRoot) {
+    
+    function dfs(root, subRoot) {
+        if(!root) return false;
+        if(isSameTree(root, subRoot)) return true;
+
+        // dfs(root.left, subRoot);
+        // dfs(root.right, subRoot);
+
+        return dfs(root.left, subRoot) || dfs(root.right, subRoot);
+    }
+
+    return dfs(root, subRoot);
+};
+
+
+// another method. aadil042 came up with it. time complexity is O(n). only the numberof nodes that are in (rootArr + subRootarr).
+var isSubtree = function(root, subRoot) {
+    
+    const rootArr = [];
+    const subRootArr = [];
+
+    function dfs(root, currentArr) {
+        root ? currentArr.push( "0" + root.val) : currentArr.push('n');
+        if(!root) return;
+     
+        dfs(root.left, currentArr);
+        dfs(root.right, currentArr); 
+    }
+
+    dfs(root, rootArr);
+    dfs(subRoot, subRootArr);
+    console.log(rootArr, subRootArr);
+    return rootArr.join('').includes(subRootArr.join(''));
 };
