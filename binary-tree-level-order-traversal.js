@@ -33,3 +33,30 @@ var levelOrder = function(root) {
     
     return levelOrderArr;
 };
+
+var levelOrder = function(root) {
+    if(!root) return [];
+    const treeHeight = heightOfTree(root);
+
+    const levelOrderArr = [];
+    for(let i = 0; i <= treeHeight; i++) {
+        levelOrderArr.push(goRecursive(root, i, []));
+    }
+
+    function goRecursive(root, level, currentArr) {
+        if(!root) return currentArr;
+
+        if(level === 0) {
+            currentArr.push(root.val);
+            return currentArr;
+        }
+
+        currentArr = goRecursive(root.left, level-1, currentArr);
+        currentArr = goRecursive(root.right, level-1, currentArr);
+
+        return currentArr;
+    }
+
+    return levelOrderArr;
+}
+Console
