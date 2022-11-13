@@ -23,3 +23,17 @@ var isValidBST = function(root) {
     
     return true;
 };
+
+// solved it second time.
+var isValidBSTR = function(root) {
+    if(!root) return;
+
+    const InArr = makeInOrderArray(root);
+    for(let i = 0; i < InArr.length - 1; i++) {
+        if(InArr[i] >= InArr[i + 1]) {
+            return false;
+        }
+    }
+
+    return true;
+};
