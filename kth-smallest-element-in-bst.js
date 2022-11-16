@@ -21,3 +21,9 @@ var kthSmallest = function(root, k) {
     }
     
 };
+
+var kthSmallestR = function(root, k) {
+
+    const InArr = makeInOrderArr(root);
+    return InArr[k - 1];
+};
