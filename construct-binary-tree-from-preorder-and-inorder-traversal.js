@@ -32,3 +32,28 @@ const pre = [1,2,4,8,9,5,10,11,3,6,13,12,7,14,15];
 const inO = [8,4,9,2,10,5,11,1,13,6,12,3,7,15,14];
 
 buildTree(pre, inO);
+
+
+var buildTreeR = function(preO, inO) {
+    
+    function goRecursive(inO, isi, iei, preO, psi, pei) {
+
+        if(iei < isi) return null;
+
+        let currentIndex = isi;
+        while(inO[currentIndex] !== preO[psi]) {
+            currentIndex++;
+        }
+
+        const root = new TreeNode(preO[psi]);
+        const totalElementUntillCurrentRoot = currentIndex - isi;
+       
+       
+        root.left = goRecursive(inO, isi, currentIndex - 1, preO, psi + 1, totalElementUntillCurrentRoot + psi);
+        root.right = goRecursive(inO, currentIndex + 1, iei, preO, psi + totalElementUntillCurrentRoot + 1, pei);
+
+        return root;
+    }
+
+    return goRecursive(inO, 0, inO.length - 1, preO, 0, preO.length - 1);
+};
