@@ -51,3 +51,45 @@
      return root;
  };
  
+
+ // solved second time
+var serializeR = function(root) {
+    const preArr = [];
+   
+       function dfs(root) {
+           if(!root) {
+               preArr.push('N');
+               return;
+           }
+           preArr.push(root.val);
+           dfs(root.left);
+           dfs(root.right);
+       }
+   
+       dfs(root);
+       return preArr;
+   };
+
+ var deserializeR = function(data) {
+
+
+    let i = 0;
+    console.log(data);
+  
+    function makeTree() {
+       
+        if(data[i] === 'N') {
+            i++;
+            return null;
+        }
+      
+        const root = new TreeNode(data[i]);
+        i++;
+        root.left = makeTree();
+        root.right = makeTree();
+  
+       return root;
+    }
+  
+    return  makeTree();
+  };
