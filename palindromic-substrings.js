@@ -58,3 +58,34 @@ function isPlindrome(s, left, right) {
     return total;
 }
 console.log(countSubstrings(s));
+
+// solved it again. with n^2
+var countSubstringsR = function(s) {
+
+    let total = 0;
+    
+    for(let i = 0; i < s.length; i++) {
+        let left = i;
+        let right = i;
+    
+        while(left >= 0 && right < s.length && s[left] === s[right]) {
+            total += 1;
+            left--;
+            right++;
+        }
+    }
+    
+    for(let i = 0; i < s.length; i++) {
+    
+        let left = i;
+        let right = i + 1;
+    
+        while(left >= 0 && right < s.length && s[left] === s[right]) {
+            total += 1;
+            left--;
+            right++;
+        }  
+    }
+    
+    return total;
+    };
