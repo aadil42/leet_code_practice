@@ -76,3 +76,42 @@ function longestPalindrome(s) {
 const s = "abcdbbfcb";
 console.log(longestPalindrome(s));
 
+
+// solved it second time.
+function longestPalindromeR(s) {
+
+    let longestPalindrome = '';
+
+    for(let i = 0; i < s.length; i++) {
+        let left = i;
+        let right = i;
+
+        while(left >= 0 && right < s.length && s[left] === s[right]) {
+            const currentPalindrome = s.slice(left, right + 1);
+            
+            if(currentPalindrome.length > longestPalindrome.length) {
+                longestPalindrome = currentPalindrome;
+            }
+            left--;
+            right++;
+        }
+    }
+
+    for(let i = 0; i < s.length;  i++) {
+        let left = i;
+        let right = i + 1;
+
+        while(left >= 0 && right < s.length && s[left] === s[right]) {
+            const currentPalindrome = s.slice(left, right + 1); 
+            if(currentPalindrome.length > longestPalindrome.length) {
+                longestPalindrome = currentPalindrome;
+            }
+    
+            left--;
+            right++;
+        }
+    }
+
+    return longestPalindrome;
+}
+
