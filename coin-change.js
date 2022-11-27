@@ -33,3 +33,28 @@ var coinChange = function(coins, amount) {
 
 const coins = [1,2,5], amount = 11;
 console.log(coinChange(coins, amount));
+
+
+// solved it second time.
+var coinChangeR = function(coins, amount) {
+
+    const myHash = new Map();
+    myHash.set(0,0);
+
+    function dfs(remaining) {
+      if(myHash.has(remaining)) return myHash.get(remaining);
+
+        if(remaining < 0) return Infinity;
+
+        let minVal = Infinity;
+        for(let i = 0; i < coins.length; i++) {
+            minVal = Math.min(dfs(remaining - coins[i]), minVal);
+        }
+
+         myHash.set(remaining, minVal + 1); 
+         return minVal + 1;
+    }
+ 
+    const result = dfs(amount);
+    return result === Infinity ? -1 : result;
+};
