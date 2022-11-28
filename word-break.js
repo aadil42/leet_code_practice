@@ -55,3 +55,24 @@ var wordBreak = function(s, wordDict) {
 
 const s = "abcd", wordDict = ["a","abc","b","cd"];
 console.log(wordBreak(s,wordDict));
+
+
+// solved second time.
+var wordBreakR = function(s, wordDict) {
+
+  const dpArray = new Array(s.length + 1).fill(false);
+
+  dpArray[s.length] = true;
+
+  for(let i = s.length - 1; i > -1; i--) {
+      for(let j = 0; j < wordDict.length; j++) {
+          const currentWord = s.substring(i, i + wordDict[j].length);
+          if(i + wordDict[j].length <= s.length  && currentWord === wordDict[j]) {
+              dpArray[i] = dpArray[i + wordDict[j].length];
+          }
+          if(dpArray[i]) break;
+      }
+  }
+
+  return dpArray[0];
+};
