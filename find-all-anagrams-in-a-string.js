@@ -1,4 +1,4 @@
-// brute force O(n^2)
+// brute force O(s*p)
 
 var findAnagrams = function(s, p) {
   
