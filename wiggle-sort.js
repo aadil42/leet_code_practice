@@ -1,5 +1,5 @@
 // brute force O(n^2);
-function wiggle_sort(arr) {
+function wiggle_sort_brute(arr) {
     
     for(let  i = 1; i < arr.length; i++) {
         // if odd index find large else find small
@@ -41,8 +41,26 @@ function swap(i,j,arr) {
     arr[j] = temp;
 }
 
+
+// bit efficiant with time coplexity of O(n*log(n));
+function wiggle_sort(arr) {
+    
+arr.sort((a,b) =>  {
+    return a - b;
+});
+
+for(let i = 1; i < arr.length; i += 2) {
+    if(arr[i+1]) {
+        swap(i,i+1,arr);
+    }
+}
+
+return arr;
+}
+// 123456
 const myArr = [3, 5, 2, 1, 6, 4];
 console.log(wiggle_sort(myArr));
+
 
 
 
