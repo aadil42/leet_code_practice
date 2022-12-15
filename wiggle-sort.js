@@ -43,7 +43,7 @@ function swap(i,j,arr) {
 
 
 // bit efficiant with time coplexity of O(n*log(n));
-function wiggle_sort(arr) {
+function wiggle_sort_not_so_bad(arr) {
     
 arr.sort((a,b) =>  {
     return a - b;
@@ -62,5 +62,25 @@ const myArr = [3, 5, 2, 1, 6, 4];
 console.log(wiggle_sort(myArr));
 
 
+// even more better solution
+function wiggle_sort(arr) {
+    let i = 1;
+    while( i < arr.length) {
+        if(i%2) {
+            if(arr[i] < arr[i-1]) {
+                swap(i, i-1, arr);
+            }
+        } else {
+            if(arr[i] > arr[i-1]) {
+                swap(i, i-1, arr);
+            }
+        }
+        i++;
+    }
+    return arr;
+}
 
+// 0 1 2 3 4 5
+// 3 5 2 1 6 4
+// 3 5 1 6 2 4 
 
