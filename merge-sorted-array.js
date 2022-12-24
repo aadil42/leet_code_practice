@@ -1,38 +1,35 @@
 /**
+ * Linear 
+ * Time O(N) | Space O(1)
+ * https://leetcode.com/problems/merge-sorted-array/
  * @param {number[]} nums1
  * @param {number} m
  * @param {number[]} nums2
  * @param {number} n
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
-var merge = function(nums1, m, nums2, n) {
-
-    nums1 = [...nums1.slice(m), ...nums1.slice(0,m)];
+ var merge = function(nums1, m, nums2, n) {
     
-    let i = n;
-    let j = 0;
-    let k = 0;
-
-    
-    while(i < m+n && j < n) {
-        console.log(nums2[j], nums1[i]);
-
-        if(nums2[j] < nums1[i]) {
-            nums1[k] = nums2[j];
-            j++;
+    let k = m + n - 1;
+    m = m - 1;
+    n = n - 1;
+    console.log(m,n);
+    while(m >= 0 && n >= 0) {
+        if(nums1[m] > nums2[n]) {
+            nums1[k] = nums1[m];
+            m--;
         } else {
-            nums1[k] = nums1[i];
-            i++;
+            nums1[k] = nums2[n];
+            n--;
         }
-        k++;
+        k--;
     }
-
-    if(i == m+n) {
     
-        nums1 = [...nums1.slice(0, i - j - 1), ...nums2.slice(j)];
+    if(n >= 0) {
+        while(n >= 0) {
+            nums1[k] = nums2[n];
+            n--;
+            k--;
+        }
     }
-    return nums1;
 };
-//[0,0,0,1,2,3]  [2,5,6]
-const  nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3;
-console.log(merge(nums1, m, nums2, n));
