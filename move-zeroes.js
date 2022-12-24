@@ -4,7 +4,7 @@
  * @param {number[]} nums
  * @return {void} Do not return anything, modify nums in-place instead.
  */
-var moveZeroesLinearSpace = function(nums) {
+var moveZeroes = function(nums) {
 
     const zeroAtTheEnd = Array(nums.length).fill(0);
     let left = 0;

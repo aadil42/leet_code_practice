@@ -10,11 +10,16 @@
  var validPalindromeBrute = function(s) {
     
     for(let i = 0; i < s.length; i++) {
-        if(isPalindrome(s.slice(0, i) + s.slice(i+1))) return true;
+        if(isValid(s.slice(0, i) + s.slice(i + 1))) return true;
+    }
+
+    function isValid(s) {
+        return s.split('').reverse().join('') === s;   
     }
 
     return false;
 };
+
 
 /**
  * Optimal Approach
@@ -34,8 +39,8 @@ var validPalindrome = function (s) {
         if(s[left] !== s[right]) {
 
         if(
-        isPalindrome(s.slice(left + 1, right + 1)) ||
-        isPalindrome(s.slice(left, right))
+        isValid(left + 1, right + 1) ||
+        isValid(left, right)
         ) return true;
 
         return false;
@@ -48,7 +53,8 @@ var validPalindrome = function (s) {
 return true;
 }
 
-function isPalindrome(s) {
+function isValid(s, left, right) {
+    s = s.slice(left, right);
     return s.split('').reverse().join('') === s;
 }
 
