@@ -36,3 +36,37 @@
       return max;
   }
   
+  /**
+ * Two Pointer
+ * Time O(n) | Space O(1)
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var maxFrequency = function(nums, k) {
+
+    nums.sort((a,b) => a-b);
+  
+    let left = 0;
+    let right = 0;
+    let maxFreq = 0;
+    let currentTotal = 0;
+  
+  
+    while(right < nums.length) {
+        const targetSum = nums[right];
+        const windowLen = right - left + 1;
+        currentTotal += nums[right];
+        if(targetSum * windowLen <= currentTotal + k) {
+            maxFreq = Math.max(windowLen, maxFreq);
+            right++;
+        } else {
+            currentTotal -= nums[left];
+            right++;
+            left++;
+        }
+      }
+  
+      return maxFreq;
+  };
+  
