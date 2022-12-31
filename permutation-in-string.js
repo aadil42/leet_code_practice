@@ -45,6 +45,7 @@ var isPermutation = function(s, t) {
     return true;
 };
 
+
 /**
  * @param {string} s1
  * @param {string} s2
@@ -99,6 +100,15 @@ var isPermutation = function(s, t) {
 
 
 
+    
+     s2Hash.set(leftChar, s2Hash.get(leftChar) - 1);
+
+     if(s2Hash.get(leftChar) === s1Hash.get(leftChar)) {
+        matches++;
+    } else if(s2Hash.get(leftChar) === s1Hash.get(leftChar) - 1) {
+        matches--;
+    }
+    
      s2Hash.set(rightChar, s2Hash.get(rightChar) + 1);
      if(s2Hash.get(rightChar) === s1Hash.get(rightChar)) {
          matches++;
@@ -106,15 +116,11 @@ var isPermutation = function(s, t) {
          matches--;
      }
 
-     s2Hash.set(leftChar, s2Hash.get(leftChar) - 1);
-     if(s2Hash.get(leftChar) === s1Hash.get(leftChar)) {
-         matches++;
-     } else if(s2Hash.get(leftChar) === s1Hash.get(leftChar) - 1) {
-         matches--;
-     }
+     
+
 
      left++;
      right++;
  }
- return matches === 26;
+  return matches === 26;
 };
