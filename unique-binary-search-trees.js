@@ -1,4 +1,6 @@
 /**
+ * recursion
+ * Time O(n^2) | Space O(n)
  * @param {number} n
  * @return {number}
  */
