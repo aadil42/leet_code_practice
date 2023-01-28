@@ -16,6 +16,7 @@ var maxAreaOfIsland = function(grid) {
         }
     }
 
+    // don't declare currentArea var inside dfs!! make it global.
     function dfs(r,c) {
         
         if(
