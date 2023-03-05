@@ -10,7 +10,7 @@ var stoneGame = function(piles) {
    
     const cache = {};
     function dfs(l, r) {
-        const key = l+"-"+r; 
+        const key = l+"-"+r;
         if(cache[key]) return cache[key];
         if(l > r) return 0;
  
