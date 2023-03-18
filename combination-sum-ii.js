@@ -4,8 +4,39 @@
  * @return {number[][]}
  */
 
-// bad solution
+
+// proper solution
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
 var combinationSum2 = function(candidates, target) {
+    
+    candidates.sort((a,b) => a - b);
+    const result = [];
+    function dfs(remaining, candidate, index) {
+        if(remaining === 0) {
+            result.push(candidate.slice(0));
+            return;
+        }
+        if(remaining <= 0 || index === candidates.length) return;
+
+        candidate.push(candidates[index]);
+        dfs(remaining - candidates[index], candidate, index+1);
+        while(candidates[index] === candidates[index + 1]) {
+            index++;
+        }
+        candidate.pop();
+        dfs(remaining, candidate, index+1);
+    }
+
+    dfs(target, [], 0);
+    return result;
+};
+
+// bad solution
+var combinationSumBad = function(candidates, target) {
     
     candidates.sort((a,b) => a - b);
     const result = [];
