@@ -31,9 +31,9 @@ var isNStraightHand = function(hand, groupSize) {
     hand = [...unique];
     console.log(hand);
     while(hand.length > 0) {
-        const min = hand[hand.length - 1];
-        let i = min;
-        while(i < min + groupSize) {
+        const start = hand[hand.length - 1];
+        let i = start;
+        while(i < start + groupSize) {
             if(!hash.has(i))  {
                 return false;
             }
