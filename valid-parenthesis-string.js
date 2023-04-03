@@ -6,7 +6,7 @@
  * @param {string} s
  * @return {boolean}
  */
-var checkValidString = function(s) {
+var checkValidStringRecursion = function(s) {
     
     const hashSet = new Map();
     function dfs(validCount, i) {
@@ -40,3 +40,35 @@ var checkValidString = function(s) {
 
     return dfs(0, 0);
 };
+
+
+/**
+ * 
+ * Time O(n) | Space O(1)
+ * @param {string} s
+ * @return {boolean}
+ */
+var checkValidString = function(s) {
+    
+    let chooseLeft = 0;
+    let chooseRight = 0;
+  
+    for(let i = 0; i < s.length; i++) {
+        if(s[i] === '(') {
+            chooseLeft += 1;
+            chooseRight += 1;
+        }
+        if(s[i] === ')') {
+            chooseLeft -= 1;
+            chooseRight -= 1;
+        }
+        if(s[i] === '*') {
+            chooseLeft += 1;
+            chooseRight -= 1;
+        }
+        if(chooseLeft < 0) return false;
+        if(chooseRight < 0) chooseRight = 0;
+    }
+  
+    return chooseRight === 0;
+  };
