@@ -13,6 +13,9 @@ var search = function(nums, target) {
 
     while(left <= right) {
         const mid = Math.floor((left+right)/2);
+
+        // alternate way of calculating mid
+        // const mid = Math.floor((right - left)/2) + left;
         if(nums[mid] === target) return mid;
         if(nums[mid] < target){
             left = mid+1;
