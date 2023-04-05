@@ -46,3 +46,17 @@ var arrangeCoins = function(n) {
   
     return result;
   };
+  
+/** 
+ * Math 
+ * Time O(1) | Space O(1)
+ * @param {number} n
+ * @return {number}
+ */
+var arrangeCoins = function(n) {
+    
+    let result1 = Math.floor((-1 + Math.sqrt(1+(8*n)))/2);
+    let result2 = Math.floor((-1 - Math.sqrt(1+(8*n)))/2);
+   
+    return Math.max(result1, result2);
+};
