@@ -38,3 +38,50 @@ var maximumRemovals = function(s, p, removable) {
 
   return k;  
 };
+
+
+/**
+ * 
+ * Binary Search 
+ * n = length of string, k = length of removable
+ * Time O(log(k)*n) | Space O(k)
+ * @param {string} s
+ * @param {string} p
+ * @param {number[]} removable
+ * @return {number}
+ */
+var maximumRemovals = function(s, p, removable) {
+
+    s = s.split('');
+    p = p.split('');
+    let left = 0;
+    let right = removable.length - 1;
+    let k = 0;
+    while(left <= right) {
+        const mid = Math.floor((left+right)/2);
+        const hash = new Set(removable.slice(0, mid + 1));
+        if(isSubSet(hash))  {
+            k = Math.max(k, mid + 1);
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+  function isSubSet(hash) {
+      let i = 0;
+      let j = 0;
+
+      while(i < s.length && j < p.length) {
+          if(s[i] === p[j] && !hash.has(i)) {
+              i++;
+              j++;
+          } else {
+              i++;
+          }
+      }
+      return j === p.length
+  }
+
+  return k;  
+};
