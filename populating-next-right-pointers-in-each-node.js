@@ -103,7 +103,7 @@ class Dequeue {
 
 }
 
-var connect = function(root) {
+var connectExtraMemory = function(root) {
     
     const ListArr = [];
 
@@ -139,6 +139,46 @@ var connect = function(root) {
         pointer1.next = null;
         pointer1 = pointer2;
         level++;
+    }
+
+    return root;
+};
+
+
+
+/**
+ * BFS
+ * Time O(n) | Space O(1)
+ * // Definition for a Node.
+ * function Node(val, left, right, next) {
+ *    this.val = val === undefined ? null : val;
+ *    this.left = left === undefined ? null : left;
+ *    this.right = right === undefined ? null : right;
+ *    this.next = next === undefined ? null : next;
+ * };
+ */
+/**
+ * @param {Node} root
+ * @return {Node}
+ */
+
+
+// very neat code.
+var connect = function(root) {
+
+    let currentNode = root;
+    let nextLevelNode = root && root.left;
+
+    while(currentNode && nextLevelNode) {
+        currentNode.left.next = currentNode.right;
+        if(currentNode.next) {
+            currentNode.right.next = currentNode.next.left;
+        }
+        currentNode = currentNode.next;
+        if(!currentNode) {
+            currentNode = nextLevelNode;
+            nextLevelNode = currentNode.left;
+        }
     }
 
     return root;
