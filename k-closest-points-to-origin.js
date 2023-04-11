@@ -1,182 +1,98 @@
-
-// push  done
-// pop done
-// getParent done
-// getLeftChild done
-// getRightChild done
-// swap done
-// peek  done
-// print done
-// this is a max heap
-class MinHeap {
-    constructor() {
-        this.queue = [];
-        this.size = 0;
-    }
-
-    // this is for the min heap
-    push(data) {
-    this.queue.push(data);
-    let currunt_index = this.queue.length - 1;
-    
-    while(currunt_index !== 0 && this.queue[currunt_index][0] < this.queue[this.getParent(currunt_index)][0]) {
-        this.swap(currunt_index, this.getParent(currunt_index));
-        currunt_index = this.getParent(currunt_index);
-    }
-    this.size++;
-    }
-    // this is for the min heap
-    pop() {
-        this.swap(0, this.queue.length - 1);
-        const popData = this.queue.pop();
-        let i = 0;
-        let root;
-        let left;
-        let right;
-        while(i < this.queue.length - 1) {
-            root = i;
-            left = this.getLeftChild(i);
-            right = this.getRightChild(i);
-
-            
-            if(!this.queue[left] || !this.queue[right]) {
-                break;
-            }
-            if(this.queue[root][0] <= this.queue[left][0] && this.queue[root][0] <= this.queue[right][0]) {
-                break;
-            }
-            if(this.queue[left] && this.queue[root][0] >= this.queue[left][0]) {
-                this.swap(root, this.getLeftChild(root));
-                i = left;
-            }
-            if(this.queue[right] && this.queue[root][0] >= this.queue[right][0]) {
-                this.swap(root, this.getRightChild(root));
-                i = right;
-            }
-        }
-
-        return popData;
-    }
-
-    // this is for the max heap
-    // push(data) {
-    //     this.queue.push(data);
-    //     let currunt_index = this.queue.length - 1;
-    //     while(currunt_index !== 0 && this.queue[currunt_index] > this.queue[this.getParent(currunt_index)]) {
-    //         this.swap(currunt_index, this.getParent(currunt_index));
-    //         currunt_index = this.getParent(currunt_index);
-    //     }
-    //     this.size++;
-    // }
-
-    // // this is for the max heap
-    // pop() {
-    //     this.swap(0, this.queue.length - 1);
-    //     const popData = this.queue.pop();
-    //     let i = 0;
-    //     while(i < this.queue.length - 1) {
-    //         let root = i;
-    //         let left = this.getLeftChild(i);
-    //         let right = this.getRightChild(i);
-    //         if(this.queue[root] < this.queue[left]) {
-    //             this.swap(root, this.getLeftChild(root));
-    //             i = left;
-    //         }
-
-    //         // now the root will have the value of left child.
-    //         if(this.queue[root] < this.queue[right]) {
-    //             this.swap(root, this.getRightChild(root));
-    //             i = right;
-    //         }
-    //         if(this.queue[root] > this.queue[left] && this.queue[root] > this.queue[right]) {
-    //             break;
-    //         }
-    //         if(!this.queue[left] || !this.queue[right]) {
-    //             break;
-    //         }
-    //     }
-
-    //     return popData;
-    // }
-
-    getLeftChild(index) {
-        return (index * 2) + 1;
-    }
-    getRightChild(index) {
-        return (index * 2) + 2;
-    }
-    swap(parentIn, currunt_index) {
-        const temp = this.queue[currunt_index];
-        this.queue[currunt_index] = this.queue[parentIn];
-        this.queue[parentIn] = temp;
-    }
-    getParent(index) {
-        return Math.ceil((index - 2)/2);
-    }
-    peek() {
-        return this.queue[0];
-    }
-    print() {
-        return this.queue;
-    }
-}
-
-
-
+/**
+ * 
+ * MinHeap
+ * 
+ * Time O(n*log(n)) | Space O(n)
+ * @param {number[][]} points
+ * @param {number} k
+ * @return {number[][]}
+ */
 var kClosest = function(points, k) {
-    const distanceArray = [];
 
-    for(let i = 0; i < points.length; i++) {
-        const distance = Math.sqrt( (points[i][0]) ** 2 + (points[i][1]) ** 2 );
-        distanceArray.push([distance, i]);
-    }
+    const closestPointHeap = new MinHeap();
 
-    const priorityDistance = new MinHeap();
-    distanceArray.forEach((element) => {
-        priorityDistance.push(element);
+    points.forEach((point, index) => {
+        const distance = Math.sqrt(point[0]*point[0] + point[1]*point[1]);
+        closestPointHeap.insert([distance, index]);
     });
-    console.log(priorityDistance);
-    result = [];
-    for(let i = 0; i < k; i++) {
-        let indexPoint = priorityDistance.pop()[1];
-        indexPoint = points[indexPoint]; 
-        console.log(indexPoint);
-        result.push(indexPoint);
+    console.log(closestPointHeap.heap);
+    const result = [];
+    while(k > 0) {
+        // console.log(closestPointHeap.peek());
+        const cordinate = points[closestPointHeap.extractMin()[1]]; 
+        result.push(cordinate);
+        k--;
     }
-
     return result;
 };
 
+class MinHeap {
+  constructor() {
+    this.heap = [];
+  }
 
+  compare(a, b) {
+    return a[0] - b[0];
+  }
 
+  getParentIndex(index) {
+    return Math.floor((index - 1) / 2);
+  }
 
-// const points =  [[68,97],[34,-84],[60,100],[2,31],[-27,-38],[-73,-74],[-55,-39],[62,91],[62,92],[-57,-67]];
-// const k = 5;
-// console.log(kClosest(points, k));
+  getLeftChildIndex(index) {
+    return (index * 2) + 1;
+  }
 
-// console.log(10 ** 2);
+  getRightChildIndex(index) {
+    return (index * 2) + 2;
+  }
 
-const temp = new MinHeap();
-points = [
-    [ 31.064449134018133, 3 ],
-    [ 46.61544808322666, 4 ],
-    [ 67.42403132415029, 6 ],
-    [ 110.11357772772621, 7 ],
-    [ 87.96590248499699, 9 ],
-    [ 116.61903789690601, 2 ],
-    [ 103.9471019317037, 5 ],
-    [ 118.46096403457132, 0 ],
-    [ 110.9414259868693, 8 ],
-    [ 90.62008607367353, 1 ]
-  ];
+  insert(value) {
+    this.heap.push(value);
+    let currentIndex = this.heap.length - 1;
+    let parentIndex = this.getParentIndex(currentIndex);
 
-for(let i = 0; i < points.length ; i++) {
-    temp.push(points[i]);
+    while (currentIndex > 0 && this.compare(this.heap[currentIndex], this.heap[parentIndex]) < 0) {
+      [this.heap[currentIndex], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[currentIndex]];
+      currentIndex = parentIndex;
+      parentIndex = this.getParentIndex(currentIndex);
+    }
+  }
+
+  extractMin() {
+    if (this.heap.length === 0) {
+      return null;
+    }
+
+    if (this.heap.length === 1) {
+      return this.heap.pop();
+    }
+
+    const min = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    let currentIndex = 0;
+    let leftChildIndex = this.getLeftChildIndex(currentIndex);
+    let rightChildIndex = this.getRightChildIndex(currentIndex);
+
+    while (leftChildIndex < this.heap.length) {
+      let smallestChildIndex = rightChildIndex < this.heap.length && this.compare(this.heap[rightChildIndex], this.heap[leftChildIndex]) < 0
+        ? rightChildIndex
+        : leftChildIndex;
+
+      if (this.compare(this.heap[currentIndex], this.heap[smallestChildIndex]) <= 0) {
+        break;
+      }
+
+      [this.heap[currentIndex], this.heap[smallestChildIndex]] = [this.heap[smallestChildIndex], this.heap[currentIndex]];
+      currentIndex = smallestChildIndex;
+      leftChildIndex = this.getLeftChildIndex(currentIndex);
+      rightChildIndex = this.getRightChildIndex(currentIndex);
+    }
+
+    return min;
+  }
+
+  peek() {
+    return this.heap.length > 0 ? this.heap[0] : null;
+  }
 }
-console.log(temp.queue);
-
-for(let i = 0; i < 5; i++) {
-    console.log(temp.pop());
-}
-
-// console.log(temp.queue);
