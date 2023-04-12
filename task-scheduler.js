@@ -1,4 +1,7 @@
 /**
+ * 
+ * MinHeap and MaxHeap
+ * Time O(tasks.length*log(tasks.length*n)) | Space O(n)
  * @param {character[]} tasks
  * @param {number} n
  * @return {number}
