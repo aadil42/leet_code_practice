@@ -1,4 +1,8 @@
 /**
+ * 
+ * MinHeap
+ * 
+ * Time O(n*log(n)) | Space O(n)
  * @param {number} n
  */
 var SeatManager = function(n) {
