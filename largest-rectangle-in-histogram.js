@@ -30,3 +30,66 @@ var largestRectangleArea = function(heights) {
 
     return largestArea;
 };
+
+// efficient way
+
+/**
+ * Next greater element/ stack
+ * 
+ * Time O(n) | Space O(n)
+ * @param {number[]} heights
+ * @return {number}
+ */
+var largestRectangleArea = function(heights) {
+    
+    let stack = [];
+    const leftDirectionLimit = [];
+    const rightdirectionLimit = [];
+
+    for(let i = 0; i < heights.length; i++) {
+        // if(!stack.length) {
+        //     leftDirectionLimit.push(0);
+        //     stack.push(i);
+        //     continue;
+        // }
+        while(stack.length && heights[stack[stack.length - 1]] >= heights[i]) {
+           stack.pop();
+        }
+        if(!stack.length) {
+            leftDirectionLimit.push(0);
+        } else {
+            leftDirectionLimit.push(stack[stack.length - 1] + 1);
+        }
+        stack.push(i);
+    }
+
+    stack = [];
+    for(let i = heights.length - 1; i > -1; i--) {
+        // if(!stack.length) {
+        //     leftDirectionLimit.push(0);
+        //     stack.push(i);
+        //     continue;
+        // }
+        while(stack.length && heights[stack[stack.length - 1]] >= heights[i]) {
+           stack.pop();
+        }
+        if(!stack.length) {
+            rightdirectionLimit.push(heights.length - 1);
+        } else {
+            rightdirectionLimit.push(stack[stack.length - 1] - 1);
+        }
+        stack.push(i);
+    }
+    rightdirectionLimit.reverse();
+    // console.log(leftDirectionLimit, rightdirectionLimit);
+
+    // calculate max histogram
+    let maxArea = 0;
+
+    for(let i = 0; i < heights.length; i++) {
+        const currentMax = (rightdirectionLimit[i] - leftDirectionLimit[i] + 1) * heights[i];
+        maxArea = Math.max(maxArea, currentMax);
+    }
+
+    return maxArea;
+};
