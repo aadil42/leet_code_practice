@@ -47,11 +47,6 @@ var largestRectangleArea = function(heights) {
     const rightdirectionLimit = [];
 
     for(let i = 0; i < heights.length; i++) {
-        // if(!stack.length) {
-        //     leftDirectionLimit.push(0);
-        //     stack.push(i);
-        //     continue;
-        // }
         while(stack.length && heights[stack[stack.length - 1]] >= heights[i]) {
            stack.pop();
         }
@@ -65,11 +60,6 @@ var largestRectangleArea = function(heights) {
 
     stack = [];
     for(let i = heights.length - 1; i > -1; i--) {
-        // if(!stack.length) {
-        //     leftDirectionLimit.push(0);
-        //     stack.push(i);
-        //     continue;
-        // }
         while(stack.length && heights[stack[stack.length - 1]] >= heights[i]) {
            stack.pop();
         }
