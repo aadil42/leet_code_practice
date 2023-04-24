@@ -66,3 +66,30 @@ var convert = function(s, numRows) {
 
     return result;
 };
+
+
+/**
+ * 
+ * Time O(n) | Space O(1)
+ * @param {string} s
+ * @param {number} numRows
+ * @return {string}
+ */
+var convert = function(s, numRows) {
+    
+    if(numRows === 1) return s;
+    
+    let result = '';
+    for(let i = 0; i < numRows; i++) {
+        const increament = 2 * (numRows - 1);
+        for(let j = i; j < s.length; j+=increament) {
+            result += s[j];
+            // this condition is the meat of the code. understand this and you'll understand the logic
+            if(i > 0 && i < numRows - 1 && j + increament - 2 * i < s.length) {
+                result += s[j + increament - 2 * i];
+            }
+        }
+    }
+
+    return result;
+};
