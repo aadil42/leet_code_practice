@@ -4,7 +4,7 @@
  * @param {number[][]} intervals
  * @return {number}
  */
-var removeCoveredIntervals = function(intervals) {
+var removeCoveredIntervalsBF = function(intervals) {
     
 
     let removables = 0;
@@ -20,4 +20,36 @@ var removeCoveredIntervals = function(intervals) {
     }
 
     return intervals.length - removables;
+};
+
+// optimized
+/**
+ * Time O(n*log(n)) | Space O(1)
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+var removeCoveredIntervals = function(intervals) {
+      
+    // the main thig // just know how we're sorting it and you'll get it
+  intervals.sort((a,b) => {
+      if(a[0] === b[0]) {
+          return b[1] - a[1];
+      } 
+      return a[0] - b[0];
+  });
+
+  let removables = 0;
+
+  for(let i = 0; i < intervals.length; i++) {
+      let j = i+1;
+      // console.log(intervals[i], intervals[j]);
+      while(j < intervals.length && intervals[j][0] >= intervals[i][0] && intervals[j][1] <= intervals[i][1]) {
+          removables++;
+          j++;
+      }
+
+      i = j - 1;
+  }
+
+  return intervals.length - removables;
 };
