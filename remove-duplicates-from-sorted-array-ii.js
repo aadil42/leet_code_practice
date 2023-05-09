@@ -1,0 +1,33 @@
+/**
+ * Leaner time.
+ * Time O(n) | Space O(1)
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function(nums) {
+    let current = nums[0];
+    let sameElCount = 0;
+
+    for(let i = 0; i < nums.length; i++) {
+      if(current === nums[i]) {
+          sameElCount++;
+      } 
+      if(current !== nums[i]) {
+          current = nums[i];
+          sameElCount = 1;
+      }
+     if(sameElCount > 2) {
+          nums[i] = '#';
+      }
+    }
+
+    // filter out #
+    for(let i = 0; i < nums.length; i++) {
+        while(i < nums.length && nums[i] === '#') {
+            nums.splice(i, 1);
+        }
+    }
+
+    console.log(nums);
+    return nums.length;
+};
