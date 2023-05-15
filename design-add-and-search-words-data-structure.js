@@ -1,29 +1,28 @@
-
 var WordDictionary = function() {
-    this.children = new Map();
-    this.endOfWord = false;
+    this.root = {};
+    this.root['isEnd'] = false;
+
 };
 
+/** 
+ * @param {string} word
+ * @return {void}
+ */
 WordDictionary.prototype.addWord = function(word) {
-    let curr = this;
-    let temp;
-
+    
+    let current = this.root;
     for(let i = 0; i < word.length; i++) {
-        curr = curr.children;
-        temp = i;
-        if(curr.get(word[i])) {
-            curr = curr.get(word[i]);
+        if(current[word[i]]) {
+            current = current[word[i]];
         } else {
-            curr.set(word[i], new WordDictionary());
-            curr = curr.get(word[i]);
+            const charNode = {};
+            charNode['isEnd'] = false;
+            current[word[i]] = charNode;
+            current = current[word[i]];
         }
     }
-    
-    curr.endOfWord = true;
+    current['isEnd'] = true;
 };
-
-
-
 
 /** 
  * @param {string} word
@@ -31,36 +30,28 @@ WordDictionary.prototype.addWord = function(word) {
  */
 WordDictionary.prototype.search = function(word) {
 
-    function dfs(j, root) {
-        
-        
-        let curr = root;
-       
-        for(let i = j; i < word.length; i++) {
-           
-            const char = word[i];
-            if(char == '.') {
-                for(childe of curr.children.values()) {
-                    if(dfs(i+1, childe)) return true;
+     let current = this.root;
+    
+    const dfs = (cr, w) =>  {
+        for(let i = 0; i < w.length; i++) {
+            if(!cr[w[i]] && w[i] !== '.') return false;
+            if(w[i] === '.') {
+                for(const key in cr) {
+                    if(dfs(cr[key],w.substring(i+1))) return true;
                 }
                 return false;
-            } else {    
-                
-                if(!curr.children.has(word[i])) return false;
-                curr = curr.children.get(word[i]);
             }
+            cr = cr[w[i]];
         }
-        return curr.endOfWord;
+        return cr['isEnd'];
     }
-    
-    return dfs(0, this);
+
+    return  dfs(current,word);
 };
 
-const  myDict = new WordDictionary();
-myDict.addWord("bad");
-myDict.addWord("dad");
-myDict.addWord("mad");
-console.log(myDict.search("pad")); // return False
-console.log(myDict.search("bad")); // return True
-console.log(myDict.search(".ad")); // return True
-console.log(myDict.search("b.."));  // true
+/** 
+ * Your WordDictionary object will be instantiated and called as such:
+ * var obj = new WordDictionary()
+ * obj.addWord(word)
+ * var param_2 = obj.search(word)
+ */
