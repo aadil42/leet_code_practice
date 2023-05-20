@@ -1,6 +1,8 @@
 /**
  * DP Recursion
- * I kind of get the solution review it again.
+ * I kind of get the solution review it again. 
+ * I reviewd it again and I get it more then previously. Try to draw the tree  and see what's happning. It's an elegent solution tbh.
+ * 
  * @param {string[]} strs
  * @param {number} m
  * @param {number} n
