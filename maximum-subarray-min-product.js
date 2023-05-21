@@ -44,3 +44,33 @@ var maxSumMinProduct = function(nums) {
 
     return max % (10**9 + 7);
 };
+
+
+/**
+ * brute force
+ * 
+ * Time O(n^2) | Space O(1);
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSumMinProduct = function(nums) { 
+    
+    const getTotal = (start,end) => {
+        let total = 0;
+        for(let i = start; i < end;  i++) {
+            total += nums[i];
+        }
+        return total;
+    }
+
+    let max = 0;
+    for(let i = 0; i < nums.length; i++) {
+        max = Math.max(max, nums[i] * nums[i]);
+        for(let j = i + 1; j < nums.length; j++) {
+            const min = Math.min(...nums.slice(i, j + 1));
+            max = Math.max(max, min * getTotal(i,j + 1));
+        }
+    }
+
+    return max;
+};
