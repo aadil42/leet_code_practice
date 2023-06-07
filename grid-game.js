@@ -1,3 +1,11 @@
+/**
+ * https://leetcode.com/problems/grid-game/description/
+ * 
+ * Linear
+ * Time O(n) | Space O(n)
+ * @param {number[][]} grid
+ * @return {number}
+ */
 var gridGame = function(grid) {
 
     const preSum1 = [0];
