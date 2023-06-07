@@ -20,6 +20,15 @@ function multipleOf(i,nums,k) {
 }
 
 
+/**
+ * https://leetcode.com/problems/continuous-subarray-sum/
+ * 
+ * Hasing
+ * Time O(n) | Space O(n)
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
 // efficient algorithm O(n)
 var checkSubarraySum = function(arr, k) {
     let sum = 0;
