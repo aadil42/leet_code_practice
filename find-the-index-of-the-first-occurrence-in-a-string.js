@@ -20,6 +20,14 @@ var strStrBrute = function(haystack, needle) {
   return true;
   }
 
+/**
+ * https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+ * KMP algorithm
+ * Time O(m+n) | Space (n)
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
 //   efficient with KMP algorithm. O(m+n);
 var strStr = function(haystack, needle) {
     
