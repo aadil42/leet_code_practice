@@ -1,3 +1,11 @@
+/**
+ * https://leetcode.com/problems/repeated-dna-sequences/
+ * Hashing
+ * Time O(n) | Space O(n)
+ * @param {string} s
+ * @return {string[]}
+ */
+
 var findRepeatedDnaSequences = function(s) {
 
     const sequanceStack = new Set();
