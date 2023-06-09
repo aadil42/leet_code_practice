@@ -1,4 +1,6 @@
 /**
+ * https://leetcode.com/problems/range-sum-query-2d-immutable/
+ * 
  * @param {number[][]} matrix
  */
  var NumMatrix = function(matrix) {
@@ -6,6 +8,9 @@
 };
 
 /** 
+ * 
+ * m = row2 - row1; n = col2 - col1
+ * Time O(m*n) | Space O(1)
  * @param {number} row1 
  * @param {number} col1 
  * @param {number} row2 
