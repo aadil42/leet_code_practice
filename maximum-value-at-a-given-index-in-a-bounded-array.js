@@ -35,7 +35,7 @@ var maxValue = function(n, index, maxSum) {
     let right = maxSum;
     while(left < right) { 
         const mid = Math.floor((right + left + 1)/2);
-        // const mid = left + Math.floor((right - left)/2); // I don't understand why it's giving me error?
+        // const mid = left + Math.floor((right - left)/2); // I don't understand why it's giving me error? // I think the + 1 is because we're starting left with 1 insted of 0 so +1 cancels out the -1. think about it.
         if(getSum(mid) <= maxSum) {
             left = mid;
         } else {
