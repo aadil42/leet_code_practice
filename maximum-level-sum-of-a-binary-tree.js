@@ -42,3 +42,44 @@ var maxLevelSum = function(root) {
 
     return resultLevel;
 };
+
+/**
+ * 
+ * DFS
+ * Time O(n) | Space O(n)
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxLevelSum1 = function(root) {
+
+  const dfs = (node, level, levelSumArr) => {
+
+      if(!node) return;
+      if(level === levelSumArr.length) levelSumArr.push(node.val);
+      else levelSumArr[level] += node.val
+
+      dfs(node.left, level+1, levelSumArr);
+      dfs(node.right, level+1, levelSumArr);
+  }
+
+  const levelSumArr = [];
+  dfs(root, 0, levelSumArr);
+  let max = -Infinity;
+  let level = 0;
+  for(let i = 0; i < levelSumArr.length; i++) {
+      if(levelSumArr[i] > max) {
+          level = i + 1;
+      } 
+      max = Math.max(levelSumArr[i], max);
+  } 
+
+  return level;
+};
