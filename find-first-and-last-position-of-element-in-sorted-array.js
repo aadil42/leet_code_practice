@@ -1,6 +1,6 @@
 /**
  * Binary Search
- * 
+ * https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
  * Time O(log(n)) | Space O(1)
  * @param {number[]} nums
  * @param {number} target
