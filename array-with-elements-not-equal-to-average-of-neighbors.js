@@ -1,4 +1,8 @@
 /**
+ * Two Pointers
+ * https://leetcode.com/problems/array-with-elements-not-equal-to-average-of-neighbors/
+ * 
+ * Time O(n*log(n)) | Space O(n)
  * @param {number[]} nums
  * @return {number[]}
  */
