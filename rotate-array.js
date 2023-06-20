@@ -1,4 +1,8 @@
 /**
+ * Two Pointers
+ * https://leetcode.com/problems/rotate-array/
+ * 
+ * Time O(n) | Space O(1)
  * @param {number[]} nums
  * @param {number} k
  * @return {void} Do not return anything, modify nums in-place instead.
