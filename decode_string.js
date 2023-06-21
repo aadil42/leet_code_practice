@@ -1,3 +1,11 @@
+/**
+ * Stack
+ * https://leetcode.com/problems/decode-string/
+ * 
+ * Time O(n) | Space O(n)
+ * @param {string} s
+ * @return {string}
+ */
 var decodeString = function(s) {
   
 const myStack = [];
