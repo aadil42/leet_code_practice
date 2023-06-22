@@ -1,5 +1,5 @@
 /**
- * 
+ * https://leetcode.com/problems/arranging-coins/
  * Linear time
  * Time O(n) | Space O(1)
  * @param {number} n
