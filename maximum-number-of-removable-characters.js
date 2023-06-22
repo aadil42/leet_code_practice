@@ -1,4 +1,6 @@
 /**
+ * https://leetcode.com/problems/maximum-number-of-removable-characters/
+ * 
  * Brute force
  * Time O(removable.length * s.length) | Space O(1)
  * @param {string} s
@@ -6,7 +8,7 @@
  * @param {number[]} removable
  * @return {number}
  */
-var maximumRemovals = function(s, p, removable) {
+var maximumRemovals1 = function(s, p, removable) {
 
     let k = 0;
     // removable.reverse();
