@@ -6,13 +6,66 @@
  * }
  */
 /**
- * Time O(n) | Space(n)
+ * 
+ * Time O(n) | Space O(n)
  * @param {TreeNode} root
  * @param {TreeNode} target
  * @param {number} k
  * @return {number[]}
  */
 var distanceK = function(root, target, k) {
+    
+    const dfs = (node, preNode) => {
+        if(!node) return;
+        dfs(node.left, node);
+        dfs(node.right, node);
+        node.parent = preNode;     
+    }
+ 
+    dfs(root, null);
+ 
+    const queue = new Queue();
+    const visited = new Set();
+    queue.enqueue([target, 0]);
+    visited.add(target.val);
+    const result = [];
+    while(!queue.isEmpty()) {
+        const [node, steps] = queue.dequeue();
+        if(steps === k) result.push(node.val);
+ 
+        if(node.left && !visited.has(node.left.val)) {
+         queue.enqueue([node.left, steps+1]);
+         visited.add(node.left.val);
+        }
+        if(node.right && !visited.has(node.right.val)) {
+            queue.enqueue([node.right, steps+1]);
+            visited.add(node.right.val);
+        } 
+        if(node.parent && !visited.has(node.parent.val)) {
+            queue.enqueue([node.parent, steps+1]);
+            visited.add(node.parent.val);
+        }
+    }
+ 
+    return result;
+ };
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * Time O(n) | Space(n)
+ * @param {TreeNode} root
+ * @param {TreeNode} target
+ * @param {number} k
+ * @return {number[]}
+ */
+var distanceK1 = function(root, target, k) {
     
     const graph = {};
     const queue = new Queue();
