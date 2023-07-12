@@ -32,3 +32,44 @@ var eventualSafeNodes = function(graph) {
     // console.log(result);
     return result;
 };  
+
+
+/**
+ * 
+ * DFS | Brute Force 
+ * 
+ * Time O(n^2) | Space O(n);
+ * @param {number[][]} graph
+ * @return {number[]}
+ */
+var eventualSafeNodes1 = function(graph) {
+   
+    const traverseNode = (startNode) => {
+        const visited = new Set();
+ 
+        const dfs = (node) => {
+            if(!graph[node].length) return true;
+            if(visited.has(node)) return false;
+ 
+            let canReach = true;
+            for(let i = 0; i < graph[node].length;  i++) {
+                visited.add(node);
+                canReach = dfs(graph[node][i]);
+                if(!canReach) break;
+                visited.delete(node);
+            }
+            return canReach;
+        }
+ 
+        return dfs(startNode);
+    }
+ 
+    const result = [];
+    for(let i = 0; i < graph.length; i++) {
+        if(traverseNode(i)) {
+            result.push(i);
+        }
+    }
+ 
+    return result;
+ };  
