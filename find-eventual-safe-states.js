@@ -35,6 +35,34 @@ var eventualSafeNodes = function(graph) {
 
 
 /**
+ * Updated code using object instead of Map. It's practically the same.
+ * @param {number[][]} graph
+ * @return {number[]}
+ */
+var eventualSafeNodes2 = function(graph) {
+
+    const isSafe = {}; 
+    const dfs = (node) => {
+            if(isSafe[node] !== undefined) return isSafe[node];
+             isSafe[node] = false;
+             const neighbor = graph[node];
+             for(let i = 0; i < neighbor.length; i++) {
+                 if(!dfs(neighbor[i])) return false;
+             }
+             isSafe[node] = true;
+             return true;
+     }
+    const result = [];
+    for(let i = 0; i < graph.length; i++) {
+        if(dfs(i)) {
+            result.push(i);
+        }
+    }
+ 
+    return result;
+ };  
+
+/**
  * 
  * DFS | Brute Force 
  * 
