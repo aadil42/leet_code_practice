@@ -2,7 +2,7 @@
  * Greedy | Sorting
  * https://leetcode.com/problems/non-overlapping-intervals/
  * 
- * Time O(n) | Space O(1)
+ * Time O(n*log(n)) | Space O(1)
  * @param {number[][]} intervals
  * @return {number}
  */
