@@ -1,4 +1,8 @@
 /**
+ * https://leetcode.com/problems/minimum-speed-to-arrive-on-time/
+ * 
+ * Binary Search
+ * Time O(n*log(n)) | Space O(1)
  * @param {number[]} dist
  * @param {number} hour
  * @return {number}
