@@ -1,11 +1,40 @@
 /**
  * Recursion
- * Time O(n^n) | Space O(n^2)
+ * https://leetcode.com/problems/combinations
+ *
+ * Time O(2^n) | Space O(n)
  * @param {number} n
  * @param {number} k
  * @return {number[][]}
  */
 var combine = function(n, k) {
+
+    const result = [];
+    const dfs = (index, combo) =>  {
+      if(combo.length === k) {
+        result.push(combo.slice());
+        return;
+      } 
+      if(index === n + 1) return;
+      const combo1 = [...combo];
+      combo = [...combo, index];
+      dfs(index+1, combo);
+      dfs(index+1, combo1);
+    }
+
+    dfs(1, []);
+    return result;
+};
+
+
+/**
+ * Recursion
+ * Time O(n^k) | Space O(n^2)
+ * @param {number} n
+ * @param {number} k
+ * @return {number[][]}
+ */
+var combine1 = function(n, k) {
 
     const nArr = [];
     
@@ -31,4 +60,5 @@ var combine = function(n, k) {
     
     dfs(0,[]);
     return result;
-    };
+};
+
