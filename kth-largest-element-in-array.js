@@ -1,15 +1,45 @@
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
 // naive approache using array and sorting
-// var findKthLargest = function(nums, k) {
-//    nums.sort((x, y) => {
-//         return x - y;
-//     });
-//     console.log(nums);
-//     return nums[nums.length - k];
-// };
-// console.log(findKthLargest([3,2,3,1,2,4,5,5,6], 4));
+var findKthLargestN = function(nums, k) {
+   nums.sort((x, y) => {
+        return x - y;
+    });
+    console.log(nums);
+    return nums[nums.length - k];
+};
+
+/**
+ * Pirority Queue.
+ * https://leetcode.com/problems/kth-largest-element-in-an-array
+ * 
+ * Time O(n*log(n)) | Space(n);
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findKthLargest = function(nums, k) {
+    
+    const pq = new MaxPriorityQueue(); // this only exist in leetcode environment.
+
+    nums.forEach((num) => {
+        pq.enqueue(num);
+    });
+
+    let kthLargest = 0;
+    while(k) {
+        kthLargest = pq.dequeue().element;
+        k--;
+    }
+
+    return kthLargest;
+};
 
 
-// heap data structure
+// custom built heap data structure
 class PriorityQueue {
     constructor() {
         this.queue = [];
@@ -76,7 +106,7 @@ class PriorityQueue {
 
 
 // using heap
-var findKthLargest = function(nums, k) {
+var findKthLargest1 = function(nums, k) {
     // push every element in the queue
     let myqueue = new PriorityQueue();
     nums.forEach((element) => {
@@ -90,5 +120,5 @@ var findKthLargest = function(nums, k) {
     return myqueue.peek();
  };
 
- console.log(findKthLargest([1,3,2,5,6], 2));
+ console.log(findKthLargest1([1,3,2,5,6], 2));
  
