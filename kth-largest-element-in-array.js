@@ -38,6 +38,33 @@ var findKthLargest = function(nums, k) {
     return kthLargest;
 };
 
+/**
+ * Quick Select 
+ * 
+ * Time O(n^2) worst, O(n) average | Space O(1)
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findKthLargest2 = function(nums, k) {
+    k = nums.length - k;
+    const quickSelect = (l,r) => {
+        const pivot = nums[r];
+        let p = l;
+        for(let i = l; i < r; i++) {
+            if(nums[i] <= pivot) {
+                [nums[p], nums[i]] = [nums[i], nums[p]];
+                p+=1;
+            }
+        }
+        [nums[p], nums[r]] = [nums[r], nums[p]];
+        if(k > p) return quickSelect(p+1,r);
+        if(k < p) return quickSelect(l, p-1);
+        return nums[p];
+    }
+    return quickSelect(0, nums.length - 1);
+};
+
 
 // custom built heap data structure
 class PriorityQueue {
