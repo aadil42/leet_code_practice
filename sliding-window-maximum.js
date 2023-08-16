@@ -1,7 +1,117 @@
+
+class MinHeap {
+    constructor() {
+      this.heap = [];
+    }
+  
+    compare(a, b) {
+      return a[0] - b[0];
+    }
+  
+    getParentIndex(index) {
+      return Math.floor((index - 1) / 2);
+    }
+  
+    getLeftChildIndex(index) {
+      return (index * 2) + 1;
+    }
+  
+    getRightChildIndex(index) {
+      return (index * 2) + 2;
+    }
+  
+    insert(value) {
+      this.heap.push(value);
+      let currentIndex = this.heap.length - 1;
+      let parentIndex = this.getParentIndex(currentIndex);
+  
+      while (currentIndex > 0 && this.compare(this.heap[currentIndex], this.heap[parentIndex]) < 0) {
+        [this.heap[currentIndex], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[currentIndex]];
+        currentIndex = parentIndex;
+        parentIndex = this.getParentIndex(currentIndex);
+      }
+    }
+  
+    extractMin() {
+      if (this.heap.length === 0) {
+        return null;
+      }
+  
+      if (this.heap.length === 1) {
+        return this.heap.pop();
+      }
+  
+      const min = this.heap[0];
+      this.heap[0] = this.heap.pop();
+      let currentIndex = 0;
+      let leftChildIndex = this.getLeftChildIndex(currentIndex);
+      let rightChildIndex = this.getRightChildIndex(currentIndex);
+  
+      while (leftChildIndex < this.heap.length) {
+        let smallestChildIndex = rightChildIndex < this.heap.length && this.compare(this.heap[rightChildIndex], this.heap[leftChildIndex]) < 0
+          ? rightChildIndex
+          : leftChildIndex;
+  
+        if (this.compare(this.heap[currentIndex], this.heap[smallestChildIndex]) <= 0) {
+          break;
+        }
+  
+        [this.heap[currentIndex], this.heap[smallestChildIndex]] = [this.heap[smallestChildIndex], this.heap[currentIndex]];
+        currentIndex = smallestChildIndex;
+        leftChildIndex = this.getLeftChildIndex(currentIndex);
+        rightChildIndex = this.getRightChildIndex(currentIndex);
+      }
+  
+      return min;
+    }
+  
+    peek() {
+      return this.heap.length > 0 ? this.heap[0] : null;
+    }
+  
+    isEmpty() {
+      return this.heap.length === 0;
+    }
+  }
+  /**
+   * Heap | Priority Queue
+   * 
+   * https://leetcode.com/problems/sliding-window-maximum
+   * Time O(n*log(n)) | Space O(n)
+   * @param {number[]} nums
+   * @param {number} k
+   * @return {number[]}
+   */
+  var maxSlidingWindow = function(nums, k) {
+      
+      const maxHeap = new MinHeap();
+  
+      let left = 0;
+      let right = k - 1;
+      const result = [];
+      // fill the maxHeap with the first k elements.
+      for(let i = 0; i < k; i++) {
+          maxHeap.insert([-1*nums[i], i]);
+      }
+      
+      while(right < nums.length) {
+          const currentMax = maxHeap.peek();
+          result.push(currentMax[0] * -1);
+          while(maxHeap.peek() && maxHeap.peek()[1] <= left) {
+              maxHeap.extractMin();
+          }
+          left++;
+          right++;
+          if(right < nums.length) maxHeap.insert([nums[right] * -1, right]);
+      }
+  
+      return result;
+  };
+
+/////////////////////////////////////////// Alternative approch /////////////////////////////////////////
 /**
  * @class Dequeue
  */
-
  class Dequeue {
     constructor() {
         this.items = {};
@@ -97,7 +207,7 @@
  * @param {number} k
  * @return {number[]}
  */
- var maxSlidingWindow = function(nums, k) {
+ var maxSlidingWindow1 = function(nums, k) {
     
     const result = [], queue = new Dequeue();
     let left = 0, right = 0;
