@@ -1,7 +1,8 @@
 /**
+ * https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/
  * 
- * The answer is not getting submitted. I don't know why? it gives wrong answer for certain inputs.
- * check
+ * Minimum Spanning Tree.
+ * Time O(n^2) | Space(n) 
  * @param {number} n
  * @param {number[][]} edges
  * @return {number[][]}
@@ -9,15 +10,23 @@
 var findCriticalAndPseudoCriticalEdges = function(n, edges) {
     // if you ignore an edge and you can't form a cycle or the sum is bigger then it's a ciritical
     // if you include an edge and the sum is the same and you can form a cycle then it's a psudo critical.
+
+    // keeping the original index of edge so we can correctly append it.
+    for(let i = 0; i < edges.length; i++) {
+        edges[i].push(i);
+    }
+
+    // sorting.
     edges = edges.sort((a,b) => a[2] - b[2]);
 
+    // helper method
     const find = (n, parent) => {
         while(parent[n] !== n) {
             n = parent[n];
         }
         return n;
     }
-
+    // helper method
     const unionF = (n1, n2, rank, parent) => {
         n1 = find(n1, parent);
         n2 = find(n2, parent);
@@ -38,11 +47,10 @@ var findCriticalAndPseudoCriticalEdges = function(n, edges) {
         const rank = [];
         const parent = [];
 
-        for(let i = 0; i < n + 1; i++) {
+        for(let i = 0; i < n; i++) {
             parent[i] = i;
             rank[i] = 1;
         }
-
         let totalSum = 0;
         let totalEdges = 0;
 
@@ -54,6 +62,7 @@ var findCriticalAndPseudoCriticalEdges = function(n, edges) {
             totalSum += weight;
             unionF(node1, node2, rank, parent);
         }
+
         for(let i = 0;  i < edges.length; i++) {
             if(i === mustNotInclude) continue;
             const node1 = edges[i][0];
@@ -64,7 +73,6 @@ var findCriticalAndPseudoCriticalEdges = function(n, edges) {
                 totalEdges++;
             }; 
         }
-
         if(totalEdges === n - 1) return totalSum;
         return Infinity;
     }
@@ -76,21 +84,14 @@ var findCriticalAndPseudoCriticalEdges = function(n, edges) {
 
     // try excluding each edge and check for critical edge.
     for(let i = 0; i < edges.length; i++) {
-        if(getMstSum(i) > mstSum) {
-            criticalEdges.push(i);
+        if(getMstSum(i, undefined) > mstSum) {
+            criticalEdges.push(edges[i][3]);
         } else {
             // it's not criticale. Check if it's psudo critical?
             if(getMstSum(undefined, i) === mstSum) {
-                psudoCriticalEdges.push(i);
+                psudoCriticalEdges.push(edges[i][3]);
             };
         }
     }
-
     return [criticalEdges, psudoCriticalEdges];
 };
-
-// const edges = [[0,1,1],[1,2,1],[2,3,2],[0,3,2],[0,4,3],[3,4,3],[1,4,6]];
-const edges = [[0,1,1],[1,2,1],[0,2,1],[2,3,4],[3,4,2],[3,5,2],[4,5,2]];
-const n = 6;
-console.log(findCriticalAndPseudoCriticalEdges(n, edges));
-//  [[0,1],[2,3,4,5]];
