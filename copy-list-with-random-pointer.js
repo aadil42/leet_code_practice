@@ -1,6 +1,5 @@
 /**
- * HashMap.
- * Time O(n) | Space O(n)
+ * 
  * // Definition for a Node.
  * function Node(val, next, random) {
  *    this.val = val;
@@ -10,6 +9,10 @@
  */
 
 /**
+ * HashMap.
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/copy-list-with-random-pointer
+ * 
  * @param {Node} head
  * @return {Node}
  */
