@@ -1,3 +1,44 @@
+/**
+ * Better Solution
+ * Time  O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/pascals-triangle
+ * @param {number} numRows
+ * @return {number[][]}
+ */
+var generate = function(numRows) {
+    
+  if(numRows === 1) return [[1]];
+  if(numRows === 2) return [[1],[1,1]];
+
+  const getPascalRow = (pre, curr) => {
+      let i = 1;
+      let j = 2;
+      while(pre[j]) {
+          curr.push(pre[i] + pre[j]);
+          i++;
+          j++;
+      }
+      curr.push(1);
+      return curr;
+  }
+
+  const pascal = [];
+  pascal.push([1]);
+  pascal.push([1,1]);
+  
+  let i = 2;
+  while(i < numRows) {
+      pascal.push([1,i]);
+      i++;
+  }
+
+  i = 2;
+  while(i < pascal.length) {
+      getPascalRow(pascal[i-1],pascal[i]);
+      i++;
+  }
+  return pascal;
+};
 
 // link to the problem https://leetcode.com/problems/pascals-triangle/
 // the time complexity will basically be the number of elements in pascale tringle. roughly height of tringle * number of honeycomb in each row.
