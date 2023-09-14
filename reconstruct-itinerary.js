@@ -1,9 +1,48 @@
 /**
+ * Graph traversal | DFS
  * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/reconstruct-itinerary
  * @param {string[][]} tickets
  * @return {string[]}
  */
 var findItinerary = function(tickets) {
+    
+    const map = {};
+    for(let i = 0; i < tickets.length;  i++) {
+        const [dep, des] = tickets[i];
+        const list = map[dep] || [];
+        map[dep] = [...list, des];
+    }
+    
+    for(key in map) {
+        map[key].sort();
+    }
+
+    const result = ['JFK'];
+    const dfs = (airport) => {
+        if(result.length === tickets.length + 1) return true;
+        if(!map[airport]) return false;
+
+        const list = map[airport] || [];
+        
+        for(let i = 0; i < list.length; i++) {
+            const [node] = list.splice(i,1);
+            result.push(node);
+            if(dfs(node)) return true;
+            result.pop(node);
+            list.splice(i,0,node);
+        }
+    }
+    dfs('JFK');
+    return result;
+};
+
+/**
+ * Time O(n^2) | Space O(n^2)
+ * @param {string[][]} tickets
+ * @return {string[]}
+ */
+var findItinerary1 = function(tickets) {
     
     // sorting strings [['JFK','SFO'],['JFK','ATL']] -> [['JFK','ATL],['JFK','SFO']];
     tickets.sort((a,b)=> {
