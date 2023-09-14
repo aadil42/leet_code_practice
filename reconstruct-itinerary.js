@@ -1,5 +1,5 @@
 /**
- * Graph traversal | DFS
+ * Graph traversal | DFS | Backtracking
  * Time O(n^2) | Space O(n^2)
  * https://leetcode.com/problems/reconstruct-itinerary
  * @param {string[][]} tickets
