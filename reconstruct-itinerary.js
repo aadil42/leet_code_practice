@@ -1,6 +1,6 @@
 /**
  * Graph traversal | DFS | Backtracking
- * Time O(n^2) | Space O(n^2)
+ * Time O(e^2) | Space O(e) | e = number of edges
  * https://leetcode.com/problems/reconstruct-itinerary
  * @param {string[][]} tickets
  * @return {string[]}
