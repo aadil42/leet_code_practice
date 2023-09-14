@@ -1,6 +1,6 @@
 /**
  * Graph traversal | DFS | Backtracking
- * Time O(e^2) | Space O(e) | e = number of edges
+ * Time O(e^3) | Space O(e) | e = number of edges
  * https://leetcode.com/problems/reconstruct-itinerary
  * @param {string[][]} tickets
  * @return {string[]}
@@ -26,11 +26,11 @@ var findItinerary = function(tickets) {
         const list = map[airport] || [];
         
         for(let i = 0; i < list.length; i++) {
-            const [node] = list.splice(i,1);
+            const [node] = list.splice(i,1); // this will make it e^3
             result.push(node);
             if(dfs(node)) return true;
             result.pop(node);
-            list.splice(i,0,node);
+            list.splice(i,0,node); // this will make it e^3
         }
     }
     dfs('JFK');
