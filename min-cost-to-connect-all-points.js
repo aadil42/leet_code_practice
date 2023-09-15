@@ -1,11 +1,81 @@
 /**
+ * Kruskal's Algorithm (minimum spanning tree)
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/min-cost-to-connect-all-points
+ * @param {number[][]} points
+ * @return {number}
+ */
+var minCostConnectPoints = function(points) {
+    
+  const edges = [];
+
+  const calcManhattenDistance = (pointA, pointB) => {
+      return Math.abs(pointA[0] - pointB[0]) + Math.abs(pointA[1] - pointB[1]);
+  }
+
+  for(let i = 0; i < points.length; i++) {
+      for(let j = 0; j < points.length; j++) {
+          if(i===j) continue;
+          const distance = calcManhattenDistance(points[i], points[j]);
+          edges.push([i,j, distance]);
+      }
+  }
+
+  const kruskal = (edges) => {
+
+      edges = edges.sort((a,b) => a[2] - b[2]);
+      const rank = new Array(points.length).fill(1);
+      const parent = [];
+      let total = 0;
+
+
+      for(let i = 0; i < points.length; i++) {
+          parent.push(i);
+      }
+
+      const getParent = (point) => {
+          while(parent[point] !== point) {
+              point = parent[point];
+          }
+          return point;
+      }
+      
+      const isCycle = (point1, point2) => {
+          const point1Parent = getParent(point1);
+          const point2Parent = getParent(point2);
+
+          if(point1Parent === point2Parent) return true;
+          
+          if(rank[point1Parent] > rank[point2Parent]) {
+              parent[point2Parent] = point1Parent;
+              rank[point1Parent] += rank[point2Parent];
+          }  else {
+              parent[point1Parent] = point2Parent;
+              rank[point2Parent] += rank[point1Parent];
+          }
+
+          return false;
+      }
+
+      for(let i = 0; i < edges.length; i++) {
+          const [point1, point2, distance] = edges[i];
+          // console.log(edges)
+          if(!isCycle(point1, point2)) total += distance;
+      }
+      return total;
+  }
+
+  return kruskal(edges);
+};
+
+/**
  * 
  * Prim's Algorithm (minimum spaning tree)
  * Time O(n^2 * log(n)) | Space O(n^2)
  * @param {number[][]} points
  * @return {number}
  */
-var minCostConnectPoints = function(points) {
+var minCostConnectPoints1 = function(points) {
 
     const getDistance = (a,b) => {
         return Math.abs(points[a][0] - points[b][0]) +
