@@ -1,3 +1,11 @@
+/**
+ * Iteration
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/is-subsequence/
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
 var isSubsequence = function(s, t) {
     
     let i = 0;
