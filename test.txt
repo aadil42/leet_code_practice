@@ -1,0 +1,11 @@
+use maxWidth to center main title on <GameStartScreen />. also make it a bit less width.
+
+Make things responsive with  Dimension API from react-native. you'll probably need to set up Android Studio for this Because inorder to see how the app looks on Other phones.
+	You may find it helpful to go to the begining and watch how Max installed Android Studio and 	
+	set up the Environment on his machine. You're using ubuntu, so  watch the installation on Mac.
+	
+use useDimention API for updating styles when the device is in portrait or landscap mode.
+
+ 
+
+
