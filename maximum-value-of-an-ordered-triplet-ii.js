@@ -3,7 +3,7 @@
  * Prefix | Array
  * Time O(n) | Space O(n)
  * https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii
- * 
+ * same as(https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-i) You just need to optimize it to run it in O(n) time. 
  * @param {number[]} nums
  * @return {number}
  */
