@@ -1,6 +1,6 @@
 /**
  * DP | memoization
- * Time O(n^2) | Space O(n)
+ * Time O(n^2) | Space O(n^2)
  * https://leetcode.com/problems/max-dot-product-of-two-subsequences
  * 
  * @param {number[]} nums1
