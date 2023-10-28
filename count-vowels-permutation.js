@@ -1,11 +1,71 @@
 /**
  * Recursion
+ * Time O(n*5) | Space O(n*5) Which is basically O(n)
+ * The reason it's multiplied with 5 is because we only have 5 vowels.
+ * so at most we will have 5 * n values in our cache. 
+ * @param {number} n
+ * @return {number}
+ */
+var countVowelPermutation = function(n) {
+
+    const mod = 10**9 + 7;
+
+    const cache = new Map();
+
+    const dfs = (n, pre) => {
+
+        const hash = `${n}-${pre}`;
+
+        if(n === 0) return 1;
+        if(cache.has(hash)) return cache.get(hash);
+
+        let totalWays = 0;
+
+        if(pre === 'a') {
+            totalWays += dfs(n-1, 'e') % mod;
+        }
+        if(pre === 'e') {
+            totalWays += dfs(n-1, 'a') % mod;
+            totalWays += dfs(n-1, 'i') % mod;
+        }
+        if(pre === 'i') {
+            totalWays += dfs(n-1, 'a') % mod;
+            totalWays += dfs(n-1, 'e') % mod;
+            totalWays += dfs(n-1, 'o') % mod;
+            totalWays += dfs(n-1, 'u') % mod;
+        }
+        if(pre === 'o') {
+            totalWays += dfs(n-1, 'i') % mod;
+            totalWays += dfs(n-1, 'u') % mod;
+        }
+        if(pre === 'u') {
+            totalWays += dfs(n-1, 'a') % mod;
+        }
+
+        if(pre === '') {
+            totalWays += dfs(n-1, 'a') % mod;
+            totalWays += dfs(n-1, 'e') % mod;
+            totalWays += dfs(n-1, 'i') % mod;
+            totalWays += dfs(n-1, 'o') % mod;
+            totalWays += dfs(n-1, 'u') % mod;
+        }
+
+        cache.set(hash, totalWays%mod);
+        return totalWays%mod;
+    }
+
+    return dfs(n, '')%mod;
+};
+
+
+/**
+ * Recursion
  * 
  * Time O(n) | Space O(n)
  * @param {number} n
  * @return {number}
  */
-var countVowelPermutation = function(n) {
+var countVowelPermutation1 = function(n) {
     
 
     const vowels = ['a','e','i','o','u'];
