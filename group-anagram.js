@@ -1,4 +1,39 @@
+/**
+ * Hashing
+ * Time O(n)  | Space O(n)
+ * https://leetcode.com/problems/group-anagrams/
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
 var groupAnagrams = function(strs) {
+    
+    const results = [];
+    const cache = {};
+
+    for(let i = 0; i < strs.length; i++) {
+        let hash = new Array(26).fill(0);
+
+        for(let j = 0; j < strs[i].length; j++) {
+            hash[strs[i][j].charCodeAt(0) - 97] += 1;
+        }
+
+        hash = hash.join('-');
+        if(cache[hash]) {
+            cache[hash].push(strs[i]);
+            continue;
+        } 
+
+        cache[hash] = [strs[i]];
+    }
+
+    for(let key in cache) {
+        results.push(cache[key]);
+    }
+    return results;
+
+};
+
+var groupAnagrams1 = function(strs) {
     
 
     const result = [];
