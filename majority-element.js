@@ -1,11 +1,37 @@
 /**
  * Boyer-Moore Algorightm
- * Time O(n) | Space O(1)
+ * Time O(n) | Space O(1) 
  * https://leetcode.com/problems/majority-element/
  * @param {number[]} nums
  * @return {number}
  */
 var majorityElement = function(nums) {
+    
+    let currentFrequent = nums[0];
+    let balancer = 1;
+
+    for(let i = 1; i < nums.length; i++) {
+        if(!balancer) {
+            currentFrequent = nums[i];
+        }
+        if(nums[i] === currentFrequent) {
+            balancer++;
+            continue;
+        };
+        balancer--;
+    }
+
+    return currentFrequent;
+};
+
+/**
+ * Boyer-Moore Algorightm
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/majority-element/
+ * @param {number[]} nums
+ * @return {number}
+ */
+var majorityElement2 = function(nums) {
     
     let majorityEl = nums[0];
     let count = 1;
