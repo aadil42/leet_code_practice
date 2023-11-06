@@ -1,22 +1,36 @@
+/**
+ * 
+ * Hashing
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/isomorphic-strings/
+ * This is Very irritatingly annyoing problem. Beware of test cases.
+ * 
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
 var isIsomorphic = function(s, t) {
-    
-    return getCode(s) === getCode(t);
-};
 
-function getCode(string) {
+    if(s.length !== t.length) return false;
 
-    const strHash = new Map();
-    let code = '';
-    let id = 0;
-
-    for(let i = 0; i < string.length; i++) {
-        if(!strHash.has(string[i])) {
-            code += code + id + '.';
-            strHash.set(string[i], id);
-            id++;
-        } else {
-            code += strHash.get(string[i]);
+    const charMap = {};
+    const pointedSet = new Set();
+    let constructedStr = "";
+    for(let i = 0; i < s.length; i++) {
+        if(charMap[s[i]]) {
+            constructedStr += charMap[s[i]];
+            continue;
+        };
+        
+        if(!pointedSet.has(t[i])) {
+            charMap[s[i]] = t[i];
+            pointedSet.add(t[i]);
+            constructedStr += t[i];
+            continue;
         }
+        
+        constructedStr += "#";
     }
-    return code;
-}
+
+    return constructedStr === t;
+};
