@@ -1,3 +1,40 @@
+/**
+ * Hashing 
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/unique-length-3-palindromic-subsequences
+ * 
+ * @param {string} s
+ * @return {number}
+ */
+var countPalindromicSubsequence = function(s) {
+    
+    const uniquePalindromicSS = new Set();
+
+    const leftHalf = {};
+    const rightHalf = {};
+
+    for(let i = 0; i < s.length; i++) {
+        const char = s[i];
+        const frequency = rightHalf[char] || 0;
+        rightHalf[char] = frequency+1;
+    }
+
+    for(let i =  0; i < s.length; i++) {
+        const char = s[i];
+        // reduce the count of right char by 1
+        if(rightHalf[char]) rightHalf[char] -= 1;
+        
+        for(key in leftHalf) {
+            if(rightHalf[key]) uniquePalindromicSS.add(`${key}${char}${key}`);
+        }
+
+        const frequencyLeft = leftHalf[char] || 0;
+        leftHalf[char] = frequencyLeft + 1;
+    }
+    console.log(uniquePalindromicSS);
+    return uniquePalindromicSS.size;
+};
+
 // brute force approche O(n^3);
 
 var countPalindromicSubsequenceBrute = function(s) {
@@ -18,7 +55,7 @@ var countPalindromicSubsequenceBrute = function(s) {
 };
 
 // optimized approche O(n); 
-var countPalindromicSubsequence = function(s) {
+var countPalindromicSubsequence1 = function(s) {
  
     const resSet = new Set();
     const leftHash = new Set();
