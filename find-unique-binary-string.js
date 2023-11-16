@@ -1,4 +1,33 @@
 /**
+ * Hashing
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/find-unique-binary-string/
+ * @param {string[]} nums
+ * @return {string}
+ */
+var findDifferentBinaryString = function(nums) {
+    
+    const uniqueSet = new Set(nums.map((num) => parseInt(num, 2)));
+
+    let min = Math.min(...nums.map((num) => {
+        return parseInt(num, 2);
+    }));
+
+    min = min - 1 > -1 ? min - 1 : min;
+    const binaryLen = nums[0].length;    
+
+    while(true) {
+        if(!uniqueSet.has(min)) {
+            const len = min.toString(2).length;
+            console.log(binaryLen - len);
+            return "0".repeat(binaryLen - len) + min.toString(2);
+        }
+        min++;
+    }
+
+};
+
+/**
  * Recursion/Backtracking
  * 
  * Time O(2^n) | Space O(n)
