@@ -1,6 +1,46 @@
+/**
+ * Hashing
+ * Time O(n) | Space O(1);
+ * https://leetcode.com/problems/find-all-anagrams-in-a-string/
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+var findAnagrams = function(s, p) {
+    
+    let pHash = new Array(26).fill(0);
+
+    for(let i = 0; i < p.length; i++) {
+        const char = p[i];
+        pHash[char.charCodeAt(0) - 97] += 1;
+    }
+    pHash = pHash.join('-');
+
+    const sHash = new Array(26).fill(0);
+
+    let start = 0;
+    let end  = 0;
+
+    const result = [];
+    while(end < s.length) {
+        if(end - start === p.length) {
+            const char = s[start];
+            sHash[char.charCodeAt(0) - 97] -= 1;
+            start++;
+        }
+        const char = s[end];
+        sHash[char.charCodeAt(0) - 97] += 1;
+
+        if(sHash.join('-') === pHash) result.push(start);
+        end++;
+    }
+
+    return result;
+};
+
 // brute force O(s*p)
 
-var findAnagrams = function(s, p) {
+var findAnagrams2 = function(s, p) {
   
     let pHash = Array(26).fill(0);
 
@@ -41,7 +81,7 @@ function checkAna(i, plen, pHash, s) {
 }
 
 // optimal approche O(n * 26)
-var findAnagrams = function(s, p) {
+var findAnagrams1 = function(s, p) {
 
     const sCount = {};
     const pCount = {};
