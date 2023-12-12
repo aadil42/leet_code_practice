@@ -38,8 +38,57 @@ var findAnagrams = function(s, p) {
     return result;
 };
 
-// brute force O(s*p)
+/**
+ * Hashing | Counting
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/find-all-anagrams-in-a-string/
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
+var findAnagrams1 = function(s, p) {
 
+    const sCount = {};
+    const pCount = {};
+
+    p.split("").forEach((element, index) => {
+        pCount[element] = (pCount[element] && pCount[element] + 1) || 1;
+        sCount[s[index]] = (sCount[s[index]] && sCount[s[index]] + 1) || 1;
+    });
+
+   let left = 0;
+   let right = p.length - 1;
+
+    const res = [];
+
+   while(right < s.length) {
+       if(checkAna(sCount, pCount)) {
+           res.push(left);
+       }
+        sCount[s[left]] -= 1;
+        left++;
+        right++;
+        sCount[s[right]] = (sCount[s[right]] && sCount[s[right]] + 1) || 1;
+   }
+
+   return res;
+}
+
+function checkAna(sCount, pCount) {
+    for(const prop in pCount) {
+        if(!sCount[prop] || sCount[prop] !== pCount[prop]) return false;
+    }
+    return true;
+}
+
+/**
+ * Brute Force
+ * Time O(s*p) | Space O(1);
+ * https://leetcode.com/problems/find-all-anagrams-in-a-string/
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ */
 var findAnagrams2 = function(s, p) {
   
     let pHash = Array(26).fill(0);
@@ -80,43 +129,19 @@ function checkAna(i, plen, pHash, s) {
     return hashArray.join("") === pHash;
 }
 
-// optimal approche O(n * 26)
-var findAnagrams1 = function(s, p) {
 
-    const sCount = {};
-    const pCount = {};
 
-    p.split("").forEach((element, index) => {
-        const count = pCount[element];
-        count ? pCount[element] = count+ 1 : pCount[element] = 1;
-        const count1 = sCount[s[index]];
-        count1 ? sCount[s[index]] = count1+1 : sCount[s[index]] = 1;
-    });
 
-   let left = 0;
-   let right = p.length - 1;
 
-    const res = [];
 
-   while(right < s.length) {
-       if(checkAna(sCount, pCount)) {
-           res.push(left);
-       }
-        sCount[s[left]] -= 1;
-        left++;
-        right++;
-        const count = sCount[s[right]];
-        count ? sCount[s[right]] = count + 1 : sCount[s[right]] = 1;
-   }
 
-   return res;
-}
 
-function checkAna(sCount, pCount) {
-    
-    for(const prop in pCount) {
-        if(!sCount[prop] || sCount[prop] !== pCount[prop]) return false;
-    }
 
-    return true;
-}
+
+
+
+
+
+
+
+
