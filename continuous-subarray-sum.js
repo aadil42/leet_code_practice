@@ -1,5 +1,5 @@
 // brute force O(n^2)
-var checkSubarraySum = function(nums, k) {
+var checkSubarraySum1 = function(nums, k) {
     
     for(let i = 0; i < nums.length; i++) {
         if(multipleOf(i,nums,k)) return true;
@@ -19,34 +19,34 @@ function multipleOf(i,nums,k) {
     return false;
 }
 
-
 /**
- * https://leetcode.com/problems/continuous-subarray-sum/
- * 
- * Hasing
- * Time O(n) | Space O(n)
  * @param {number[]} nums
  * @param {number} k
  * @return {boolean}
+ * 
+ *  Hasing | Math.
+ *  Time O(n) | Space O(n)
+ *  https://leetcode.com/problems/continuous-subarray-sum/
+ *  Think about it. if the same remainder appear again in the on going total 
+ *  that must mean there's a subarray that adds up to a sum that 
+ *  is multiple of k.
  */
-// efficient algorithm O(n)
-var checkSubarraySum = function(arr, k) {
-    let sum = 0;
-    const remainderMap = new Map();
-    remainderMap.set(0,-1);
-  
-    for(let i = 0; i < arr.length;  i++) {
-        sum += arr[i];
-        if(remainderMap.has(sum%k)) {
-            if(i - remainderMap.get(sum%k) > 1) {
-                return true;
-            } 
-        } else {
-                remainderMap.set(sum%k,i);
-          }
-    }
-  
-    console.log(remainderMap);
-  
-    return false;
-  };
+var checkSubarraySum = function(nums, k) {
+    if(nums.length < 2) return false;
+ 
+     const remainderHash = {};
+     remainderHash[0] = -1;
+ 
+     let total = 0;
+     for(let i = 0; i < nums.length; i++) {
+         total += nums[i];
+         if(remainderHash[total%k] !== undefined) {
+             if(i - remainderHash[total%k] > 1) return true;
+         } else {
+             console.log(total%k, i);
+             remainderHash[total%k] = i;
+         }
+     }
+     console.log(remainderHash);
+     return false;
+ };
