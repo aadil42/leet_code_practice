@@ -1,4 +1,26 @@
+/**
+ * Hashing
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/valid-anagram
+ * 
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
 var isAnagram = function(s, t) {
+    if(s.length !== t.length) return false;
+    const sHash = new Array(26).fill(0);
+    const tHash = new Array(26).fill(0);
+
+    for(let i = 0; i < s.length; i++) {
+        sHash[s[i].charCodeAt(0)-97] += 1;
+        tHash[t[i].charCodeAt(0)-97] += 1;
+    }
+
+    return sHash.join('-') === tHash.join('-');
+};
+
+var isAnagram1 = function(s, t) {
     
     if(s.length !== t.length) return false;
     
