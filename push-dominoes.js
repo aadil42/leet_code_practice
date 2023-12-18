@@ -1,3 +1,50 @@
+/**
+ * Two Pointers (more  intuitive and natrual approch than queue)
+ * Time O(N) | Space O(1)
+ * https://leetcode.com/problems/push-dominoes/
+ * @param {string} dominoes
+ * @return {string}
+ */
+
+var pushDominoes = function(dominoes) {
+
+    let left = 0;
+    let right = 1;
+    dominoes = "L" + dominoes + "R"; // for the edge case like ...L...R...
+    dominoes = dominoes.split('');
+
+    while(right < dominoes.length) {
+        if(dominoes[right] === ".") {
+            right++;
+            continue;
+        };
+
+        if(dominoes[left] === "R" && dominoes[right] === "L") {
+            let i = left + 1;
+            let j = right - 1;
+            while(i < j) {
+                dominoes[i] = "R";
+                dominoes[j] = "L";
+                i++;
+                j--;
+            }
+        }
+
+        if(dominoes[left] === dominoes[right]) {
+            let i = left + 1;
+            while(i < right) {
+                dominoes[i] = dominoes[left]; 
+                i++;
+            }
+        }
+
+        left = right;
+        right++;
+    };
+    return dominoes.slice(1, dominoes.length - 1).join('');
+};
+
+
 class Node {
     constructor(val, next) {
         this.val = val;
@@ -97,7 +144,7 @@ class Queue {
     }
 }
 
-var pushDominoes = function(dominoes) {
+var pushDominoes1 = function(dominoes) {
     const queue = new Queue(Number.MAX_SAFE_INTEGER);
     dominoes.split('').forEach((dominoe,index) => {
         if(dominoe !== '.') {
