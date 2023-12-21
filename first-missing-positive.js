@@ -1,4 +1,42 @@
 /**
+ * Hashing (We're hashing in the input array)
+ * Basically, we're going to store the numbers in the array index by converting
+ * the number to negetive. negetive doesn't matter. that's why we can do it.
+ * 
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/first-missing-positive/
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive = function(nums) {
+    
+    // convert every negative to 0;
+    nums = nums.map((num) => {
+        if(num < 0) return 0;
+        return num;
+    });
+
+    // multipley every index corrosponding to the num nagative 1.
+    nums.forEach((num) => {
+        num = Math.abs(num);
+        if(nums[num - 1] > 0) {
+            nums[num - 1] *= -1;
+        }         
+        if(nums[num - 1] === 0) {
+            nums[num - 1] = -1 * (nums.length + 1)
+        }
+    });
+
+    // go from 1 to nums.length+1
+    let i = 1;
+    while(i < nums.length + 1) {
+        if(nums[i-1] >= 0) return i;
+        i++;
+    }
+    return nums.length + 1;
+};
+
+/**
  * https://leetcode.com/problems/first-missing-positive/
  * Time O(n) | Space O(n)
  * @param {number[]} nums
@@ -21,7 +59,7 @@ var firstMissingPositive1 = function(nums) {
  * @param {number[]} nums
  * @return {number}
  */
-var firstMissingPositive = function(nums) {
+var firstMissingPositive2 = function(nums) {
     //-1 1 3 4
     const swap = (a,b) => {
         const temp = nums[a];
