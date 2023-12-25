@@ -1,3 +1,38 @@
+/**
+ * DP | Recursion
+ * time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/decode-ways/
+ * 
+ * @param {string} s
+ * @return {number}
+ */
+var numDecodings1 = function(s) {
+    
+    const cache = {};
+    const dfs = (index, code = true) => {
+        const hash = `${index}-${code}`;
+
+        if(cache[hash]) return cache[hash];
+        if(+code > 26 || !code) return 0;
+        if(code[0] === "0") return 0;
+        if(index === s.length) return 1;
+
+        const code1 = s[index];
+        const code2 = (s[index+1] && (s[index] + s[index+1]))  || "";
+        cache[hash] = dfs(index+1, code1) + dfs(index+2, code2);
+        return cache[hash];
+    }
+    return dfs(0);
+};
+
+/**
+ * DP | Recursion
+ * time O(n) | Space O(n)
+ * https://leetcode.com/problems/decode-ways/
+ * 
+ * @param {string} s
+ * @return {number}
+ */
 var numDecodings = function(s) {
 
     const dp = {
@@ -28,7 +63,7 @@ var numDecodings = function(s) {
 
 
 //  this problem can be iritating to solve.
-var numDecodingsR = function(s) {
+var numDecodingsR2 = function(s) {
 
     const dp = {
         [s.length] : 1
