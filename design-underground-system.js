@@ -1,3 +1,69 @@
+
+var UndergroundSystem1 = function() {
+    
+    this.stationToStationTime = {}; // stationStart-stationEnd -> [total, count];
+    this.time = {}; // id -> [stationName, time]; 
+};
+
+/** 
+ * Time O(1) | Space O(1)
+ * @param {number} id 
+ * @param {string} stationName 
+ * @param {number} t
+ * @return {void}
+ */
+UndergroundSystem1.prototype.checkIn = function(id, stationName, t) {
+    this.time[id] = [stationName, t];
+};
+
+/** 
+ * Time O(1) | Space O(1)
+ * @param {number} id 
+ * @param {string} stationName 
+ * @param {number} t
+ * @return {void}
+ */
+UndergroundSystem1.prototype.checkOut = function(id, stationName, t) {
+    const [startStationName, startTime] = this.time[id];
+
+    const timeTaken = t - startTime;
+
+    const stationHash = `${startStationName}-${stationName}`;
+    
+    let existingData = this.stationToStationTime[stationHash];
+    if(existingData !== undefined) {
+        existingData[0] += timeTaken;
+        existingData[1]++;
+    } else {
+        existingData = [];
+        existingData[0] = timeTaken;
+        existingData[1] = 1;
+    }
+
+    // delete this.time[id]; // this is optional. if we call checkIn with existing id
+    // then it will be just overwriten.
+    this.stationToStationTime[stationHash] = existingData;
+};
+
+/** 
+ * Time O(1) | Space O(1)
+ * @param {string} startStation 
+ * @param {string} endStation
+ * @return {number}
+ */
+UndergroundSystem1.prototype.getAverageTime = function(startStation, endStation) {
+    const [totalTime, count] = this.stationToStationTime[`${startStation}-${endStation}`];
+    return totalTime/count;
+};
+
+/** 
+ * Your UndergroundSystem object will be instantiated and called as such:
+ * var obj = new UndergroundSystem()
+ * obj.checkIn(id,stationName,t)
+ * obj.checkOut(id,stationName,t)
+ * var param_3 = obj.getAverageTime(startStation,endStation)
+ */
+
 var UndergroundSystem = function() {
     this.stationSystem = {};
     this.averageTime = {};
