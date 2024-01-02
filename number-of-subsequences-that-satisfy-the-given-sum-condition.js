@@ -22,6 +22,7 @@ var numSubseq = function(nums, target) {
         }
 
         // we are subtracting 1 from right because we would have gone over the subsequance by 1 // think about it.
+        // another way to look at it is by drawing a decion tree. where we either take or don't take the number.
         total += (BigInt(2)**BigInt(right - 1 - left));
         total %= mod;
     }
