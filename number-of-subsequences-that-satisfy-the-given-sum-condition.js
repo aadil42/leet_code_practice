@@ -28,3 +28,31 @@ var numSubseq = function(nums, target) {
 
     return Number(total);
 };
+
+/**
+ * Brute Force | Recursion 
+ * Time O(2^n) | Space O(n)
+ * https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/
+ * 
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var numSubseq1 = function(nums, target) {
+    
+    let total = 0;
+    const mod = 10**9 + 7;
+    const dfs = (i, curMin, curMax) => {
+        // console.log(i, curMin, curMax);
+        if(i === nums.length) {
+            if(curMin + curMax <= target) total = (total + 1) % mod;
+            return;
+        }
+        dfs(i+1, Math.min(curMin, nums[i]), Math.max(curMax, nums[i]));
+        dfs(i+1, curMin, curMax);
+    }
+
+    dfs(0, Infinity, 0);
+    return total;
+    
+};
