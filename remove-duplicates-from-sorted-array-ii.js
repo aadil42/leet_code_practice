@@ -59,12 +59,40 @@ var removeDuplicates1 = function(nums) {
 };
 
 /**
+ * Two Pointer | Sorting
+ * Time O(n*log(n)) | Space O(n);
+ * https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates2 = function(nums) {
+    
+    let left = 0;
+    let right = left+1;
+
+    let k = 0;
+    while(left < nums.length) {
+        while(right < nums.length && nums[left] === nums[right]) right++;
+        while(right - left > 2) {
+            k++;
+            nums[left] = Infinity;
+            left++;
+        }
+
+        left = right;
+        right++;
+    }
+    nums = nums.sort((a,b) => a-b);
+    return nums.length - k;
+};
+
+/**
  * Two pointer
  * Time O(n^2) | Space O(1)
  * @param {number[]} nums
  * @return {number}
  */
-var removeDuplicates2 = function(nums) {
+var removeDuplicates3 = function(nums) {
 
     let current = nums[0];
     let sameElCount = 0;
