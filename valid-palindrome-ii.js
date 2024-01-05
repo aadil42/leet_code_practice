@@ -1,34 +1,10 @@
 /**
- * Brute force
- * Time O(N^2) | Space O(1)
- * https://leetcode.com/problems/valid-palindrome-ii
+ * Two Pointers | Array
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/valid-palindrome-ii/
  * @param {string} s
  * @return {boolean}
  */
-//
-
- var validPalindromeBrute = function(s) {
-    
-    for(let i = 0; i < s.length; i++) {
-        if(isValid(s.slice(0, i) + s.slice(i + 1))) return true;
-    }
-
-    function isValid(s) {
-        return s.split('').reverse().join('') === s;   
-    }
-
-    return false;
-};
-
-
-/**
- * Optimal Approach
- * Time O(N) | Space O(1)
- * https://leetcode.com/problems/valid-palindrome-ii
- * @param {string} s
- * @return {boolean}
- */
-//
 
 var validPalindrome = function (s) {
 
@@ -57,4 +33,26 @@ function isValid(s, left, right) {
     s = s.slice(left, right);
     return s.split('').reverse().join('') === s;
 }
+
+/**
+ * Brute force
+ * Time O(N^2) | Space O(1)
+ * https://leetcode.com/problems/valid-palindrome-ii
+ * @param {string} s
+ * @return {boolean}
+ */
+//
+
+ var validPalindromeBrute = function(s) {
+    
+    for(let i = 0; i < s.length; i++) {
+        if(isValid(s.slice(0, i) + s.slice(i + 1))) return true;
+    }
+
+    function isValid(s) {
+        return s.split('').reverse().join('') === s;   
+    }
+
+    return false;
+};
 
