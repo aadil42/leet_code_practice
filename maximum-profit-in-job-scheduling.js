@@ -48,9 +48,8 @@ var jobScheduling = function(startTime, endTime, profit) {
         if(index === startTime.length) return 0;
 
         const nextIndex =  search(index+1, endTime[index]);
-        console.log(index, nextIndex, startTime[index + 1], endTime[index]);
 
-        let max = profit[index];
+        let max = 0;
         max = (nextIndex && (profit[index] + dfs(nextIndex))) || profit[index];
         max = Math.max(max, dfs(index+1));
         cache.set(index, max);
