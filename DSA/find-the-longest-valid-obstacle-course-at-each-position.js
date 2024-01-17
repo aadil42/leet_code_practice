@@ -1,4 +1,51 @@
 /**
+ * Binary Search | DP
+ * Time O(n*log(n)) | Space O(n);
+ * https://leetcode.com/problems/find-the-longest-valid-obstacle-course-at-each-position/
+ * @param {number[]} obstacles
+ * @return {number[]}
+ */
+var longestObstacleCourseAtEachPosition = function(obstacles) {
+
+    const bs = (arr, target) => {
+
+        let justLessThan;
+        let left = 0;
+        let right = arr.length - 1;
+
+        while(left <= right) {
+            const mid = left + Math.floor((right-left)/2);
+
+            if(arr[mid] <= target) {
+                left = mid+1;
+                justLessThan = mid;
+            } else {
+                right = mid-1;
+            }
+        }
+        return justLessThan;
+    }
+
+    const lis = [obstacles[0]];
+    const result = [1];
+
+    for(let i = 1; i < obstacles.length; i++) {
+
+        const justLessThanTargetIdx = bs(lis, obstacles[i]);
+
+        if(justLessThanTargetIdx !== undefined) {
+            result.push(justLessThanTargetIdx+2);
+            lis[justLessThanTargetIdx+1] = obstacles[i];
+        } else {
+            result.push(1);
+            lis[0] = obstacles[i];
+        }
+    }
+
+    return result;
+};
+
+/**
  * DP | Bottom up | Brute force
  * Time O(n^2) | Space O(n)
  * https://leetcode.com/problems/find-the-longest-valid-obstacle-course-at-each-position/
