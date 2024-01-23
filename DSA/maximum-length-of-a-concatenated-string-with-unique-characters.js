@@ -1,11 +1,90 @@
 /**
+ * Recursion | Backtracking
+ * Time O(2^n) | Space O(n)
+ * https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters
+ * @param {string[]} arr
+ * @return {number}
+ */
+var maxLength = function(arr) {
+  const exists = (s, mySet) => {
+      s = s.split("");
+
+      let i = 0;
+
+      while(i < s.length) {
+          if(mySet.has(s[i])) return true;
+          i++;
+      }
+
+      return false;
+  }
+
+  const hasDuplicateChars = (s) => {
+
+      const set = new Set();
+      let i = 0;
+
+      while(i < s.length) {
+          if(set.has(s[i])) return true;
+          set.add(s[i]);
+          i++;
+      }
+
+      return false;
+  }
+
+  const addChars = (s, mySet) => {
+
+      let i = 0;
+      while(i < s.length) {
+          mySet.add(s[i]);
+          i++;
+      }
+      
+  }
+
+  const deleteChars = (s, mySet) => {
+      
+      let i = 0;
+      while(i < s.length) {
+          mySet.delete(s[i]);
+          i++;
+      }
+
+  }
+
+
+  const dfs = (i, runningSequence) => {
+
+      if(i === arr.length) {
+          return runningSequence.size;
+      }
+
+      if(!exists(arr[i], runningSequence) && !hasDuplicateChars(arr[i])) {
+          
+          addChars(arr[i], runningSequence);
+          const choice1 = dfs(i+1, runningSequence);
+          deleteChars(arr[i], runningSequence);
+          const choice2 = dfs(i+1, runningSequence);
+
+          return Math.max(choice1, choice2);
+      }
+
+      const choice3 = dfs(i+1, runningSequence);
+      return choice3;
+  }
+
+  return dfs(0, new Set());
+};
+
+/**
  * Recursion/Backtracking
  * 
  * Time O(2^n) | Space O(n); 
  * @param {string[]} arr
  * @return {number}
  */
-var maxLength = function(arr) {
+var maxLength1 = function(arr) {
     
     const uniqueChars = new Set();
     let MaxLen = 0;
