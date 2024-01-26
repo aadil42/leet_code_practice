@@ -1,4 +1,45 @@
 /**
+ * 
+ * DFS | Recursion | DP | Caching
+ * Time O(n * l^3) | Space O(n)
+ * https://leetcode.com/problems/concatenated-words/
+ * 
+ * @param {string[]} words
+ * @return {string[]}
+ */
+var findAllConcatenatedWordsInADict = function(words) {
+    
+    const wordSet = new Set(words);
+    const cache = new Map();
+
+    const dfs = (word) => {
+        if(cache.has(word)) return cache.get(word);
+
+        for(let i = 1; i < word.length + 1; i++) {
+            const prefix = word.slice(0,i);
+            const suffix = word.slice(i);
+
+            if( (wordSet.has(prefix) && wordSet.has(suffix)) || 
+                (wordSet.has(prefix) && dfs(suffix)) ) {
+                    cache.set(word, true);
+                    return true;
+                }
+        }
+
+        cache.set(word, false);
+        return false;
+    }
+
+    const result = [];
+
+    for(let i = 0; i < words.length; i++) {
+        if(dfs(words[i])) result.push(words[i]);
+    }
+
+    return result;
+};
+
+/**
  * DFS | Recursion
  * Time O(n*n[i]^2) | Space O(n)
  * https://leetcode.com/problems/concatenated-words/
@@ -7,8 +48,8 @@
  * @return {string[]}
  */
 
-// Good solution but TLE is happning.
-var findAllConcatenatedWordsInADict = function(words) {
+// Good solution but TLE is happning. Same code as above but without caching.
+var findAllConcatenatedWordsInADict1 = function(words) {
     
     const wordSet = new Set(words);
 
@@ -36,7 +77,7 @@ var findAllConcatenatedWordsInADict = function(words) {
  * @param {string[]} words
  * @return {string[]}
  */
-var findAllConcatenatedWordsInADict1 = function(words) {
+var findAllConcatenatedWordsInADict2 = function(words) {
     
     function Trie() {
         this.trie = {
