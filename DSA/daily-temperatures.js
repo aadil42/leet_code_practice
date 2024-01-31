@@ -1,44 +1,52 @@
-class Stack {
-    constructor(){
-        this.stack = [];
-    }
-    
-    isEmpty(){
-        return this.stack.length === 0 ? true : false;
-    }
-    
-    peek(){
-        return this.stack[this.stack.length - 1];
-    }
-    
-    push(val){
-        return this.stack.push(val);
-    }
-    
-    pop(){
-        return this.stack.pop();
-    }
-}
-
-
+/**
+ * Monotonic Stack
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/daily-temperatures/
+ * 
+ * @param {number[]} temperatures
+ * @return {number[]}
+ */
 var dailyTemperatures = function(temperatures) {
     
-   const nextWarmTemperatures = Array(temperatures.length).fill(0);
-   const myStack = new Stack();
+    const mds = []; // monotonic decreasing stack
+    const result = [0]; 
+    mds.push([temperatures[temperatures.length - 1], temperatures.length - 1]);
+    let i = temperatures.length - 2;
 
-   for(let i = 0; i< temperatures.length; i++)  {
-
-        const currunt = temperatures[i];
-        while(!myStack.isEmpty() && temperatures[myStack.peek()] < currunt) {
-            let index = myStack.pop();
-            nextWarmTemperatures[index] = i - index;
+    while(i > -1) {
+        while(mds.length && temperatures[i] >= mds[mds.length - 1][0]) mds.pop();
+        if(!mds.length) {
+            result.push(0);
+            mds.push([temperatures[i], i]);
+            i--;
+            continue;
         }
+        result.push(mds[mds.length-1][1] - i)
+        mds.push([temperatures[i], i]);
+        i--;
+    }
 
-        myStack.push(i);
-   }
-
-
-   return nextWarmTemperatures;
+    return result.reverse();
 };
 
-console.log(dailyTemperatures([73,74,75,71,69,72,76,73]));
+/**
+ * Brute Force
+ * Time O(n^2) | Space O(n)
+ * https://leetcode.com/problems/daily-temperatures
+ * @param {number[]} temperatures
+ * @return {number[]}
+ */
+var dailyTemperatures1 = function(temperatures) {
+    
+    const result = [];
+    for(let i = 0; i < temperatures.length; i++) {
+        for(let j = i+1; j < temperatures.length; j++) {
+            if(temperatures[i] < temperatures[j]) {
+                result.push(j-i);
+                break;
+            }
+        }
+        if(result.length === i) result.push(0);
+    }
+    return result;
+};
