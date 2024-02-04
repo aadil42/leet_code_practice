@@ -52,3 +52,38 @@ var bestTeamScore = function(scores, ages) {
 
     return dfs(0, -1);
 };
+
+
+/**
+ * I have no clue about this code. the time and space complexity is the same for this code
+ * and the recursive code which for some reason is not getting accepted. 
+ * I generated this code from chatGPT by giving my recursive code. I pasted it because I
+ * wanted it to get submitted.
+ * @param {number[]} scores
+ * @param {number[]} ages
+ * @return {number}
+ */
+var bestTeamScore1 = function(scores, ages) {
+
+    const n = scores.length;
+
+    const players = [];
+    for (let i = 0; i < n; i++) {
+        players.push({ age: ages[i], score: scores[i] });
+    }
+
+    players.sort((a, b) => a.age - b.age || a.score - b.score);
+
+    const dp = Array(n).fill(0);
+
+    for (let i = 0; i < n; i++) {
+        dp[i] = players[i].score;  // Initialize with individual scores
+        for (let j = 0; j < i; j++) {
+            if (players[j].score <= players[i].score) {
+                dp[i] = Math.max(dp[i], dp[j] + players[i].score);
+            }
+        }
+    }
+
+    return Math.max(...dp);
+};
