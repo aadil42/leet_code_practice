@@ -1,11 +1,53 @@
 /**
+ * Hashing | Counting
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/group-anagrams
+ * 
+ * This code is more moduler.
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+var groupAnagrams = function(strs) {
+    
+    const hashes = {};
+
+    const getHash = (str) => {
+        const word = new Array(26).fill(0);
+        
+        for(let i = 0; i < str.length; i++) {
+            word[str[i].charCodeAt(0) - 97] += 1;
+        }
+
+        return word.join("-");
+    }
+
+    for(let i = 0; i < strs.length; i++) {
+        
+        const hash = getHash(strs[i]);
+        
+        if(hashes[hash]) {
+            hashes[hash].push(strs[i]);
+            continue;
+        }
+        hashes[hash] = [strs[i]];
+    }
+
+    const result = [];
+    for(const key in hashes) {
+        result.push(hashes[key]);
+    }
+
+    return result;
+};
+
+/**
  * Hashing
  * Time O(n)  | Space O(n)
  * https://leetcode.com/problems/group-anagrams/
  * @param {string[]} strs
  * @return {string[][]}
  */
-var groupAnagrams = function(strs) {
+var groupAnagrams1 = function(strs) {
     
     const results = [];
     const cache = {};
