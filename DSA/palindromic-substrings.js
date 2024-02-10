@@ -1,3 +1,36 @@
+/**
+ * Two Pointers
+ * Time O(n^2) | Space
+ * https://leetcode.com/problems/palindromic-substrings
+ *  
+ * @param {string} s
+ * @return {number}
+ */
+var countSubstrings = function(s) {
+    
+    // O(n)
+    const getTotalPalindrome = (left, right) => {
+        let total = 0;
+        while(left > -1 && right < s.length && s[left] === s[right]) {
+            total++;
+            left--;
+            right++;
+        }
+        return total;
+    }
+
+    let totalPalindrome = 0;
+    // O(n)
+    for(let i = 0; i < s.length; i++) {
+        // calculate odd number of palindrome.
+        totalPalindrome += getTotalPalindrome(i,i);
+        // calculate even number of palindrome.
+        totalPalindrome += getTotalPalindrome(i,i+1);
+    }
+
+    return totalPalindrome;
+};
+
 // the time complexity is n^3
 var countSubstrings1 = function(s) {
     let totalPalindrome = 0;
@@ -31,7 +64,7 @@ const s = 'abbacddc';
 // console.log(countSubstrings1(s));
 
 // slightly efficient // with time coplexity of n^2.
-var countSubstrings = function(s) {
+var countSubstrings2 = function(s) {
     let totalPalindrome = 0;
 
     for(let i = 0; i < s.length; i++) {
