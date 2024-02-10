@@ -1,6 +1,35 @@
-// problem is premium on leetcode. try it here https://www.lintcode.com/problem/515/
 
-function minCost(costs) {
+// DP | Recursion | Memoization
+// Time O(n^2) | Space O(n^2)
+// same time complexity as below code but somehow it's not accepted.
+// https://www.lintcode.com/problem/515/solution
+const minCost = (costs) => {
+  // write your code here
+
+  const cache = new Map();
+  const dfs = (i, preColor) => {
+
+    const hash = `${i}-${preColor}`;
+
+    if(cache.has(hash)) return cache.get(hash);
+    
+    if(i === costs.length) return 0;
+
+    let min = Infinity;
+    for(let index = 0; index < 3; index++) {
+      if(index === preColor) continue;
+      min = Math.min(min, costs[i][index] + dfs(i+1, index));
+    }
+
+    cache.set(hash, min);
+    return min;
+  }
+
+  return dfs(0, -1);
+}
+
+// problem is premium on leetcode. try it here https://www.lintcode.com/problem/515/
+function minCost1(costs) {
     if(!costs.length) return 0;
     const colorDP = [];
      for(let i = 0; i < costs.length;  i++) {
