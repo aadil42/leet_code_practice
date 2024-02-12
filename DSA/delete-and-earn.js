@@ -1,51 +1,42 @@
 /**
+ * DP | Memoization | Hashing | Counting
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/delete-and-earn/
+ * 
  * @param {number[]} nums
  * @return {number}
  */
 var deleteAndEarn = function(nums) {
-    const hash = new Map();
     
-    nums.forEach((num) => {
-        const numCache = hash.get(num);
-        if(numCache) {
-            hash.set(num, numCache + 1);
-        } else {
-            hash.set(num, 1);
-        }
-    });
-    
-    const uniqueNums = new Set();
-    
-    nums.forEach((num) => {
-        uniqueNums.add(num);
-    });
-    
-    nums = [...uniqueNums];
-    
-    nums.sort((a,b) => {
-        return a-b;
-    });
-    
-    let earn1 = 0;
-    let earn2 = 0;
-    
+    nums.sort((a,b) => a-b);
+
+    const dp = [];
+    const frequencies = {};
+
+    // getting frequeincies
     for(let i = 0; i < nums.length; i++) {
-        const currentEarn = nums[i] * hash.get(nums[i]);
-    
-        if(nums[i] === nums[i-1] + 1) {
-            const temp = earn2;
-            earn2 = Math.max(earn2, currentEarn + earn1);
-            earn1 = temp;
-        } else {
-            const temp = earn2;
-            earn2 = currentEarn + earn2;
-            earn1 = temp;
-        }
+        const num = nums[i];
+        frequencies[num] = (frequencies[num] && frequencies[num]+1) || 1;
     }
-    
-    return earn2;
-    
-    };
+
+    // making numbers unique.
+    nums = new Set(nums);
+    nums = [...nums];
+
+    for(let i = 0; i < nums.length; i++) {
+
+        // if the previous number was just 1 less
+        if(nums[i-1] + 1 === nums[i]) {
+            dp[i] = Math.max(dp[i-1], (frequencies[nums[i]] * nums[i]) + (dp[i-2] || 0) );
+            continue;
+        }
+
+        // we can include the previouse number
+        dp[i] = (dp[i-1] || 0) + frequencies[nums[i]] * nums[i];
+    }
+
+    return dp[dp.length -1];
+};
 
 /**
  * Recursion | DP | Memoization
