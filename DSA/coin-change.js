@@ -1,3 +1,39 @@
+/**
+ * Better Readable Solution
+ * 
+ * Recursion | Memoization | DP
+ * Time O(n) | Space O(n) where n === amount
+ * https://leetcode.com/problems/coin-change/
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+    
+    const cache = new Map();
+
+    const dfs = (leftAmount) => {
+
+        if(cache.has(leftAmount)) return cache.get(leftAmount);
+
+        if(leftAmount === 0) return 0;
+        if(leftAmount < 0) return Infinity;
+
+        let min = Infinity;
+        for(let i = 0; i < coins.length; i++) {
+            min = Math.min(min, 1 + dfs(leftAmount - coins[i]));
+        }
+
+        cache.set(leftAmount, min);
+        return min;
+    }
+
+
+    const result = dfs(amount);
+    if(result === Infinity) return -1;
+    return result; 
+};
+
 var coinChange = function(coins, amount) {
 
 
