@@ -1,4 +1,41 @@
 /**
+ * DP | Memoization | Recursion
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/decode-ways/
+ * 
+ * Most simple and readable code from all the given solution in this file.
+ * 
+ * @param {string} s
+ * @return {number}
+ */
+var numDecodings = function(s) {
+
+    const cache = new Map();
+
+    const dfs = (i) => {
+
+        if(cache.has(i)) return cache.get(i);
+
+        if(i === s.length) return 1;
+        if(i > s.length) return 0;
+
+        let total = 0;
+        const oneDigitNum = +s.slice(i, i+1);
+        if(oneDigitNum !== 0) {
+            total += dfs(i+1);
+        }
+        const twoDigitNum = s.slice(i, i+2);
+        if(twoDigitNum[0] !== "0" && +twoDigitNum < 27) {
+            total += dfs(i+2);
+        }
+        cache.set(i, total);
+        return total;
+    }
+
+    return dfs(0);
+};
+
+/**
  * DP | Recursion
  * time O(n^2) | Space O(n^2)
  * https://leetcode.com/problems/decode-ways/
@@ -33,7 +70,7 @@ var numDecodings1 = function(s) {
  * @param {string} s
  * @return {number}
  */
-var numDecodings = function(s) {
+var numDecodings2 = function(s) {
 
     const dp = {
         [s.length] : 1
