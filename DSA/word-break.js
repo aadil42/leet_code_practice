@@ -1,5 +1,41 @@
+/**
+ * Recursion | Memoization | DP
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/word-break/
+ * 
+ * We're just using the word it self now instead of index as parameter to dfs.
+ * 
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {boolean}
+ */
+
+var wordBreak = function(s, wordDict) {
+    
+  const cache = new Map();
+  
+  const dfs = (leftWord) => {
+
+      if(cache.has(leftWord)) return cache.get(leftWord);
+
+      if(!leftWord) return true;
+
+      for(let i = 0; i < wordDict.length; i++) {
+          if(leftWord.slice(0, wordDict[i].length) !== wordDict[i]) continue;
+          const result = dfs(leftWord.slice(wordDict[i].length));
+          cache.set(leftWord, result);
+          if(result) return true;
+      }
+
+      cache.set(leftWord, false);
+      return false;
+  }
+
+  return dfs(s);
+};
+
 // brute force with recursion
-var wordBreakRecursion = function(s, wordDict) {
+var wordBreakRecursion2 = function(s, wordDict) {
 
   const wordCache = {};
 
@@ -30,7 +66,7 @@ var wordBreakRecursion = function(s, wordDict) {
   
 // with array solution time complexity will be n*m
 
-var wordBreak = function(s, wordDict) {
+var wordBreak1 = function(s, wordDict) {
 
   const dpArray = new Array(s.length + 1).fill(false);
 
