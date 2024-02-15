@@ -43,6 +43,66 @@ var findMedianSortedArraysBF = function(nums1, nums2) {
   };
 
 /**
+ * Time O(N) | Space O(1) 
+ * https://leetcode.com/problems/median-of-two-sorted-arrays/
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+var findMedianSortedArraysConstantSpace = function(nums1, nums2) {
+
+  const total = nums1.length + nums2.length;
+
+  let targetIndex = Math.floor(total/2);
+  
+  if(!(total%2)) targetIndex = targetIndex-1;
+
+  let i = 0;
+  let j = 0;
+  let k = 0;
+
+  while(i < nums1.length && j < nums2.length) {
+      if(k === targetIndex) {
+    
+      if(total%2) return Math.min(nums1[i], nums2[j]);
+    
+      if(nums1[i] < nums2[j]) {
+          return (nums1[i] + Math.min(nums2[j], nums1[i+1] || Infinity))/2;
+      }
+      return (nums2[j] + Math.min(nums1[i], nums2[j+1] || Infinity))/2;
+
+      }
+
+      if(nums1[i] < nums2[j]) {
+          i++;
+      } else {
+          j++;
+      }
+
+      k++;
+  }
+
+  while(i < nums1.length) {
+      if(k === targetIndex && total%2) return nums1[i];
+      if(k === targetIndex) return (nums1[i] + nums1[i+1])/2
+
+      i++;
+      k++;
+      
+  }
+
+  while(j < nums2.length) {
+      if(k === targetIndex && total%2) return nums2[j];
+      if(k === targetIndex) return (nums2[j] + nums2[j+1])/2;
+
+      j++;
+      k++;
+  }
+};
+
+
+
+/**
  * Binary Search
  * 
  * Time O(log(min(m,n))) | Space O(1);
