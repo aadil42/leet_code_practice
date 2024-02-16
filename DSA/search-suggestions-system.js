@@ -1,4 +1,47 @@
 /**
+ * 
+ * Kind of like Binary Search
+ * Time O(n+m) | Space O(n)
+ * https://leetcode.com/problems/search-suggestions-system/
+ * @param {string[]} products
+ * @param {string} searchWord
+ * @return {string[][]}
+ */
+var suggestedProducts = function(products, searchWord) {
+
+    // this will sort words lexicographically
+    products.sort();
+    
+    const suggestedWords = [];
+    let left = 0;
+    let right = products.length - 1;
+
+    for(let i = 0; i < searchWord.length; i++) {
+        const char = searchWord[i];
+
+        while(left < products.length && products[left][i] !== char) {
+            left++;
+        }
+
+        while(right > -1 && products[right][i] !== char) {
+            right--;
+        }
+
+        const minLen = Math.min(right-left + 1, 3);
+
+        const currentSuggestion = [];
+
+        for(let j = left; j < left + minLen; j++) {
+            currentSuggestion.push(products[j]);
+        }
+
+        suggestedWords.push(currentSuggestion);
+    }
+
+    return suggestedWords;
+};
+
+/**
  * Binary Search
  * 
  * Time O(n*log(n) + m*n) | Space O(m)
@@ -7,7 +50,7 @@
  * @param {string} searchWord
  * @return {string[][]}
  */
-var suggestedProducts = function(products, searchWord) {
+var suggestedProducts1 = function(products, searchWord) {
 
     products.sort((product1, product2) => {
         if(product1 < product2) {
