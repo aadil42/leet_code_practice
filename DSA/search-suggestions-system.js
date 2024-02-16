@@ -1,6 +1,6 @@
 /**
  * 
- * Kind of like Binary Search
+ * Sorting | Greedy
  * Time O(n+m) | Space O(n)
  * https://leetcode.com/problems/search-suggestions-system/
  * @param {string[]} products
@@ -42,7 +42,7 @@ var suggestedProducts = function(products, searchWord) {
 };
 
 /**
- * Binary Search
+ * Sorting | Greedy
  * 
  * Time O(n*log(n) + m*n) | Space O(m)
  * https://leetcode.com/problems/search-suggestions-system/description/
