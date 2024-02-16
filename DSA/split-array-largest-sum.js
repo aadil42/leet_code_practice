@@ -3,6 +3,7 @@
  * 
  * Binary Search
  * Time O(log(s)*n) (s = difference between the least and max possible value) | Space O(1)
+ * It's hard to come up with this solution. But once you go through it it's pretty easy
  * @param {number[]} nums
  * @param {number} k
  * @return {number}
