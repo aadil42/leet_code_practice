@@ -1,4 +1,24 @@
+/**
+ * Simple Logic 
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/missing-number
+ * @param {number[]} nums
+ * @return {number}
+ */
 var missingNumber = function(nums) {
+
+    // total of numbers from 1 to n using Gauss's method
+    const targetTotal = (1 + nums.length)*(nums.length/2);
+
+    // actual total of the array.
+    const originalTotal = nums.reduce((acc, curr) => acc + curr, 0);
+
+    // simple logic if actuall total sum up to the target total then we have all numbers from 
+    // 1 to n, which means 0 is missing otherwise the missing number will be returned.
+    return (originalTotal !== targetTotal && targetTotal - originalTotal) || 0;
+};
+
+var missingNumber1 = function(nums) {
 
     let n = nums.length;
     let origanalTotal = (n) * ((n+1) / 2);
