@@ -1,4 +1,31 @@
 /**
+ * Binary Search
+ * Time O(log(n)) | Space O(1)
+ * https://leetcode.com/problems/sqrtx/
+ * @param {number} x
+ * @return {number}
+ */
+var mySqrt = function(x) {
+    
+    let left = 0;
+    let right = x;
+    let ans = 0;
+
+    while(left <= right) {
+        const mid = left + Math.floor((right-left)/2);
+
+        if(mid*mid <= x) {
+            ans=mid;
+            left = mid+1;
+        } else {
+            right = mid-1;
+        }
+    }
+
+    return ans;
+};
+
+/**
  * Binary Search 
  * https://leetcode.com/problems/sqrtx/
  * 
@@ -6,7 +33,7 @@
  * @param {number} x
  * @return {number}
  */
-var mySqrt = function(x) {
+var mySqrt1 = function(x) {
     let left = 1;
     let right = x;
  
