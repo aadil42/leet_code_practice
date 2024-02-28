@@ -1,4 +1,50 @@
 /**
+ * BFS | Queue
+ * Time O(3^log(n)) | Space O(3^log(n))
+ * https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/
+ * @param {number} n
+ * @return {number}
+ */
+var minDays = function(n) {
+
+    const bfs = () => {
+        
+        const queue = [];
+        const visited = new Set();
+        queue.push([n, 0]);
+
+        while(queue.length) {
+            
+            const size = queue.length;
+
+            for(let i = 0; i < size; i++) {
+
+                const node = queue.shift();
+                const leftOranges = node[0];
+                const daysTakenSoFar = node[1];
+
+                if(visited.has(leftOranges)) continue;
+
+                visited.add(leftOranges);
+
+                if(leftOranges <= 0) return daysTakenSoFar;
+
+                if(leftOranges%2 === 0) {
+                    queue.push([leftOranges - (leftOranges/2), daysTakenSoFar+1]);
+                }
+                if(leftOranges%3 === 0) {
+                    queue.push([leftOranges - (2*(leftOranges/3)), daysTakenSoFar+1]);
+                }
+                queue.push([leftOranges-1, daysTakenSoFar+1]);
+            }
+
+        }
+    }
+
+    return bfs();
+};
+
+/**
  * Brute Force
  * DP | Recursion | Memoization
  * Time O(n) | Space O(n)
@@ -7,7 +53,7 @@
  * @param {number} n
  * @return {number}
  */
-var minDays = function(n) {
+var minDays1 = function(n) {
 
     const cache = new Map();
 
@@ -49,7 +95,7 @@ var minDays = function(n) {
  * @param {number} n
  * @return {number}
  */
-var minDays1 = function(n) {
+var minDays2 = function(n) {
     
     const hash = new Map();
     hash.set(0,0);
