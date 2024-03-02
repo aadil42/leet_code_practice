@@ -46,3 +46,62 @@ var maximumDetonation = function(bombs, bombIndex) {
     }
     return maxDetonation;
 };
+
+/**
+ * BFS
+ * Time O(n^3) | Space O(n)
+ * https://leetcode.com/problems/detonate-the-maximum-bombs/
+ * @param {number[][]} bombs
+ * @return {number}
+ */
+var maximumDetonation1 = function(bombs) {
+    
+    const bfs = (origin, idx) =>  {
+
+        let detonetedBombs = 0;
+
+        const q = new Queue();
+        const visited = new Set();
+        q.enqueue(origin);
+        visited.add(idx);
+
+        while(!q.isEmpty()) {
+
+            const size = q.size();
+            detonetedBombs += size;
+
+            for(let i = 0; i < size; i++) {
+                const bomb = q.dequeue();
+
+                const currentX = bomb[0];
+                const currentY = bomb[1];
+                const currentR = bomb[2];
+
+                for(let j = 0; j < bombs.length; j++) {
+                    const nextBomb = bombs[j];
+                    const nextX = nextBomb[0];
+                    const nextY = nextBomb[1];
+                    const distanceSquare = Math.abs(nextX - currentX)**2 + Math.abs(nextY - currentY)**2
+                    const distance = Math.sqrt(distanceSquare);
+
+                    if(visited.has(j)) continue;
+                    
+                    if(distance <= currentR) {
+                        visited.add(j);
+                        q.enqueue(nextBomb);
+                    }
+                }
+            }
+        }
+
+        return detonetedBombs;
+    }
+
+    let maxDetonetion = 0;
+
+    for(let i = 0; i < bombs.length; i++) {
+        maxDetonetion = Math.max(maxDetonetion, bfs(bombs[i], i));
+    }
+
+    return maxDetonetion;
+};
