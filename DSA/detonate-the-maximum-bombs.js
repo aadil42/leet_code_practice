@@ -1,7 +1,7 @@
 
 /** 
  * BFS
- * Time O(n^2) | Space O(n)
+ * Time O(n^3) | Space O(n)
  * @param {number[][]} bombs
  * @return {number}
  */
