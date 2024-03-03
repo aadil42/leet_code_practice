@@ -1,5 +1,48 @@
-
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * LinkedList
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/remove-nth-node-from-end-of-list
+ * @param {ListNode} head
+ * @param {number} n
+ * @return {ListNode}
+ */
 var removeNthFromEnd = function(head, n) {
+    
+    let len = 0;
+    let curr = head;
+    
+    while(curr) {
+        len++;
+        curr = curr.next;
+    }
+
+    if(n === len) return head.next;
+
+    n = len - n;
+
+    let i = 0;
+    curr = head;
+
+    while(curr) {
+        if(i === n-1) {
+            curr.next = curr.next.next;
+            break;
+        }
+        curr = curr.next;
+        i++;
+    }
+
+    return head;
+};
+
+var removeNthFromEnd1 = function(head, n) {
     
     if(!head) return null;
     // if the node is the only node in the list
