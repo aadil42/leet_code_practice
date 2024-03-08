@@ -9,7 +9,7 @@
  * @param {number} node2
  * @return {number}
  */
-var closestMeetingNodeDFS = function(edges, node1, node2) {
+var closestMeetingNodeDFS1 = function(edges, node1, node2) {
     
     const createGraph = () => {
         const graph = {};
@@ -63,6 +63,50 @@ var closestMeetingNodeDFS = function(edges, node1, node2) {
 };
 
 
+/**
+ * DFS 
+ * Did it without creating a graph.
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/find-closest-node-to-given-two-nodes/
+ * @param {number[]} edges
+ * @param {number} node1
+ * @param {number} node2
+ * @return {number}
+ */
+var closestMeetingNodeDFS = function(edges, node1, node2) {
+
+    const dfs = (node, steps, hash, visited) => {
+        
+        if(node === -1) return;
+        if(visited.has(node)) return;
+        visited.add(node);
+        hash[node] = steps;
+        
+        // don't have to create graph and run for loop for all the children because,
+        // we only have one outgoing edge at most.
+        dfs(edges[node], steps+1, hash, visited);
+
+        return hash;
+    }   
+
+    const node1Hash = dfs(node1, 0, {}, new Set());
+    const node2Hash = dfs(node2, 0, {}, new Set());
+
+    let minPath = Infinity;
+    let minNode = -1;
+
+    for(let i = 0; i < edges.length; i++) {
+        if(node1Hash[i] !== undefined && node2Hash[i] !== undefined) {
+
+            if(Math.max(node1Hash[i], node2Hash[i]) < minPath) {
+                minPath = Math.max(node1Hash[i], node2Hash[i]);
+                minNode = i;
+            }
+        }
+    }
+
+    return minNode;
+};
 
 /**
  * Brute Force | BFS
