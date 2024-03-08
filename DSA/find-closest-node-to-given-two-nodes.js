@@ -1,4 +1,70 @@
 /**
+ * Optimal Approch
+ * DFS | Hashing
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/find-closest-node-to-given-two-nodes/
+ * 
+ * @param {number[]} edges
+ * @param {number} node1
+ * @param {number} node2
+ * @return {number}
+ */
+var closestMeetingNodeDFS = function(edges, node1, node2) {
+    
+    const createGraph = () => {
+        const graph = {};
+
+        for(let i = 0; i < edges.length;  i++) {
+            
+            if(!graph[i]) {
+                graph[i] = [];
+            }
+
+            graph[i].push(edges[i]);
+        }
+
+        return graph;
+    }
+
+    const graph = createGraph();
+
+    const dfs = (node, steps, hash, visited) => {
+
+        if(visited.has(node)) return;
+        visited.add(node);
+        hash[node] = steps;
+
+        const neighbors = graph[node];
+        for(let i = 0; i < (neighbors && neighbors.length); i++) {
+            const nextNode = neighbors[i];
+            dfs(nextNode, steps+1, hash, visited);
+        }
+
+        return hash;
+    }   
+
+    const node1Hash = dfs(node1, 0, {}, new Set());
+    const node2Hash = dfs(node2, 0, {}, new Set());
+
+    let minPath = Infinity;
+    let minNode = -1;
+
+    for(let i = 0; i < edges.length; i++) {
+        if(node1Hash[i] !== undefined && node2Hash[i] !== undefined) {
+
+            if(Math.max(node1Hash[i], node2Hash[i]) < minPath) {
+                minPath = Math.max(node1Hash[i], node2Hash[i]);
+                minNode = i;
+            }
+        }
+    }
+
+    return minNode;
+};
+
+
+
+/**
  * Brute Force | BFS
  * Time O(n^2) | Space O(n) (because we have atmost 1 outgoing edge so each node will have only one len of array at most) 
  * https://leetcode.com/problems/find-closest-node-to-given-two-nodes/
