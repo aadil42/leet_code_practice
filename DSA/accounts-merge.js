@@ -1,8 +1,94 @@
 /**
+ * UnionFind | DFS/BFS
+ * Time O(n) Space O(n)
+ * https://leetcode.com/problems/accounts-merge/
+ * It's not that hard You just need to grasp how graph and union graphs are created in the code. After that it's just plain BFS and DFS
  * @param {string[][]} accounts
  * @return {string[][]}
  */
 var accountsMerge = function(accounts) {
+
+  const graph = {};
+
+  for(let i = 0; i < accounts.length; i++) {
+      for(let j = 1; j < accounts[i].length; j++) {
+          const email = accounts[i][j];
+          
+          if(!graph[email]) {
+              graph[email] = [];
+          }
+
+          graph[email].push(i);
+      }
+  }
+
+  const unionGraph = {};
+  
+  for(const key in graph) {
+      const email = key;
+      const samePersonArr = graph[key];
+
+      const name = accounts[samePersonArr[0]][0];
+
+      const samePersonMultipleEmailArr = [];
+      for(let i = 0; i < samePersonArr.length;  i++) {
+          const emails = accounts[samePersonArr[i]];
+          for(let j = 1; j < emails.length; j++) {
+              samePersonMultipleEmailArr.push(emails[j]);
+          }
+      }
+
+      const uniqueEmails = new Set(samePersonMultipleEmailArr);
+      uniqueEmails.delete(email);
+
+      unionGraph[email] = [];
+
+      unionGraph[email].push(name);
+      unionGraph[email].push([...uniqueEmails]);
+  }
+
+
+  const visited  = new Set();
+  const getAllEmails = (sourceNode) => {
+
+      const result = [];
+      const dfs = (node) => {
+          if(visited.has(node)) return;
+          visited.add(node);
+
+          result.push(node);
+          const neighbors = unionGraph[node] && unionGraph[node][1];
+          if(!neighbors) return;
+          for(let i = 0; i < neighbors.length; i++) {
+              const nextNode = neighbors[i];
+              dfs(nextNode);
+          }
+      }
+
+      dfs(sourceNode);
+      return result;
+  }
+
+  const mergedAccounts = [];
+  for(const email in unionGraph) {
+
+      const emails = getAllEmails(email);
+      const name = unionGraph[email][0];
+
+      if(emails.length) {
+          emails.sort();
+          mergedAccounts.push([name, ...emails]);
+      }
+  }
+
+  return mergedAccounts;
+};
+
+/**
+ * @param {string[][]} accounts
+ * @return {string[][]}
+ */
+var accountsMerge1 = function(accounts) {
   // make a graph
   // traverse that graph 
 
