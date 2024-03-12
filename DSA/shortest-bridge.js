@@ -1,4 +1,100 @@
 /**
+ * DFS | BFS | Multi-source-BFS
+ * Time O(n^2) | Space(n^2) 
+ * https://leetcode.com/problems/shortest-bridge/
+ * Queue is not defined in js internally. Have to run this code in leetcode environment. 
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var shortestBridge = function(grid) {
+    
+    const n = grid.length;
+    const islandA = new Set();
+    const islandB = new Set();
+    const directions = [[1,0], [-1,0], [0,1], [0,-1]];
+
+    const isOutOfBound = (r,c) => {
+        if(r < 0 || r === n) return true;
+        if(c < 0 || c === n) return true;
+        return false;
+    }
+
+    const dfs = (node, island) => {
+        const row = node[0];
+        const col = node[1];
+
+        const hash = `${row}-${col}`;
+        if(island.has(hash)) return;
+        if(!grid[row][col]) return;
+
+        island.add(hash);
+
+        for(let i = 0; i < directions.length; i++) {
+            const nextRow = row + directions[i][0];
+            const nextCol = col + directions[i][1];
+
+            if(isOutOfBound(nextRow, nextCol)) continue;
+            dfs([nextRow, nextCol], island); 
+        }
+    }   
+
+    // locate islands a and b.
+    for(let i = 0; i < n; i++) {
+        for(let j = 0; j < n; j++) {
+            const hash = `${i}-${j}`;
+            if(grid[i][j] === 0 || islandA.has(hash) || islandB.has(hash)) continue;
+            if(islandA.size === 0) {
+                dfs([i,j],islandA);
+                continue;
+            }
+            dfs([i,j], islandB);
+        }
+    }
+
+    const bfs = (sourceIsland, targetIsland) => {
+
+        const q = new Queue();
+
+        for(const cell of sourceIsland) {
+            const row = +cell.split("-")[0];
+            const col = +cell.split("-")[1];
+
+            q.enqueue([row, col, 0]);
+        }
+
+        const visited = new Set();
+
+        while(!q.isEmpty()) {
+
+            const element = q.dequeue();
+            const row = element[0];
+            const col = element[1];
+            const distance = element[2];
+            
+            
+            const hash = `${row}-${col}`;
+            if(visited.has(hash)) continue;
+            visited.add(hash);
+            if(grid[row][col] && targetIsland.has(hash)) return distance - 1;
+
+            for(let i = 0; i < directions.length; i++) {
+
+                const nextRow = row + directions[i][0];
+                const nextCol = col + directions[i][1];
+                const nextHash =  `${nextRow}-${nextCol}`;
+
+                if(isOutOfBound(nextRow, nextCol) || sourceIsland.has(nextHash)) continue;
+                q.enqueue([nextRow, nextCol, distance + 1]);
+            }
+        }
+
+        return Infinity;
+    }
+
+    return bfs(islandA, islandB);
+};
+
+/**
  * Time O(n^2) | Space O(n^2) | both time and space complexity would be the number cell we have in the grid
  * @param {number[][]} grid
  * @return {number}
@@ -92,7 +188,7 @@ class Dequeue {
 
 }
 
-var shortestBridge = function(grid) {
+var shortestBridge1 = function(grid) {
     
     const ROW = grid.length;
     const COL = ROW;
