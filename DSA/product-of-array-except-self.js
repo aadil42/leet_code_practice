@@ -1,4 +1,31 @@
+/**
+ * Array
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/product-of-array-except-self/
+ * @param {number[]} nums
+ * @return {number[]}
+ */
 var productExceptSelf = function(nums) {
+    
+    const result = [];
+
+    // add prefixes
+    let currPreFix = 1;
+    for(let i = 0; i < nums.length; i++) {
+        result.push(currPreFix);
+        currPreFix *= nums[i];
+    }
+    
+    let currPostFix = 1;
+    for(let i = nums.length - 1; i > -1; i--) {
+        result[i] = currPostFix*result[i];
+        currPostFix *= nums[i];
+    }
+
+    return result;
+};
+
+var productExceptSelf1 = function(nums) {
     
 let currunt = 1;
 const result = [];
