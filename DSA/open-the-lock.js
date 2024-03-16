@@ -1,8 +1,62 @@
 /**
+ * Graph | BFS 
+ * Time O(10^4) |  Space O(10^4)
+ * https://leetcode.com/problems/open-the-lock/
  * @param {string[]} deadends
  * @param {string} target
  * @return {number}
  */
+var openLock = function(deadends, target) {
+    
+    const directions = [
+        [1,0,0,0], 
+        [0,1,0,0],
+        [0,0,1,0],
+        [0,0,0,1],
+        [-1,0,0,0],
+        [0,-1,0,0],
+        [0,0,-1,0],
+        [0,0,0,-1]
+    ];
+
+    const forbidden = new Set(deadends);
+
+    if(forbidden.has("0000")) return -1;
+    
+    const q = new Queue(); // Queue doesn't exsit here. Run it in leetcode.
+    const visited = new Set();
+
+    q.enqueue([[0,0,0,0], 0]);
+    
+    while(!q.isEmpty()) {
+
+        const node = q.dequeue();
+        const sequence = node[0];
+        const turns = node[1];
+        
+        if(visited.has(sequence.join(""))) continue;
+        visited.add(sequence.join(""));
+        
+        // console.log(sequence);
+        if(sequence.join("") === target) return turns;
+
+        for(let i = 0; i < directions.length; i++) {
+            const nextSequence = sequence.slice(0);
+
+            for(let j = 0; j < 4; j++) {
+                nextSequence[j] += directions[i][j];
+                // if we go behind 0 we get back to 9.
+                if(nextSequence[j] === -1) nextSequence[j] = 9;
+                // if we go over 9 then we get back to 0.
+                if(nextSequence[j] === 10) nextSequence[j] = 0;
+            }   
+            if(!forbidden.has(nextSequence.join(""))) q.enqueue([nextSequence, turns+1]);
+        }
+    }
+
+    return -1;
+};
+
 class Dequeue {
     constructor() {
         this.items = {};
@@ -90,8 +144,15 @@ class Dequeue {
 
 }
 
-
-var openLock = function(deadends, target) {
+/**
+ *  Graph | BFS 
+ *  Time O(10^4) |  Space O(10^4)
+ *  https://leetcode.com/problems/open-the-lock/
+ * @param {string[]} deadends
+ * @param {string} target
+ * @return {number}
+ */
+var openLock1 = function(deadends, target) {
     
     const visited = new Set(deadends);
     if(visited.has("0000")) return -1;
@@ -125,6 +186,6 @@ var openLock = function(deadends, target) {
     return -1;
 };
 
-const deadends = ["0201","0101","0102","1212","2002"];
-const target = "0202";
-console.log(openLock(deadends, target));
+// const deadends = ["0201","0101","0102","1212","2002"];
+// const target = "0202";
+// console.log(openLock(deadends, target));
