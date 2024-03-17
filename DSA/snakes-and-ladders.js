@@ -1,4 +1,89 @@
 /**
+ * Graph | BFS
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/snakes-and-ladders/
+ * @param {number[][]} board
+ * @return {number}
+ */
+var snakesAndLadders = function(board) {
+
+    const n = board.length;
+
+    // helper function.
+    const getNextRowCol = (nextCellNum) => {
+        // subtracting 1 because we're counting 0 based.
+        let row = Math.floor((nextCellNum-1)/n);
+        let col = (nextCellNum-1)%n;
+        
+        if(row%2) {
+            col = n - 1 - col;
+        }
+
+        return [row, col];
+    }
+
+    // helper function.
+    const isOutOfBound = (row, col) => {
+        if(row === n || col === n) return true;
+        if(row < 0 || col < 0) return true;
+        // console.log(row, col);
+        return false;
+    }
+
+
+    const q = new Queue();
+    const visited = new Set();
+
+    // for easier traversel.
+    board = board.reverse();
+
+    q.enqueue([1,0]); // cellNum, moves
+
+    while(!q.isEmpty()) {
+        const size = q.size();
+
+        for(let i = 0; i < size; i++) {
+
+            const cell = q.dequeue();
+            const currCellNum = cell[0];
+            const moves = cell[1];
+
+            for(let i = 1; i < 7; i++) {
+        
+                if(currCellNum+i > n**2) continue;
+                const nextCell = currCellNum+i;
+                const [nextRow, nextCol] = getNextRowCol(nextCell);
+
+                if(nextCell === n**2 && board[nextRow][nextCol] === -1) return moves+1;
+
+                // if there was a snake or ladder
+                if(!isOutOfBound(nextRow, nextCol) && board[nextRow][nextCol] !== -1) {
+
+                    const nextCell = board[nextRow][nextCol];
+
+                    const [nextRow1, nextCol1] = getNextRowCol(nextCell);
+
+                    if(nextCell === n**2 && board[nextRow1][nextCol1] === -1) return moves+1;
+
+                    if(visited.has(nextCell)) continue;
+                    visited.add(nextCell);
+
+                    q.enqueue([nextCell, moves+1]);
+                    continue;
+                }
+
+                if(visited.has(nextCell)) continue;
+                visited.add(nextCell);
+
+                q.enqueue([nextCell,moves+1]);
+            }
+        }
+    }
+
+    return -1;
+};
+
+/**
  * BFS
  * Time O()
  * @param {number[][]} board
@@ -93,7 +178,7 @@ class Dequeue {
 
 }
 
-var snakesAndLadders = function(board) {
+var snakesAndLadders1 = function(board) {
 
     const visited = new Set();
     const dequeu = new Dequeue();
