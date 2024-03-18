@@ -1,11 +1,78 @@
 /**
+ * DFS 
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/
+ * @param {number} n
+ * @param {number[][]} connections
+ * @return {number}
+ */
+var minReorder = function(n, connections) {
+
+    const createGraph = (edges) => {
+
+        const graph = {};
+
+        for(let i = 0; i < edges.length; i++) {
+
+            const from = edges[i][0];
+            const to = edges[i][1];
+
+            if(!graph[from]) {
+                graph[from] = [];
+            }
+            if(!graph[to]) {
+                graph[to] = [];
+            }
+
+            graph[from].push(to);
+            graph[to].push(from);
+        }
+
+        return graph;
+    }
+    
+    const graph = createGraph(connections);
+    const edgesSet = new Set();
+    const visited = new Set();
+    // console.log(graph);
+    for(let i = 0; i < connections.length; i++) {
+        const from = connections[i][0];
+        const to = connections[i][1];
+
+        edgesSet.add(`${from}-${to}`);
+    }
+
+    let minPathReorder = 0;
+
+    const dfs = (pre, node) => {
+        
+        if(visited.has(node)) return;
+        visited.add(node);
+        l
+        const edge = `${pre}-${node}`;
+        if(edgesSet.has(edge)) minPathReorder++;
+
+        const neighbors = graph[node] || [];
+
+        for(let i = 0; i < neighbors.length; i++) {
+            const nextNode = neighbors[i];
+            dfs(node, nextNode);
+        }
+    }
+
+
+    dfs(-1, 0);
+    return minPathReorder;
+};
+
+/**
  * dfs traversal.
  * Time O(n) | Space O(n)
  * @param {number} n
  * @param {number[][]} connections
  * @return {number}
  */
-var minReorder = function(n, connections) {
+var minReorder1 = function(n, connections) {
     
     const edges = new Set();
     const visited = new Set();
