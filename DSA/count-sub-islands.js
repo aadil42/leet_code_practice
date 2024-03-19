@@ -1,11 +1,64 @@
 /**
+ * Graph | DFS
+ * time O(n*m) | Space O(1)
+ * https://leetcode.com/problems/count-sub-islands/
+ * @param {number[][]} grid1
+ * @param {number[][]} grid2
+ * @return {number}
+ */
+var countSubIslands = function(grid1, grid2) {
+    
+    const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+    const ROW = grid1.length;
+    const COL = grid1[0].length;
+
+    const isOutOfBound = (row, col) => {
+        if(row === ROW || col === COL) return true;
+        if(row < 0 || col < 0) return true;
+        return false;
+    }
+
+   const dfs = (row, col) => {
+
+        if(isOutOfBound(row, col)) return true;
+        if(grid2[row][col] === 0) return true;
+
+        grid2[row][col] = 0;
+        let result = true;
+
+        if(grid1[row][col] ===  0) {
+            result = false;
+        }
+
+        for(let i = 0; i < directions.length; i++) {
+            const nextRow = row + directions[i][0];
+            const nextCol = col + directions[i][1];
+            const subResult = dfs(nextRow, nextCol);
+            result = result && subResult;
+        }
+
+        return result;
+   }
+
+    let subIslands = 0;
+    for(let i = 0; i < ROW; i++) {
+        for(let j = 0; j < COL; j++) {
+            if(grid2[i][j] === 1 && dfs(i,j)) {
+                subIslands++;
+            }
+        }
+    }
+    return subIslands;
+};
+
+/**
  * DFS Traversal
  * Time O(m*n) | Space O(1)
  * @param {number[][]} grid1
  * @param {number[][]} grid2
  * @return {number}
  */
-var countSubIslands = function(grid1, grid2) {
+var countSubIslands2 = function(grid1, grid2) {
     
     let subIslandCount = 0;
     const ROW = grid1.length;
