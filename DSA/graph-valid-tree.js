@@ -1,56 +1,60 @@
+/**
+ * Graph | UnionFind
+ * Time O(n) | Space O(n) 
+ * https://www.lintcode.com/problem/178/ || This problem is not on leetcode so you must solve it on lintcode.
+ * @param n: An integer
+ * @param edges: a list of undirected edges
+ * @return: true if it's a valid tree, or false
+ */
+const validTree = (n, edges) => {
 
+    // annoying edge case || if the edges are more or less then n - 1 then either there is a cycle or there is a nodes that are not fully connected.
+    if(edges.length !== n - 1) return false; 
+    // if(!edges.length && n === 1) 
+    // return true;
 
+    const parent = [];
+    for(let i = 0; i < n; i++) {
+      parent.push(i);
+    }    
 
-
-function validTree(n, edges) {
-
-    if(!n) return false;
-    if(!edges.length) return false;
-
-    const { graph } = makeGraph(edges);
-    const visited = new Set();
-
-    if(dfs(edges[0][0], -1, graph, visited)) {
-        if(visited.size === n) return true;
+    const rank = [];
+    for(let i = 0; i < n; i++)  {
+      rank.push(1);
     }
-    return false;
-}
+    
+    const getParent = (node) => {
 
-function dfs(src, pre, graph, visited) {
+      while(parent[node] !== node) {
+        node = parent[node];
+      }
 
-    if(visited.has(src)) return false;
-    visited.add(src);
-    for(let i = 0; i < graph[src].length; i++) {
-        if(graph[src][i] == pre) continue;        
-        if(!dfs(graph[src][i], src, graph, visited)) return false;
+      return node;
+    }
+
+    const isCycle = (edge) => {
+      const node1 = edge[0];
+      const node2 = edge[1];
+      
+      const parent1 = getParent(node1);
+      const parent2 = getParent(node2);
+
+      if(parent1 === parent2) return true;
+
+      if(rank[parent1] > rank[parent2]) {
+        parent[parent2] = parent1;
+        rank[parent1] += rank[parent2];
+      } else {
+        parent[parent1] = parent2;
+        rank[parent2] += rank[parent1];
+      }
+
+      return false;
+    }
+
+    for(let i = 0; i < edges.length; i++) {
+      if(isCycle(edges[i])) return false;
     }
 
     return true;
-}
-
-function makeGraph(edges) {
-    const graph = [];
-    
-    for(let i = 0; i < edges.length; i++) {
-
-        
-        if(graph[edges[i][0]]) {
-            graph[edges[i][0]].push(edges[i][1]);
-        } else {
-            graph[edges[i][0]] = [];
-            graph[edges[i][0]].push(edges[i][1]);
-        }
-
-        if(graph[edges[i][1]]) {
-            graph[edges[i][1]].push(edges[i][0]);
-        } else {
-            graph[edges[i][1]] = [];
-            graph[edges[i][1]].push(edges[i][0]);
-        }
-    }
-    return {graph};
-}
-
-const edges = [[0,1],[0,2],[0,4],[4,9],[4,8],[2,3],[3,7],[7,5],[1,3]];
-const n = 9;
-console.log(validTree(n, edges));
+  }
