@@ -87,59 +87,114 @@ class Dequeue {
 
 }
 
+const wallsAndGates = (rooms) => {
+    // write your code here
 
-export class Solution {
-  /**
+    const queue = new Dequeue();
+    const ROW = rooms.length;
+    const COL = rooms[0].length;
+    const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+    const visited = new Set();
+
+    for(let i = 0; i < ROW; i++) {
+        for(let j = 0; j < COL; j++) {
+            if(rooms[i][j] === 0) {
+                visited.add(`${i}-${j}`);
+                queue.addBack([i,j,0]);
+            }
+        }
+    }
+
+    const isOutOfBound = (row, col) => {
+        if(row < 0) return true;
+        if(col < 0) return true;
+        if(row === ROW) return true;
+        if(col === COL) return true;
+        return false;
+    }
+
+    // run bfs
+    while(!queue.isEmpty()) {
+
+        const size = queue.size();
+
+        for(let i = 0; i < size; i++) {
+            const node = queue.removeFront();
+            const row = node[0];
+            const col = node[1];
+            const distance = node[2];
+
+            for(let i = 0; i < directions.length; i++) {
+                const nextRow = row + directions[i][0];
+                const nextCol = col + directions[i][1];
+                const nextDistance = distance + 1;
+
+
+                if(isOutOfBound(nextRow, nextCol)) continue;
+                if(rooms[nextRow][nextCol] === -1) continue; 
+                if(visited.has(`${nextRow}-${nextCol}`)) continue;
+                visited.add(`${nextRow}-${nextCol}`);
+                
+                // it's an empty room 
+                rooms[nextRow][nextCol] = nextDistance;
+
+                queue.addBack([nextRow, nextCol, nextDistance]);
+            }
+        }
+    }
+
+    return rooms;
+}
+
+/**
    * @param rooms: m x n 2D grid
    * @return: nothing
-   */
-  wallsAndGates(rooms) {
-   
-      const ROW = rooms.length;
-    const COL = rooms[0].length;
- 
-    const visited = new Set();
-    const q = new Dequeue();
- 
-    const directions = [[1,0], [-1,0], [0,1], [0,-1]];
-    rooms.forEach((room, row) => {
-      room.forEach((singleRoom,col) =>  {
-         if(singleRoom === 0) {
-           q.addBack([row,col,0]);
-         }
-      });
+*/
+const wallsAndGates1 = (rooms) => {
+
+const ROW = rooms.length;
+const COL = rooms[0].length;
+
+const visited = new Set();
+const q = new Dequeue();
+
+const directions = [[1,0], [-1,0], [0,1], [0,-1]];
+rooms.forEach((room, row) => {
+    room.forEach((singleRoom,col) =>  {
+        if(singleRoom === 0) {
+        q.addBack([row,col,0]);
+        }
     });
- 
-   function isValid(r,c) {
-     const hash = r + "-" + c;
-     if(r === ROW || c === COL ||
-        r < 0 || c < 0 ||
-        visited.has(hash) || rooms[r][c] === -1 || rooms[r][c] === 0){
-            return false;
-        } 
-        return true;
-   }
-   
-   while(!q.isEmpty()) {
-     const len = q.size();
-     
-     for(let i = 0; i  < len; i++) {
-       const node  = q.removeFront();
-       
-       const r = node[0];
-       const c = node[1];
-       const len = node[2];
-       directions.forEach((direction) => {
-         if(isValid(r + direction[0],c + direction[1])) {
-           const hash = (r + direction[0]) +"-"+ (c + direction[1]);
-           rooms[r + direction[0]][c + direction[1]] = len + 1;
-           visited.add(hash);
-           q.addBack([r+direction[0], c+direction[1], len + 1]);
-         }
-       });
-     }
-   }
- 
-     return rooms;
-  }
+});
+
+function isValid(r,c) {
+    const hash = r + "-" + c;
+    if(r === ROW || c === COL ||
+    r < 0 || c < 0 ||
+    visited.has(hash) || rooms[r][c] === -1 || rooms[r][c] === 0){
+        return false;
+    } 
+    return true;
+}
+
+while(!q.isEmpty()) {
+    const len = q.size();
+    
+    for(let i = 0; i  < len; i++) {
+    const node  = q.removeFront();
+    
+    const r = node[0];
+    const c = node[1];
+    const len = node[2];
+    directions.forEach((direction) => {
+        if(isValid(r + direction[0],c + direction[1])) {
+        const hash = (r + direction[0]) +"-"+ (c + direction[1]);
+        rooms[r + direction[0]][c + direction[1]] = len + 1;
+        visited.add(hash);
+        q.addBack([r+direction[0], c+direction[1], len + 1]);
+        }
+    });
+    }
+}
+    return rooms;
 }
