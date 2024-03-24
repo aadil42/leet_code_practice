@@ -1,4 +1,106 @@
 /**
+ * Minimum Spanning tree | Kruskal's algorithm
+ * Time O(n^2) | Space O(n)
+ * https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number[][]}
+ */
+var findCriticalAndPseudoCriticalEdges = function(n, edges) {
+
+    // preserve the index of edges with them because we're about to sort them.
+    for(let i = 0; i < edges.length; i++) {
+        const edge = edges[i];
+        edge.push(i);
+    }
+
+    edges = edges.sort((a,b) => {
+        return a[2] - b[2];
+    });
+
+    const MST = (edges, n, mustIgnore, mustInclude) => {
+
+        let mstCost = 0;
+        let numOfEdges = 0;
+
+        const parent = [];
+        const rank = [];
+        
+        for(let i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 1;
+        }
+
+        const findParent = (node) => {
+            while(parent[node] !== node) {
+                node = parent[node];
+            }
+            return node;
+        }
+        
+        const union = (edge) => {
+            
+            const node1 = edge[0];
+            const node2 = edge[1];
+
+            const node1Parent = findParent(node1);
+            const node2Parent = findParent(node2);
+
+            if(node1Parent === node2Parent) return false;
+
+            if(rank[node1Parent] > rank[node2Parent]) {
+                rank[node1Parent] += rank[node2Parent];
+                parent[node2Parent] = node1Parent;
+            } else {
+                rank[node2Parent] += rank[node1Parent];
+                parent[node1Parent] = node2Parent;
+            }
+
+            return true;
+        }
+
+        if(edges[mustInclude]) {
+            union(edges[mustInclude]);
+            numOfEdges++;
+            mstCost += edges[mustInclude][2];
+        }
+
+        for(let i = 0; i < edges.length; i++) {
+
+            if(i === mustIgnore) continue;
+            const edge = edges[i];
+            if(!union(edge)) continue;
+
+            mstCost += edge[2];
+            numOfEdges++;
+        }
+
+        if(numOfEdges === n - 1) return mstCost;
+        return Infinity;
+    }
+
+    const mstWeight = MST(edges, n, null, null);
+
+    const criticleEdges = [];
+    const psudoCriticleEdges = [];
+
+    for(let i = 0; i < edges.length; i++) {
+
+        if(MST(edges, n, i, null) > mstWeight) {
+            criticleEdges.push(edges[i][3]);
+            continue;
+        }
+
+        if(MST(edges, n, null, i) === mstWeight) {
+            psudoCriticleEdges.push(edges[i][3]);
+        }
+
+    }
+
+    return [criticleEdges, psudoCriticleEdges];
+};
+
+/**
  * https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/
  * 
  * Minimum Spanning Tree.
@@ -7,7 +109,7 @@
  * @param {number[][]} edges
  * @return {number[][]}
  */
-var findCriticalAndPseudoCriticalEdges = function(n, edges) {
+var findCriticalAndPseudoCriticalEdges1 = function(n, edges) {
     // if you ignore an edge and you can't form a cycle or the sum is bigger then it's a ciritical
     // if you include an edge and the sum is the same and you can form a cycle then it's a psudo critical.
 
