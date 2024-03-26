@@ -31,48 +31,13 @@
 
 
 /**
- * Hashing
- * Time O(n) | Space O(n)
- * https://leetcode.com/problems/first-missing-positive
  * 
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/first-missing-positive/
  * @param {number[]} nums
  * @return {number}
  */
 var firstMissingPositive0 = function(nums) {
-    const numberSet = new Set(nums);
-    let i = 1;
-    while(true) {
-        if(!numberSet.has(i)) return i;
-        i++;
-    }
-};
-
-/**
- * https://leetcode.com/problems/first-missing-positive/
- * Time O(n) | Space O(n)
- * @param {number[]} nums
- * @return {number}
- */
-var firstMissingPositive1 = function(nums) {
-
-    const numberSet = new Set(nums);
-      
-      let i = 1;
-      while(numberSet.has(i)) {
-          i++;
-      }
-  
-      return i;
-};
-
-/**
- * 
- * Time O(n) | Space O(n)
- * https://leetcode.com/problems/first-missing-positive/
- * @param {number[]} nums
- * @return {number}
- */
-var firstMissingPositive2 = function(nums) {
     
     // convert every negative to 0;
     nums = nums.map((num) => {
@@ -98,4 +63,39 @@ var firstMissingPositive2 = function(nums) {
         i++;
     }
     return nums.length + 1;
+};
+
+/**
+ * Hashing
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/first-missing-positive
+ * 
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive1 = function(nums) {
+    const numberSet = new Set(nums);
+    let i = 1;
+    while(true) {
+        if(!numberSet.has(i)) return i;
+        i++;
+    }
+};
+
+/**
+ * https://leetcode.com/problems/first-missing-positive/
+ * Time O(n) | Space O(n)
+ * @param {number[]} nums
+ * @return {number}
+ */
+var firstMissingPositive2 = function(nums) {
+
+    const numberSet = new Set(nums);
+      
+      let i = 1;
+      while(numberSet.has(i)) {
+          i++;
+      }
+  
+      return i;
 };
