@@ -1,11 +1,71 @@
 /**
- * Priority queue
+ * Graph | BFS | Priority Queue
+ * Time O(n^2  * log(n)) | Space O(n^2)
+ * https://leetcode.com/problems/swim-in-rising-water/
+ * understanding the problem is a bit trikier than solving it. 
+ * the solution is pretty straight forward.
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var swimInWater = function(grid) {
+    
+  const n = grid.length;
+  const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+
+  // helper function
+  const isDestination = (row, col) => {
+      return (row === n - 1 && col === n-1);
+  }
+  // helper function
+  const isOutOfBound = (row, col) => {
+      if(row === n) return true;
+      if(col === n) return true;
+      if(row < 0) return true;
+      if(col < 0) return true;
+      return false;
+  }
+
+  const minQueue = new MinHeap();
+
+  const visited = new Set();
+  minQueue.insert([grid[0][0], 0, 0]);
+
+
+  let maxHeight = 0;
+  while(!minQueue.isEmpty())  {
+
+      const cell = minQueue.extractMin();
+
+      const height = cell[0];
+      const row = cell[1];
+      const col = cell[2];
+
+      visited.add(`${row}-${col}`);
+
+      maxHeight = Math.max(maxHeight, height);
+      if(isDestination(row, col)) return maxHeight;
+
+      for(let i =  0; i < directions.length; i++) {
+          const nextRow = row + directions[i][0];
+          const nextCol = col + directions[i][1];
+          
+          if(isOutOfBound(nextRow, nextCol)) continue;
+          if(visited.has(`${nextRow}-${nextCol}`)) continue;
+
+          const nextHeight = grid[nextRow][nextCol];
+          minQueue.insert([nextHeight, nextRow, nextCol]);
+      }
+  }
+};
+
+/**
+ * Graph | BFS | Priority queue 
  * Time O(n^2 * log(n)) | Space O(n^2)
  * @param {number[][]} grid
  * @return {number}
  */
 
-var swimInWater = function(grid) {
+var swimInWater1 = function(grid) {
 
     const destination = grid.length - 1;
     const elivationHeap = new MinHeap();
