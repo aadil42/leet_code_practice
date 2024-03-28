@@ -1,11 +1,62 @@
 /**
+ * Graph | DFS | Backtracking (the trick in this problem to backtrack. that's it.)
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/reconstruct-itinerary/
+ * @param {string[][]} tickets
+ * @return {string[]}
+ */
+var findItinerary = function(tickets) {
+
+    const graph = {};
+    for(let i = 0; i < tickets.length; i++) {
+
+        const from = tickets[i][0];
+        const to = tickets[i][1];
+
+        if(!graph[from]) {
+            graph[from] = [];
+        }
+
+        graph[from].push(to);
+    }
+
+    // sort the edges from nodes
+    for(const node in graph) {
+        graph[node].sort();
+    }
+
+    const result = ["JFK"];
+
+    console.log(graph);
+    const dfs = (node) => {
+
+        // these two lines are making all the difference
+        if(result.length === tickets.length + 1) return true;
+        if(!graph[node]) return false;
+
+        const neighrbos = graph[node];
+        for(let i = 0; i < neighrbos.length; i++) {
+            const [nextStop] = neighrbos.splice(i,1);
+            result.push(nextStop);
+            if(dfs(nextStop)) return true;
+            result.pop();
+            neighrbos.splice(i,0,nextStop);
+        }
+
+    }
+
+    dfs("JFK");
+    return result;
+};
+
+/**
  * Graph traversal | DFS | Backtracking
  * Time O(e^2) | Space O(e) | e = number of edges
  * https://leetcode.com/problems/reconstruct-itinerary
  * @param {string[][]} tickets
  * @return {string[]}
  */
-var findItinerary = function(tickets) {
+var findItinerary1 = function(tickets) {
     
     const map = {};
     for(let i = 0; i < tickets.length;  i++) {
