@@ -1,6 +1,8 @@
 /**
- * 
- * Dijkstra's Algorithm But it's not working for one specific test case
+ * BFS | Dynamic-Programming
+ * Time O(n) | Space O(n)
+ * Main takeaway is to keep a distance array. And update each node with the smallest distance from src if possible.
+ * Kind of like dynamic programing but with bfs instead of dfs.
  * @param {number} n
  * @param {number[][]} flights
  * @param {number} src
@@ -8,136 +10,58 @@
  * @param {number} k
  * @return {number}
  */
-var findCheapestPrice1 = function(n, flights, src, dst, k) {
+var findCheapestPrice = function(n, flights, src, dst, k) {
 
-    // make graph
-    const graph = {};
-    for(let i = 0; i < flights.length; i++) {
-        const sourceNode = flights[i][0];
-        const targetNode = flights[i][1];
-        const cost = flights[i][2];
+  const distance = new Array(n).fill(Infinity);
 
-        if(graph[sourceNode]) {
-            graph[sourceNode].push([targetNode, cost]);
-        } else {
-            graph[sourceNode] = [[targetNode, cost]];
-        }
-    }    
+  const createGraph = (edges) => {
 
-    const shortestPaths = {};
-    for(let i = 0; i < n; i++) {
-      shortestPaths[i] = Infinity;
-    }
-    shortestPaths[src] = 0;
+      const graph = {};
 
-    const flightsHeap = new MinHeap();
-    flightsHeap.insert([0,0,src]);
-    // const visited = new Set();
+      for(let i = 0; i < edges.length; i++) {
+          const from = edges[i][0];
+          const to = edges[i][1];
+          const price = edges[i][2];
 
-    while(!flightsHeap.isEmpty()) {
-      const node = flightsHeap.extractMin();
-      const kStops = node[1];
-      const cost = node[0];
-      const nextNode = node[2];
-      // if(nextNode === dst) return cost;
-      if(kStops > k) continue;
+          if(!graph[from]) {
+              graph[from] = [];
+          }
 
-      // if(visited.has(nextNode)) continue;
-      // visited.add(nextNode);
-
-      const neighbor = graph[nextNode];
-      // console.log(neighbor)
-      if(!neighbor) continue;
-      for(let i = 0; i < neighbor.length; i++) {
-        const currentCost = neighbor[i][1];
-        const totalCost = currentCost + cost;
-        if(totalCost < shortestPaths[neighbor[i][0]] ) {
-          shortestPaths[neighbor[i][0]] = totalCost;
-          flightsHeap.insert([ totalCost, kStops+1, neighbor[i][0]]);
-        }
+          graph[from].push([to, price]);
       }
-    }
 
-    if(shortestPaths[dst] === Infinity) return -1;
-    return shortestPaths[dst];
-    // return -1;
+      return graph;
+  }
+
+  const graph = createGraph(flights); 
+
+  const q = [[0, src]];
+  distance[src] = 0;
+  k = k + 1;
+
+  while(q.length && k) {
+      
+      const size = q.length;
+
+      for(let i = 0;  i < size;  i++) {
+          const node = q.shift();
+          const airport = node[1];
+          const price = node[0];
+          const neighbors = graph[airport] || [];
+          for(let j = 0; j < neighbors.length; j++) {
+              const nextAirport = neighbors[j][0];
+              const nextPrice = neighbors[j][1];
+              if(distance[nextAirport] > nextPrice + price) {
+                  distance[nextAirport] = price + nextPrice;
+                  q.push([price + nextPrice, nextAirport]);
+              }
+          }
+      }
+      k--;
+  }
+
+  return distance[dst] === Infinity ? -1: distance[dst];
 };
-
-class MinHeap {
-  constructor() {
-    this.heap = [];
-  }
-
-  compare(a, b) {
-    return a[0] - b[0];
-  }
-
-  getParentIndex(index) {
-    return Math.floor((index - 1) / 2);
-  }
-
-  getLeftChildIndex(index) {
-    return (index * 2) + 1;
-  }
-
-  getRightChildIndex(index) {
-    return (index * 2) + 2;
-  }
-
-  insert(value) {
-    this.heap.push(value);
-    let currentIndex = this.heap.length - 1;
-    let parentIndex = this.getParentIndex(currentIndex);
-
-    while (currentIndex > 0 && this.compare(this.heap[currentIndex], this.heap[parentIndex]) < 0) {
-      [this.heap[currentIndex], this.heap[parentIndex]] = [this.heap[parentIndex], this.heap[currentIndex]];
-      currentIndex = parentIndex;
-      parentIndex = this.getParentIndex(currentIndex);
-    }
-  }
-
-  extractMin() {
-    if (this.heap.length === 0) {
-      return null;
-    }
-
-    if (this.heap.length === 1) {
-      return this.heap.pop();
-    }
-
-    const min = this.heap[0];
-    this.heap[0] = this.heap.pop();
-    let currentIndex = 0;
-    let leftChildIndex = this.getLeftChildIndex(currentIndex);
-    let rightChildIndex = this.getRightChildIndex(currentIndex);
-
-    while (leftChildIndex < this.heap.length) {
-      let smallestChildIndex = rightChildIndex < this.heap.length && this.compare(this.heap[rightChildIndex], this.heap[leftChildIndex]) < 0
-        ? rightChildIndex
-        : leftChildIndex;
-
-      if (this.compare(this.heap[currentIndex], this.heap[smallestChildIndex]) <= 0) {
-        break;
-      }
-
-      [this.heap[currentIndex], this.heap[smallestChildIndex]] = [this.heap[smallestChildIndex], this.heap[currentIndex]];
-      currentIndex = smallestChildIndex;
-      leftChildIndex = this.getLeftChildIndex(currentIndex);
-      rightChildIndex = this.getRightChildIndex(currentIndex);
-    }
-
-    return min;
-  }
-
-  peek() {
-    return this.heap.length > 0 ? this.heap[0] : null;
-  }
-
-  isEmpty() {
-    return this.heap.length === 0;
-  }
-}
-
 
 /** Just recursion
  * Time O()
