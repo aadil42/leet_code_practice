@@ -1,4 +1,60 @@
 /**
+ * Dijkstra's algorithm | BFS
+ * Time O(n*log(n)) | Space O(n^2)
+ * https://leetcode.com/problems/network-delay-time/
+ * @param {number[][]} times
+ * @param {number} n
+ * @param {number} k
+ * @return {number}
+ */
+var networkDelayTime = function(times, n, k) {
+
+  const createGraph = (edges) => {
+
+      const graph = {};
+
+      for(let i = 0; i < edges.length; i++) {
+          const from = edges[i][0];
+          const to = edges[i][1];
+          const weight = edges[i][2];
+
+          if(!graph[from]) {
+              graph[from] = [];
+          }
+
+          graph[from].push([to, weight]);
+      }
+
+      return graph;
+  }
+
+  const graph = createGraph(times);
+
+  const pq = new MinHeap();  
+  pq.insert([0, k]);
+
+  const visited = new Set();
+  while(!pq.isEmpty()) {
+
+      const [weight, node] = pq.extractMin();
+
+      if(visited.has(node)) continue;
+      visited.add(node);
+      if(visited.size === n) return weight;
+
+      const neighbors = graph[node] || [];
+      for(let i = 0; i < neighbors.length; i++) {
+          const nextNode = neighbors[i][0];
+          const nextWeight = neighbors[i][1];
+          // if(visited.has(nextNode)) continue; // saves us from cycles. If you add this line then visited nodes won't be added. 
+          // Right now visited nodes are added but it's taken care of in the above visited.has(node) condition
+          pq.insert([nextWeight+weight, nextNode]);
+      }
+  }
+  return -1;
+};
+
+/**
  * Dijkstra's Algorithm
  * n = number of total  nodes
  * Time O(n) | Space O(edges)
@@ -8,7 +64,7 @@
  * @return {number}
  */
 
-var networkDelayTime = function(times, n, k) {
+var networkDelayTime1 = function(times, n, k) {
     
     const graph = {};
     const minNetworkHeap = new MinHeap();
