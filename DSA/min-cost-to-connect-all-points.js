@@ -1,11 +1,92 @@
 /**
+ * Union Find | MST | Kruskal's algorithm
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/min-cost-to-connect-all-points/description/
+ * @param {number[][]} points
+ * @return {number}
+ */
+var UF = function(n) {
+  this.rank = new Array(n).fill(1);
+  this.parent = [];
+  this.unConnectedNodes = n;
+
+  for(let i = 0; i < n; i++) {
+      this.parent.push(i);
+  }
+} 
+
+UF.prototype.union = function(node1, node2) {
+
+  const node1Parent = this.getParent(node1);
+  const node2Parent = this.getParent(node2);
+
+  if(node1Parent === node2Parent) return false;
+
+  // unioning occurs here.
+  if(this.rank[node1Parent] > this.rank[node2Parent]) {
+      this.rank[node1Parent] += this.rank[node2Parent];
+      this.parent[node2Parent] = node1Parent;
+  } else {
+      this.rank[node2Parent] += this.rank[node1Parent];
+      this.parent[node1Parent] = node2Parent;
+  }
+
+  this.unConnectedNodes--;
+  return true;
+}
+
+UF.prototype.getParent = function(node) {
+
+  while(this.parent[node] !== node) {
+      node = this.parent[node];
+  }
+
+  return node;
+}
+
+UF.prototype.isConnected = function() {
+  return this.unConnectedNodes === 1;
+}
+
+var minCostConnectPoints = function(points) {
+
+  if(points.length === 1) return 0;
+
+  const weightedEdges = [];
+  // connect the points.
+  for(let i = 0; i < points.length; i++) {
+      for(let j = i+1; j < points.length; j++) {
+          const absX = Math.abs(points[i][0] - points[j][0]);
+          const absY = Math.abs(points[i][1] - points[j][1]);
+          const absDistance = absX + absY;
+          weightedEdges.push([i,j,absDistance]);
+      }
+  }
+
+  weightedEdges.sort((a,b) => a[2]-b[2]);
+
+  const uf = new UF(points.length);
+
+  let cost = 0;
+  for(let i = 0; i < weightedEdges.length; i++) {
+      const node1 = weightedEdges[i][0];
+      const node2 = weightedEdges[i][1];
+      const weight = weightedEdges[i][2];
+      if(uf.union(node1, node2)) {
+          cost += weight;
+      }
+      if(uf.isConnected()) return cost;
+  }    
+};
+
+/**
  * Kruskal's Algorithm (minimum spanning tree)
  * Time O(n^2) | Space O(n^2)
  * https://leetcode.com/problems/min-cost-to-connect-all-points
  * @param {number[][]} points
  * @return {number}
  */
-var minCostConnectPoints = function(points) {
+var minCostConnectPoints0 = function(points) {
     
   const edges = [];
 
