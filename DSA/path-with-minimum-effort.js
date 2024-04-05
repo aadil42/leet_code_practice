@@ -42,6 +42,64 @@ var minimumEffortPath = function(heights) {
 
 };
 
+/**
+ * Graph | DFS
+ * Brute Force
+ * Time O(n*m)^4 | Space O(n*m)
+ * https://leetcode.com/problems/path-with-minimum-effort/
+ * @param {number[][]} heights
+ * @return {number}
+ */
+var minimumEffortPath1 = function(heights) {
+
+  const ROW = heights.length;
+  const COL = heights[0].length;
+  const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+
+  const isOutOfBound = (row, col) => {
+      if(row === ROW) return true;
+      if(col === COL) return true;
+      if(row < 0) return true;
+      if(col < 0) return true;
+      return false;
+  }
+
+  const visited = new Set();
+
+  let min = Infinity;    
+  const dfs = (row, col, diff, currMax) => {
+      const hash = `${row}-${col}`;
+
+      if(visited.has(hash)) return;
+      visited.add(hash);
+
+      if(row === ROW - 1 && col === COL - 1) {
+          // backtrack.
+          visited.delete(hash);
+          min = Math.min(currMax, min);
+          return;
+      }
+
+      for(let i = 0; i < directions.length; i++) {
+          const nextRow = row + directions[i][0];
+          const nextCol = col + directions[i][1];
+
+          if(isOutOfBound(nextRow, nextCol)) continue;
+
+          const nextDiff = Math.abs(heights[row][col] - heights[nextRow][nextCol]);
+          const nextMax = Math.max(nextDiff, currMax);
+          dfs(nextRow, nextCol, nextDiff, nextMax);
+      }
+
+      // backtrack.
+      visited.delete(hash);
+  }
+
+  dfs(0,0,0,0);
+  return min;
+};
+
+
 class MinHeap {
   constructor() {
     this.heap = [];
