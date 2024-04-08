@@ -2,6 +2,73 @@
  * @param {number} capacity
  */
 var LRUCache = function(capacity) {
+    this.queue = [];
+    this.capacity = capacity;
+};
+
+/** 
+ * Brute Force
+ * Queue
+ * Time O(n) | Space O(1)
+ * @param {number} key
+ * @return {number}
+ */
+LRUCache.prototype.get = function(key) {
+    let i = 0;
+    while(i < this.queue.length) {
+        if(this.queue[i][0] === key) {
+            const value = this.queue[i][1];
+            this.queue.splice(i,1);
+            this.queue.unshift([key, value]);
+            return value;
+        }
+        i++;
+    }
+    return -1;
+};
+
+/** 
+ * Brute Force
+ * Queue
+ * Time O(n) | Space O(1)
+ * @param {number} key 
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function(key, value) {
+    
+    // check if value exists
+    let i = 0;
+    while(i < this.queue.length) {
+        if(this.queue[i][0] === key) {
+            this.queue.splice(i,1);
+            this.queue.unshift([key, value]);
+            return null;
+        }
+        i++;
+    }
+
+    if(this.queue.length === this.capacity) {
+        this.queue.pop();
+        this.queue.unshift([key, value]);
+        return null;
+    }
+
+    this.queue.unshift([key, value]);
+    return null;
+};
+
+/** 
+ * Your LRUCache object will be instantiated and called as such:
+ * var obj = new LRUCache(capacity)
+ * var param_1 = obj.get(key)
+ * obj.put(key,value)
+ */
+
+/**
+ * @param {number} capacity
+ */
+var LRUCache0 = function(capacity) {
     this.capacity = capacity;
     this.currentSize = 0;
     this.lruHash = new Map();
@@ -25,7 +92,7 @@ var Node = function(pre = null, next = null, key, val) {
  * @param {number} key
  * @return {number}
  */
-LRUCache.prototype.get = function(key) {
+LRUCache0.prototype.get = function(key) {
     if(this.lruHash.has(key)) {
         this.updateRecent(this.lruHash.get(key));
         return this.lruHash.get(key).val;
@@ -41,7 +108,7 @@ LRUCache.prototype.get = function(key) {
  * @param {number} value
  * @return {void}
  */
-LRUCache.prototype.put = function(key, value) {
+LRUCache0.prototype.put = function(key, value) {
     
     if(this.lruHash.has(key)) {
         // just update it 
@@ -64,7 +131,7 @@ LRUCache.prototype.put = function(key, value) {
 };
 
 // Time O(1) | Space O(1)
-LRUCache.prototype.add = function(node,key,value) {
+LRUCache0.prototype.add = function(node,key,value) {
             node.next = this.right
             node.pre = this.right.pre;
             this.right.pre.next = node;
@@ -74,7 +141,7 @@ LRUCache.prototype.add = function(node,key,value) {
 }
 
 // Time O(1) | Space O(1)
-LRUCache.prototype.remove = function() {
+LRUCache0.prototype.remove = function() {
         if(this.currentSize > 0) {
             const temp = this.left.next;
             this.left.next = this.left.next.next;
@@ -85,7 +152,7 @@ LRUCache.prototype.remove = function() {
 }
 
 // Time O(1) | Space O(1)
-LRUCache.prototype.updateRecent = function(node) {
+LRUCache0.prototype.updateRecent = function(node) {
 
     // updating recent node's neighbors pointer.
     const  temp = node;
@@ -101,7 +168,7 @@ LRUCache.prototype.updateRecent = function(node) {
     node.next.pre =  node;
 }
 /** 
- * Your LRUCache object will be instantiated and called as such:
+ * Your LRUCache0 object will be instantiated and called as such:
  * var obj = new LRUCache(capacity)
  * var param_1 = obj.get(key)
  * obj.put(key,value)
