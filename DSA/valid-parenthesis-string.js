@@ -1,4 +1,40 @@
 /**
+ * DP | Stack | Memoization | Recursion
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/valid-parenthesis-string/
+ * @param {string} s
+ * @return {boolean}
+ */
+var checkValidString = function(s) {
+    
+    const calculated = new Map();
+
+    const dfs = (i, balancer) => {
+        const hash = `${i}-${balancer}`;
+        if(calculated.has(hash)) return calculated.get(hash);
+        if(i === s.length) return balancer === 0;
+
+        if(s[i] === "*") {                           // this condition where balancer has to be > 0 inorder to take this ")" into account is the key insight. This condition is in the last case also.
+            const validity = dfs(i+1, balancer+1) || (balancer > 0 && dfs(i+1, balancer-1)) || dfs(i+1, balancer);
+            calculated.set(hash, validity);
+            return validity;
+        }
+        if(s[i] === "(") {
+            const validity = dfs(i+1, balancer+1);
+            calculated.set(hash, validity);
+            return validity;
+        }
+        if(s[i] === ")") {
+            const validity = balancer > 0 && dfs(i+1, balancer-1);
+            calculated.set(hash, validity);
+            return validity;
+        }
+    }
+
+    return dfs(0, 0);
+};
+
+/**
  * 
  * Recursion/memoization
  * 
@@ -6,7 +42,7 @@
  * @param {string} s
  * @return {boolean}
  */
-var checkValidStringRecursion = function(s) {
+var checkValidStringRecursion0 = function(s) {
     
     const hashSet = new Map();
     function dfs(validCount, i) {
@@ -48,7 +84,7 @@ var checkValidStringRecursion = function(s) {
  * @param {string} s
  * @return {boolean}
  */
-var checkValidString = function(s) {
+var checkValidString1 = function(s) {
     
     let chooseLeft = 0;
     let chooseRight = 0;
