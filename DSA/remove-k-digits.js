@@ -1,4 +1,46 @@
 /**
+ * Monotonic Stack
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/remove-k-digits
+ * 
+ * @param {string} num
+ * @param {number} k
+ * @return {string}
+ */
+var removeKdigits = function(num, k) {
+    
+    let mStack = [];
+
+    num = num.split("").map((n) => +n);
+
+    for(let i = 0; i < num.length; i++) {
+        while(k > 0 && mStack[mStack.length - 1] > num[i]) {
+            mStack.pop();
+            k--;
+        }
+        mStack.push(num[i]);
+    }
+
+    // if we have digits and k. then remove the last ones because the'll be the largest.
+    while(mStack.length && k > 0) {
+        mStack.pop();
+        k--;
+    }
+
+    // edge case.
+    if(+mStack.join("") === 0) return "0";
+
+    // taking care of leading zeros
+    i = 0;
+    while(i < mStack.length && mStack[i] === 0) {
+        mStack[i] = "#";
+        i++;
+    }
+
+    return mStack.filter((num) => num !== "#").join("") || "0";
+};
+
+/**
  * 
  * Monotonic Stack
  * 
@@ -7,7 +49,7 @@
  * @param {number} k
  * @return {string}
  */
-var removeKdigits = function(num, k) {
+var removeKdigits0 = function(num, k) {
     
     const monotonicStack = [];
     const nums = num.split('').map((n) => +n);
