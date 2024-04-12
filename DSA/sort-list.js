@@ -6,10 +6,103 @@
  * }
  */
 /**
+ * LinkedList | Merge-sort
+ * Time O(n*log(n)) | Space O(1)
+ * https://leetcode.com/problems/sort-list/
  * @param {ListNode} head
  * @return {ListNode}
  */
 var sortList = function(head) {
+    
+    const merge = (h1, h2) => {
+        const dummyNode = new ListNode();
+        let curr = dummyNode;
+
+        while(h1 && h2) {
+            if(h1.val < h2.val) {
+                curr.next = h1;
+                h1 = h1.next;
+                curr = curr.next;
+            } else {
+                curr.next = h2;
+                h2 = h2.next;
+                curr = curr.next;
+            }
+        }
+
+
+        while(h1) {
+            curr.next = h1;
+            curr = curr.next;
+            h1 = h1.next;
+        }
+
+        while(h2) {
+            curr.next = h2;
+            curr = curr.next;
+            h2 = h2.next;
+        }
+
+        return dummyNode.next;
+    }
+    
+    const getLen = (head) => {
+        let i = 0;
+        while(head) {
+            head = head.next;
+            i++;
+        }  
+        return i;
+    };
+
+    const getHalf = (head) => {
+        const len = getLen(head);
+        const half = Math.floor(len/2);
+
+        let first = head;
+        let second = null;
+        let curr = head;
+        let i = 1;
+
+        while(true) {
+            if(i === half) {
+                second = curr.next;
+                curr.next = null; // break the link.
+                break;
+            }
+            curr = curr.next;
+            i++;
+        }
+
+        return [first, second];
+    }
+
+    const mergeSort = (head) => {
+        if(!head.next) return head;
+
+        const [firstHalf, secondHalf] = getHalf(head);
+        const firstSorted = mergeSort(firstHalf);
+        const secondSorted = mergeSort(secondHalf);
+        
+        return merge(firstSorted, secondSorted);
+    } 
+
+    // this condition is because head can be null (0 lengthed linked list).
+    return (head && mergeSort(head)) || head; 
+};
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var sortList0 = function(head) {
     
     if(!head || !head.next) {
         return head;
@@ -20,8 +113,8 @@ var sortList = function(head) {
     mid.next = null;
     console.log(left,right);
     
-    const leftList = sortList(left);
-    const rightList = sortList(right);
+    const leftList = sortList0(left);
+    const rightList = sortList0(right);
 
     return mergeTwoLists(leftList, rightList);
 };
