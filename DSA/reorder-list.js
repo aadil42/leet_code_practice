@@ -11,6 +11,60 @@
  * @return {void} Do not return anything, modify head in-place instead.
  */
 var reorderList = function(head) {
+
+
+    const reverseLL = (head) => {
+        let pre = null;
+        while(head) {
+            const temp = head.next;
+            head.next = pre;
+            pre = head;
+            head = temp;
+        }
+        return pre;
+    }
+
+    let slow = head;
+    let fast = head;
+
+    while(fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    let h1 = head;
+    let h2 = slow.next;
+    slow.next = null; // break the link.
+
+    h2 = reverseLL(h2);
+
+    while(h1 && h2) {
+        const temp = h1.next;
+        const temp1 = h2.next;
+
+        h1.next = h2;
+        h2.next = temp;
+
+        h1 = temp;
+        h2 = temp1;
+    }
+
+    return head;
+};
+//////////////////////////////////////////////////////////////////////////
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * Time O(n) | Space O(1)
+ * @param {ListNode} head
+ * @return {void} Do not return anything, modify head in-place instead.
+ */
+var reorderList0 = function(head) {
     
     // edge case. it is not neccecery the code will work out to be fine even without it.
     if(!head.next) return head;
