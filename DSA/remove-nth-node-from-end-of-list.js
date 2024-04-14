@@ -8,12 +8,56 @@
 /**
  * LinkedList
  * Time O(n) | Space O(1)
- * https://leetcode.com/problems/remove-nth-node-from-end-of-list
+ * https://leetcode.com/problems/remove-nth-node-from-end-of-list/
  * @param {ListNode} head
  * @param {number} n
  * @return {ListNode}
  */
 var removeNthFromEnd = function(head, n) {
+    
+    // edge cases.
+    if(!head) return null;
+
+    const getLen = (head) => {
+        let i = 0;
+        while(head) {
+            head = head.next;
+            i++;
+        }
+        return i;
+    }
+
+    const len = getLen(head);
+    let k = len - n;
+
+    const dummyNode = new ListNode(null, head);
+
+    let curr = dummyNode;
+    while(k) {
+        curr = curr.next;
+        k--;
+    }
+
+    curr.next = curr.next.next;
+    return dummyNode.next;
+};
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * LinkedList
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/remove-nth-node-from-end-of-list
+ * @param {ListNode} head
+ * @param {number} n
+ * @return {ListNode}
+ */
+var removeNthFromEnd0 = function(head, n) {
     
     let len = 0;
     let curr = head;
