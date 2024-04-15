@@ -1,4 +1,49 @@
 /**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * LinkedList
+ * Time O(n) | Space(1)
+ * https://leetcode.com/problems/palindrome-linked-list/
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function(head) {
+    const reverseLL = (head) => {
+        let pre = null;
+        while(head) {
+            const temp = head.next;
+            head.next = pre;
+            pre = head;
+            head = temp;
+        }
+        return pre;
+    }
+
+    let slow = head;
+    let fast = head;
+    while(fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    let head1 = slow;
+    head1 = reverseLL(head1);
+
+    while(head && head1) {
+        if(head.val !== head1.val) return false;
+        head = head.next;
+        head1 = head1.next;
+    }
+
+    return true;
+};
+
+/**
  * LinkedList
  * Time O(n) | Space O(1)
  * https://leetcode.com/problems/palindrome-linked-list
@@ -13,7 +58,7 @@
  * @param {ListNode} head
  * @return {boolean}
  */
-var isPalindrome = function(head) {
+var isPalindrome0 = function(head) {
 
     let curr = head;
     let pre = null;
