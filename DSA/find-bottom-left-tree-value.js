@@ -1,6 +1,6 @@
 /**
  * PreOrder Traversal
- * Time O(n) | Space O(1)
+ * Time O(n) | Space O(n) (because of the call stack space is O(n). If the tree has only left children then it's kind of  like a linkedList)
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
