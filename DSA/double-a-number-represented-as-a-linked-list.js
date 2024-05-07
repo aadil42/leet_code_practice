@@ -6,6 +6,57 @@
  * }
  */
 /**
+ * LinkedList | Reverse LinkedList
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/double-a-number-represented-as-a-linked-list
+ * 
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var doubleIt = function(head) {
+
+    let carry = 0;
+
+    const reverse  = (head) => {
+        
+        let pre = null;
+        while(head) {
+            const temp = head.next;
+            head.next = pre;
+            pre = head;
+            head = temp;
+        }
+
+        return pre;
+    }
+
+    head = reverse(head);
+    let curr = head;
+
+    while(true) {
+        const double = (curr.val  * 2) +  carry;
+        carry = Math.floor(double/10);
+        const digit = double%10;
+        curr.val = digit;
+        if(!curr.next) break;
+        curr = curr.next;
+    }
+
+    if(carry) {
+        curr.next = new ListNode(carry);
+    }
+
+    return reverse(head);
+};
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
  * Reverse Linked list
  * 
  * https://leetcode.com/problems/double-a-number-represented-as-a-linked-list/
@@ -13,7 +64,7 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-var doubleIt = function(head) {
+var doubleIt0 = function(head) {
     
     const reverseLL = (head) => {
         let pre = null;
