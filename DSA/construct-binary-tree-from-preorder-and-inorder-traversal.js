@@ -6,7 +6,55 @@ class TreeNode{
     }
 }
 
-var buildTree = function(preO, inO) {
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * Recursion | Tree 
+ * Time O(n) |  Space O(n)
+ * https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+ * @param {number[]} preorder
+ * @param {number[]} inorder
+ * @return {TreeNode}
+ */
+var buildTree = function(preorder, inorder) {
+    
+    let currNodeIdx = 0; // this idx is for traversing preorder
+
+    const dfs = (start, end) => {
+        if(start === end)  {
+            const node = new TreeNode(inorder[start]);
+            currNodeIdx++;
+            return node;
+        }
+        
+        if(start > end) return null;
+
+        let rootIdx = 0;
+        for(let i = start; i < end + 1; i++) {
+            if(inorder[i] === preorder[currNodeIdx]) {
+                rootIdx = i;
+                break;
+            }
+        }
+        currNodeIdx++;
+
+        const root = new TreeNode(inorder[rootIdx]);
+        root.left = dfs(start, rootIdx-1);
+        root.right = dfs(rootIdx+1, end);
+
+        return root;
+    }
+
+    return dfs(0, preorder.length - 1);
+};
+
+var buildTree0 = function(preO, inO) {
 
     function goRecursive(inO, isi, iei, preO, psi, pei) {
         if(eie < isi) return null;
