@@ -40,3 +40,80 @@ var deleteNode = function(root, key) {
 };
 
 // very good and elegent use of rcursion. amazing!!
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * DFS
+ * Time  O(n) | Space O(n)
+ * https://leetcode.com/problems/delete-node-in-a-bst/
+ * @param {TreeNode} root
+ * @param {number} key
+ * @return {TreeNode}
+ */
+var deleteNode0 = function(root, key) {
+    
+    if(!root) return root;
+
+    const getTheRightMost = (node) => {
+        if(!node) return null;
+        if(!node.right) return node;
+
+        return getTheRightMost(node.right);
+    }
+
+    const dfs = (node) => {
+        if(!node) return false;
+        if(!node.left && !node.right) return false;
+
+        if(node.left && node.left.val === key) return node;
+        if(node.right && node.right.val === key) return node;
+
+        return dfs(node.left) || dfs(node.right);
+    }
+
+    const dummyNode = new TreeNode(null, root);
+
+    const targetNode = dfs(dummyNode);
+
+    if(!targetNode) return root;
+
+    if(targetNode.left && targetNode.left.val === key) {
+
+        const rightMostOfLeft  = getTheRightMost(targetNode.left.left);
+        const rightOfTarget = targetNode.left.right;
+
+        if(rightMostOfLeft) {
+            rightMostOfLeft.right = rightOfTarget;
+            targetNode.left = targetNode.left.left;
+        }
+        if(!rightMostOfLeft) {
+            targetNode.left = rightOfTarget;
+        }
+    }
+
+    if(targetNode.right && targetNode.right.val === key) {
+
+        const rightMostOfLeft  = getTheRightMost(targetNode.right.left);
+        const rightOfTarget = targetNode.right.right;
+        
+        if(rightMostOfLeft) {
+            rightMostOfLeft.right = rightOfTarget;
+            targetNode.right = targetNode.right.left;
+        }
+        if(!rightMostOfLeft) {
+            targetNode.right = rightOfTarget;
+        }
+    }
+    
+    return dummyNode.left;
+};
