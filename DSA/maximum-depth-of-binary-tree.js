@@ -1,5 +1,27 @@
-
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * DFS | Tree-traversal
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/maximum-depth-of-binary-tree/
+ * @param {TreeNode} root
+ * @return {number}
+ */
 var maxDepth = function(root) {
+    const dfs = (node) => {
+        if(!node) return 0;
+        return Math.max(1 + dfs(node.left), 1 + dfs(node.right));
+    }
+    return dfs(root);
+};
+
+var maxDepth0 = function(root) {
     let max = 0;
     goRecursive(root, 1);
     function goRecursive(root, count) {
