@@ -1,6 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * Brute Force
+ * Time O(n^2) | space O(n)
+ * https://leetcode.com/problems/subtree-of-another-tree/
+ * @param {TreeNode} root
+ * @param {TreeNode} subRoot
+ * @return {boolean}
+ */
+var isSubtree = function(root, subRoot) {
+    
+    const isSame = (node1, node2) => {
+        if(!node1 && !node2) return true;
+        if(!node1 && node2) return false;
+        if(node1 && !node2) return false;
+
+        if(node1.val !== node2.val) return false;
+
+        return isSame(node1.left, node2.left) && isSame(node1.right, node2.right);
+    }
+
+    const dfs = (node) => {
+        if(!node) return false;
+        if(isSame(node, subRoot)) return true;
+
+        return dfs(node.left) || dfs(node.right);
+    }
+
+    return dfs(root);
+};
+
 //  you need to have a proper  data structure for that. If you don't have a data structure paste code here https://leetcode.com/problems/subtree-of-another-tree/submissions/
 
-var isSameTree = function(p, q) {
+var isSameTree0 = function(p, q) {
     
     function goRecursive(p, q) {
         
@@ -18,7 +56,7 @@ var isSameTree = function(p, q) {
 };
 
 // time complexity is (Numberof nodes in root * numberof nodes in subRoot)
-var isSubtree = function(root, subRoot) {
+var isSubtree1 = function(root, subRoot) {
     
   function goRecursive(root, subRoot) {
       if(!root) return false;
@@ -49,7 +87,7 @@ var isSubtreeR = function(root, subRoot) {
 
 
 // another method. aadil042 came up with it. time complexity is O(n). only the numberof nodes that are in (rootArr + subRootarr).
-var isSubtree = function(root, subRoot) {
+var isSubtree2 = function(root, subRoot) {
     
     const rootArr = [];
     const subRootArr = [];
