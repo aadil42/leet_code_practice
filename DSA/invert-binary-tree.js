@@ -1,3 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * DFS | Tree-traversal
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/invert-binary-tree/
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var invertTree = function(root) {
+    
+    const swap = (node) => {
+        const temp = node.left;
+        node.left = node.right;
+        node.right = temp;
+    }
+
+    const dfs = (node) => {
+        if(!node) return null;
+        
+        swap(node);
+ 
+        dfs(node.left);
+        dfs(node.right);
+    }
+
+    dfs(root);
+    return root;
+};
+
 var swap = function(root) {
     const temp = root.left;
     root.left = root.right;
