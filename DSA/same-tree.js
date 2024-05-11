@@ -1,6 +1,36 @@
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * DFS | Tree-traversal
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/same-tree/
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {boolean}
+ */
+var isSameTree = function(p, q) {
+
+    const dfs = (node1, node2) => {
+        if(!node1 && !node2) return true;
+        if(node1 && !node2) return false;
+        if(!node1 && node2) return false;
+
+        if(node1.val !== node2.val) return false;
+        return dfs(node1.left, node2.left) && dfs(node1.right, node2.right);
+    }
+
+    return dfs(p, q);
+};
+
 // you need appropriate data structure to run this code. If you don't have any paste this code in this editor https://leetcode.com/problems/same-tree/submissions/
 
-var isSameTree = function(p, q) {
+var isSameTree0 = function(p, q) {
     
     
     function goRecursive(p, q) {
