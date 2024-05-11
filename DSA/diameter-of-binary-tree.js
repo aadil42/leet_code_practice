@@ -1,4 +1,36 @@
 /**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * DFS | post-order-traversal
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/diameter-of-binary-tree/
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var diameterOfBinaryTree = function(root) {
+    
+    let longest = 0;
+    const dfs = (node) => {
+        if(!node) return 0;
+        
+        const len1 = dfs(node.left);
+        const len2 = dfs(node.right);
+
+        longest = Math.max(longest, len1 + len2);
+        return 1 + Math.max(len1, len2);
+    }
+
+    dfs(root);
+    return longest;
+};
+
+/**
  * DFS | Recursion
  * Time O(n) | Space O(n)
  * https://leetcode.com/problems/diameter-of-binary-tree
@@ -14,7 +46,7 @@
  * @param {TreeNode} root
  * @return {number}
  */
-var diameterOfBinaryTree = function(root) {
+var diameterOfBinaryTree0 = function(root) {
     
     let diameter = 0;
 
