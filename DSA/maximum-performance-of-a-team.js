@@ -1,5 +1,7 @@
 /**
- * 
+ * PriorityQueue | MinPriorityQueue
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/maximum-performance-of-a-team/
  * @param {number} n
  * @param {number[]} speed
  * @param {number[]} efficiency
