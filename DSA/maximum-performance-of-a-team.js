@@ -119,3 +119,35 @@ class MinHeap {
   return this.heap.length;
 }
 }
+
+/**
+ * BruteFoce | DFS | 0/1 knapsack | DP
+ * Time O(2^n) | Space O(n)
+ * https://leetcode.com/problems/maximum-performance-of-a-team/description/
+ * @param {number} n
+ * @param {number[]} speed
+ * @param {number[]} efficiency
+ * @param {number} k
+ * @return {number}`
+ */
+var maxPerformance0 = function(n, speed, efficiency, k) {
+    
+  const mod = 10**9 + 7;
+  let max = 0;
+
+  const dfs = (i, totalSpeed, minEfficiency, remaining) => {
+      
+      if(minEfficiency!== Infinity) {
+          max = Math.max(max, (totalSpeed * minEfficiency)%mod);
+      }
+
+      if(remaining === 0) return;
+      if(i === speed.length) return;
+
+      dfs(i+1, totalSpeed + speed[i], Math.min(minEfficiency, efficiency[i]), remaining-1);
+      dfs(i+1, totalSpeed, minEfficiency, remaining);
+  }
+
+   dfs(0, 0, Infinity, k);
+   return max % mod;
+};
