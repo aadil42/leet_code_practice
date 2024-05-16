@@ -1,213 +1,53 @@
-// 20 out of 21 test cases are passing on leetcode it gives me error saying "output limit exeeded."
-// the code looks fine to
+// the MaxPriorityQueue and MinPriorityQueue only exist in leetcode environment. 
+// it would give you "not defined" error here.
+
+// PriorityQueue | Max pirority queue | Min priority queue
 var MedianFinder = function() {
-    
-    this.minHeap = new maxPriorityQueue();
-    this.maxHeap = new minPriorityQueue();
+    this.maxQ = new MaxPriorityQueue();
+    this.minQ = new MinPriorityQueue();
 };
 
-class minPriorityQueue {
-    constructor() {
-        this.queue = [];
-        this.size = 0;
-    }
-
-    // this is for the min heap
-    add(val) {
-        this.queue.push(val);
-        this.bubbleUP(this.queue.length - 1);
-        this.size++;
-    }
-
-    poll() {
-        this.swap(0, this.queue.length - 1);
-        const popped = this.queue.pop();
-        this.bubbleDown(0);
-        this.size--;
-        return popped;
-    }
-
-    //this is for the min heap
-    bubbleUP(index) {
-
-        if(index <= 0) return;
-        if(this.queue[index] > this.queue[this.getParent(index)]) return;
-
-        if(this.queue[index] < this.queue[this.getParent(index)]) {
-            this.swap(index, this.getParent(index));
-            this.bubbleUP(this.getParent(index));
-        }
-    }
-
-    bubbleDown(index) {
-        if(this.queue[index] < this.queue[this.getLeftChild(index)] &&
-            this.queue[index] < this.queue[this.getRightChild(index)]) return;
-            
-         if(this.queue[index] > this.queue[this.getLeftChild(index)]) {
-            this.swap(index, this.getLeftChild(index));
-            this.bubbleDown(this.getLeftChild(index));
-         }   
-
-         if(this.queue[index] > this.queue[this.getRightChild(index)]) {
-            this.swap(index, this.getRightChild(index));
-            this.bubbleDown(this.getRightChild(index));
-         }
-    }
-
-    getLeftChild(index) {
-        return (index * 2) + 1;
-    }
-    getRightChild(index) {
-        return (index * 2) + 2;
-    }
-    swap(topNode, bottomNode) {
-        const temp = this.queue[topNode];
-        this.queue[topNode] = this.queue[bottomNode];
-        this.queue[bottomNode] = temp; 
-    }
-    getParent(index) {
-        return Math.ceil((index - 2)/2);
-    }
-    peek() {
-        return this.queue[0];
-    }
-    print() {
-        return this.queue;
-    }
+MedianFinder.prototype.swapMinToMax = function() {
+    this.maxQ.enqueue(this.minQ.dequeue().element);
 }
-
-class maxPriorityQueue {
-    constructor() {
-        this.queue = [];
-        this.size = 0;
-    }
-
-    // this is for max heap 
-    add(val) {
-        this.queue.push(val);
-        this.bubbleUp(this.queue.length - 1);
-        this.size++;
-    }
-
-    // this is for the  max heap
-    poll() {
-        this.swap(0, this.queue.length - 1);
-        const popped = this.queue.pop();
-        this.bubbleDown(0);
-        this.size--;
-        return popped;
-    }
-
-    // this will bubble down to the max heap
-    bubbleDown(index) {
-        if(this.queue[index] > this.queue[this.getLeftChild(index)] &&
-            this.queue[index] > this.queue[this.getRightChild(index)]) return;
-            
-         if(this.queue[index] < this.queue[this.getLeftChild(index)]) {
-            this.swap(index, this.getLeftChild(index));
-            this.bubbleDown(this.getLeftChild(index));
-         }   
-
-         if(this.queue[index] < this.queue[this.getRightChild(index)]) {
-            this.swap(index, this.getRightChild(index));
-            this.bubbleDown(this.getRightChild(index));
-         }
-    }
-
-    // this will bubble up to the max tree.
-    bubbleUp(index) {
-
-        if(index <= 0) return;
-        if(this.queue[index] < this.queue[this.getParent(index)]) return;
-
-        if(this.queue[index] > this.queue[this.getParent(index)]) {
-            this.swap(index, this.getParent(index));
-            this.bubbleUp(this.getParent(index));
-        }
-    }
-
-    getLeftChild(index) {
-        return (index * 2) + 1;
-    }
-    getRightChild(index) {
-        return (index * 2) + 2;
-    }
-    swap(topNode, bottomNode) {
-        const temp = this.queue[topNode];
-        this.queue[topNode] = this.queue[bottomNode];
-        this.queue[bottomNode] = temp; 
-    }
-    getParent(index) {
-        return Math.ceil((index - 2)/2);
-    }
-    peek() {
-        return this.queue[0];
-    }
-    print() {
-        return this.queue;
-    }
+MedianFinder.prototype.swapMaxToMin = function() {
+    this.minQ.enqueue(this.maxQ.dequeue().element);
 }
-
-
 
 /** 
+ * Time O(log(n)) | Space O(1)
  * @param {number} num
  * @return {void}
  */
-
 MedianFinder.prototype.addNum = function(num) {
-    
-    this.minHeap.add(num);
-    if(Math.abs(this.minHeap.size - this.maxHeap.size) > 1) {
-        if(this.minHeap.size > this.maxHeap.size) {
-            this.maxHeap.add(this.minHeap.poll());
-        } else {
-            this.minHeap.add(this.maxHeap.poll());
-        }
-     }
 
-     if(this.minHeap.peek() > this.maxHeap.peek()) {
-        this.maxHeap.add(this.minHeap.poll());
-     }
+    // add num to maxQueue
+    this.maxQ.enqueue(num);
 
-     if(Math.abs(this.minHeap.size - this.maxHeap.size) > 1) {
-        if(this.minHeap.size > this.maxHeap.size) {
-            this.maxHeap.add(this.minHeap.poll());
-        } else {
-            this.minHeap.add(this.maxHeap.poll());
-        }
-     }
-
-     if(this.minHeap.peek() > this.maxHeap.peek()) {
-        this.maxHeap.add(this.minHeap.poll());
-     }
-};
-
-/**
- * @return {number}
- */
-MedianFinder.prototype.findMedian = function() {
-    console.log(this.minHeap, this.maxHeap);
-    if(this.minHeap.size === this.maxHeap.size) {
-       return (this.minHeap.peek() + this.maxHeap.peek()) / 2;
-    } else {
-        if(this.minHeap.size > this.maxHeap.size) {
-           return this.minHeap.peek();
-        } else {
-            return this.maxHeap.peek();
-        }
+    if(this.maxQ.size() - this.minQ.size() > 1) {
+        this.swapMaxToMin();
+    }
+    if(this.minQ.size() - this.maxQ.size() > 1) {
+        this.swapMinToMax();
+    }
+    if(this.minQ.front()?.element < this.maxQ.front()?.element) {
+        this.swapMaxToMin();
+        this.swapMinToMax();
     }
 };
 
-const median = new MedianFinder();
-median.addNum(1);
-median.addNum(2);
-console.log(median.findMedian());
-median.addNum(3);
-// median.addNum(3);
-// median.addNum(4);
-// median.addNum(5);
-console.log(median.findMedian());
+/**
+ * Time O(1) | Space O(1)
+ * @return {number}
+ */
+MedianFinder.prototype.findMedian = function() {
+    if((this.minQ.size() + this.maxQ.size())%2) {
+        if(this.minQ.size() > this.maxQ.size()) return this.minQ.front().element;
+        if(this.maxQ.size() > this.minQ.size()) return this.maxQ.front().element;
+    }
+
+    return (this.minQ.front().element + this.maxQ.front().element)/2;
+};
 
 /** 
  * Your MedianFinder object will be instantiated and called as such:
@@ -215,57 +55,58 @@ console.log(median.findMedian());
  * obj.addNum(num)
  * var param_2 = obj.findMedian()
  */
+/////////////////////////////////////////////////////////////////////////////////////////////
+// same approch with slightly different code.
+// same time and space complexity as above.
 
+var MedianFinder0 = function() {
+    this.maxQ = new MaxPriorityQueue();
+    this.minQ = new MinPriorityQueue();
+};
 
-// solving the problem with leetcode inbuilt heap data structure. to run this code paste the below code in leetcode 
-// it will give you error as we don't have inbuilt MaxPriorityQueue and MinPriorityQueue in js.
-class MedianFinder {
-    
-    constructor () {
-      this.minHeap = new MaxPriorityQueue();
-      this.maxHeap = new MinPriorityQueue();   
+/** 
+ * @param {number} num
+ * @return {void}
+ */
+MedianFinder0.prototype.balance = function() {
+
+    if(this.maxQ.size() - this.minQ.size() > 1) {
+        this.minQ.enqueue(this.maxQ.dequeue().element);
     }
-
-    addNum (num) {
-
-        this.minHeap.enqueue(num);
-        if(Math.abs(this.minHeap.size() - this.maxHeap.size()) > 1) {
-            if(this.minHeap.size() > this.maxHeap.size()) {
-                this.maxHeap.enqueue(this.minHeap.dequeue().element);
-            } else {
-                this.minHeap.enqueue(this.maxHeap.dequeue().element);
-            }
-        }
-
-        if(this.minHeap.front()?.element > this.maxHeap.front()?.element) {
-            this.maxHeap.enqueue(this.minHeap.dequeue().element);
-        }
-
-        if(Math.abs(this.minHeap.size() - this.maxHeap.size()) > 1) {
-            if(this.minHeap.size() > this.maxHeap.size()) {
-                this.maxHeap.enqueue(this.minHeap.dequeue().element);
-            } else {
-                this.minHeap.enqueue(this.maxHeap.dequeue().element);
-            }
-        }
-
-        if(this.minHeap.front()?.element > this.maxHeap.front()?.element) {
-            this.maxHeap.enqueue(this.minHeap.dequeue().element);
-        }
+    if(this.minQ.size() - this.maxQ.size() > 1) {
+        this.maxQ.enqueue(this.minQ.dequeue().element);
     }
-
-
-    /* Time O(1) | Space (1) */
-    findMedian () {
-      if(this.minHeap.size() === this.maxHeap.size()) {
-        return (this.minHeap.front()?.element + this.maxHeap.front()?.element) / 2;
-      } else {
-        if(this.minHeap.size() > this.maxHeap.size()) {
-            return this.minHeap.front()?.element;
-        } else {
-            return this.maxHeap.front()?.element;
-        }
-      }
+    if(this.minQ.front()?.element < this.maxQ.front()?.element) {
+        this.maxQ.enqueue(this.minQ.dequeue().element);
     }
 }
 
+MedianFinder0.prototype.addNum = function(num) {
+
+    // add num to maxQueue
+    this.maxQ.enqueue(num);
+    this.balance(); // after balancing  it the first time it might make it unbalanced again.
+    this.balance();
+
+};
+
+/**
+ * @return {number}
+ */
+MedianFinder0.prototype.findMedian = function() {
+    // return;
+    // if odd number of elements
+    if((this.minQ.size() + this.maxQ.size())%2) {
+        if(this.minQ.size() > this.maxQ.size()) return this.minQ.front().element;
+        if(this.maxQ.size() > this.minQ.size()) return this.maxQ.front().element;
+    }
+
+    return (this.minQ.front().element + this.maxQ.front().element)/2;
+};
+
+/** 
+ * Your MedianFinder object will be instantiated and called as such:
+ * var obj = new MedianFinder()
+ * obj.addNum(num)
+ * var param_2 = obj.findMedian()
+ */
