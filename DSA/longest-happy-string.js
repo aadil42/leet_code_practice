@@ -1,4 +1,65 @@
 /**
+ * PriorityQueue
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/longest-happy-string/
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @return {string}
+ */
+var longestDiverseString = function(a, b, c) {
+    
+    const maxQ = new MaxPriorityQueue({
+        compare: (a,b) => {
+            return b[0]-a[0];
+        }
+    });
+
+    a && maxQ.enqueue([a, "a"]);
+    b && maxQ.enqueue([b, "b"]);
+    c && maxQ.enqueue([c, "c"]);
+
+    let happyStr = "";
+    
+    while(!maxQ.isEmpty()) {
+
+        let [count, char] = maxQ.dequeue();   
+        
+        // you can consider this part as kind of a delimeter. 
+        // use only one delimeter so you have more left to construct the further string.
+        if(happyStr[happyStr.length - 1] === char &&
+           happyStr[happyStr.length - 2] === char) {
+            
+            if(!maxQ.isEmpty()) {
+                let [count1, char1] = maxQ.dequeue();
+
+                happyStr += char1;
+                count1--;
+
+                count1 && maxQ.enqueue([count1, char1]);
+                maxQ.enqueue([count, char]);
+            }   
+        } else {
+            happyStr += char;
+            count--;
+            count && maxQ.enqueue([count, char]);
+
+            // the below logic will also work in place of the above logic.
+            // they both will achive the same thing because of the if check above it.
+            // if(count >= 2) {
+            //     happyStr += char.repeat(2);
+            //     count -= 2;
+            // } else {
+            //     happyStr += char;
+            //     count--;
+            // }
+        }
+    }
+
+    return happyStr;
+};
+
+/**
  * MaxHeap
  * 
  * Time O(n*log(n)) | Space O(n)
@@ -7,7 +68,7 @@
  * @param {number} c
  * @return {string}
  */
-var longestDiverseString = function(a, b, c) {
+var longestDiverseString0 = function(a, b, c) {
     const charFrequency = new MaxPriorityQueue({
         compare: (e1, e2) => {
             // if(e1[0] === e2[0]) return e1[1] - e2[1];
