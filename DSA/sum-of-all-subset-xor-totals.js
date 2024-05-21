@@ -1,6 +1,6 @@
 /***
  * BackTracking | Recursion | DFS
- * Time O(n!) | Space O(n)
+ * Time O(2^n) | Space O(n)
  * https://leetcode.com/problems/sum-of-all-subset-xor-totals/
  * @param {number[]} nums
  * @return {number}
