@@ -1,4 +1,101 @@
+
 var Twitter = function() {
+  this.tweets = {};
+  this.users =  {};
+  this.time = 0;
+};
+
+/** 
+ * Hashing
+ * Time O(1) | Space O(1)
+* @param {number} userId 
+* @param {number} tweetId
+* @return {void}
+*/
+Twitter.prototype.postTweet = function(userId, tweetId) {
+  if(!this.tweets[userId]) {
+      this.tweets[userId] = [];
+  }
+  this.tweets[userId].push([this.time, tweetId]);
+  this.time++;
+};
+
+/** 
+ * PirorityQueue 
+ * Time O(n*log(n)) | Space O(n)
+* @param {number} userId
+* @return {number[]}
+*/
+Twitter.prototype.getNewsFeed = function(userId) {
+
+  // the user is following himself because we want to display his tweets to 
+  // if he's posted recent tweets or there are no followee  
+  this.follow(userId, userId);
+
+  const followees = this.users[userId];
+
+  // Note: We  don't have  MinPriorityQueue outside leetcode environment.
+  const maxQ = new MaxPriorityQueue({
+      compare: (a,b) => {
+          return b[0] - a[0];
+      }
+  });
+
+  if(followees) {
+      for(const followee of followees) {
+          const followeeTweets = this.tweets[followee];
+          for(let i = 0; followeeTweets && i < followeeTweets.length; i++) {
+              maxQ.enqueue(followeeTweets[i]);
+          }
+      }
+  }
+
+  const recentFeed = [];
+
+  while(!maxQ.isEmpty() && recentFeed.length < 10) {
+      console.log(maxQ.front());
+      recentFeed.push(maxQ.dequeue()[1]);
+  }
+
+  return recentFeed;
+};
+
+/** 
+ * Hashing
+ * Time O(1) | Space O(1)
+* @param {number} followerId 
+* @param {number} followeeId
+* @return {void}
+*/
+Twitter.prototype.follow = function(followerId, followeeId) {
+
+  if(!this.users[followerId]) {
+      this.users[followerId] = new Set();
+  }
+  this.users[followerId].add(followeeId);
+};
+
+/** 
+ * Hashing
+ * Time O(1) | Space O(1)
+* @param {number} followerId 
+* @param {number} followeeId
+* @return {void}
+*/
+Twitter.prototype.unfollow = function(followerId, followeeId) {
+  this.users[followerId] && this.users[followerId].delete(followeeId);
+};
+
+/** 
+* Your Twitter object will be instantiated and called as such:
+* var obj = new Twitter()
+* obj.postTweet(userId,tweetId)
+* var param_2 = obj.getNewsFeed(userId)
+* obj.follow(followerId,followeeId)
+* obj.unfollow(followerId,followeeId)
+*/
+//////////////////////////////////////////////////////////////////////////////
+var Twitter0 = function() {
     this.tweets = {};
     this.users = {};
     this.time = 0;
@@ -10,7 +107,7 @@ var Twitter = function() {
  * @param {number} tweetId
  * @return {void}
  */
-Twitter.prototype.postTweet = function(userId, tweetId) {
+Twitter0.prototype.postTweet = function(userId, tweetId) {
     const userPosts = this.tweets[userId];
     if(userPosts) {
         userPosts.push([this.time, tweetId]); 
@@ -26,7 +123,7 @@ Twitter.prototype.postTweet = function(userId, tweetId) {
  * @param {number} userId
  * @return {number[]}
  */
-Twitter.prototype.getNewsFeed = function(userId) {
+Twitter0.prototype.getNewsFeed = function(userId) {
     const tweetMaxHeap = new MinHeap();
 
     this.follow(userId, userId);
@@ -55,7 +152,7 @@ Twitter.prototype.getNewsFeed = function(userId) {
  * @param {number} followeeId
  * @return {void}
  */
-Twitter.prototype.follow = function(followerId, followeeId) {
+Twitter0.prototype.follow = function(followerId, followeeId) {
     const userFollows = this.users[followerId];
     if(userFollows) {
         userFollows.add(followeeId);
@@ -70,7 +167,7 @@ Twitter.prototype.follow = function(followerId, followeeId) {
  * @param {number} followeeId
  * @return {void}
  */
-Twitter.prototype.unfollow = function(followerId, followeeId) {
+Twitter0.prototype.unfollow = function(followerId, followeeId) {
     const userFollows = this.users[followerId];
     userFollows && userFollows.delete(followeeId);
 };
