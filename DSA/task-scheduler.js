@@ -1,4 +1,48 @@
 /**
+ * MinPriorityQueue | MaxPriorityQueue
+ * Time O(n*log(n)) | Space O(1) (we'll store max of 26 value in each heap)
+ * https://leetcode.com/problems/task-scheduler/
+ * @param {character[]} tasks
+ * @param {number} n
+ * @return {number}
+ */
+var leastInterval = function(tasks, n) {
+
+  const minQ = new MinPriorityQueue({
+      compare: (a,b) => {
+          return a[0]-b[0];
+      }
+  });
+
+  const maxQ = new MaxPriorityQueue({
+      compare: (a,b) => {
+          return b-a;
+      }
+  });
+
+  const taskFrequency = {};
+  for(let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
+      taskFrequency[task] = (taskFrequency[task] && taskFrequency[task] + 1) || 1;
+  }
+
+  for(const key in taskFrequency) {
+      maxQ.enqueue(taskFrequency[key]);
+  }
+
+  let time = 0;
+  while(!minQ.isEmpty() || !maxQ.isEmpty()) {
+      let remaining = maxQ.dequeue();
+      remaining -= 1;
+      if(remaining > 0) minQ.enqueue([time+n, remaining]);
+      if(!minQ.isEmpty() && minQ.front()[0] === time) maxQ.enqueue(minQ.dequeue()[1]);
+      time++;
+  }
+  
+  return time;
+};
+
+/**
  * 
  * MinHeap and MaxHeap
  * Time O(tasks.length*log(tasks.length*n)) | Space O(n)
@@ -6,14 +50,7 @@
  * @param {number} n
  * @return {number}
  */
-var leastInterval = function(tasks, n) {
-    
-};/**
-* @param {character[]} tasks
-* @param {number} n
-* @return {number}
-*/
-var leastInterval = function(tasks, n) {
+var leastInterval0 = function(tasks, n) {
 
    if(n === 0) return tasks.length;
    const maxHeapTask = new MaxHeap();
