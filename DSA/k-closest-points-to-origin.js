@@ -1,4 +1,25 @@
 /**
+ * Sorting 
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/k-closest-points-to-origin/
+ * @param {number[][]} points
+ * @param {number} k
+ * @return {number[][]}
+ */
+var kClosest = function(points, k) {
+
+  const getDistance = ([x,y]) => {
+      return Math.sqrt(Math.abs(0-x)**2 + Math.abs(0-y)**2);
+  }
+
+  return points
+          .map((point) =>  ([...point, getDistance(point)]))
+          .sort((a,b) => a[2]-b[2])
+          .slice(0,k)
+          .map((point) => [point[0], point[1]]);
+};
+
+/**
  * 
  * MinHeap
  * 
@@ -7,7 +28,7 @@
  * @param {number} k
  * @return {number[][]}
  */
-var kClosest = function(points, k) {
+var kClosest0 = function(points, k) {
 
     const closestPointHeap = new MinHeap();
 
