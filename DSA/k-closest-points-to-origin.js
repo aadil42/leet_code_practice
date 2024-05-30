@@ -19,6 +19,36 @@ var kClosest = function(points, k) {
           .map((point) => [point[0], point[1]]);
 };
 
+
+/**
+ * MinHeap
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/k-closest-points-to-origin/
+ * Note: MinPriorityQueue is only defined in leetcode environment.
+ * @param {number[][]} points
+ * @param {number} k
+ * @return {number[][]}
+ */
+var kClosest0 = function(points, k) {
+
+  const minQ = new MinPriorityQueue({
+      compare: (a,b) => (a[2]-b[2])
+  });
+
+  const getDistance = ([x,y]) => {
+      return Math.sqrt(Math.abs(0-x)**2 + Math.abs(0-y)**2);
+  }
+
+  points.forEach( (point) => minQ.enqueue([...point, getDistance(point)]) );
+  
+  const result = [];
+  while(!minQ.isEmpty() && result.length < k) {
+      result.push(minQ.dequeue().slice(0,2));
+  }
+
+  return result;
+};
+
 /**
  * 
  * MinHeap
@@ -28,7 +58,7 @@ var kClosest = function(points, k) {
  * @param {number} k
  * @return {number[][]}
  */
-var kClosest0 = function(points, k) {
+var kClosest1 = function(points, k) {
 
     const closestPointHeap = new MinHeap();
 
