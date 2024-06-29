@@ -39,3 +39,40 @@ var canCompleteCircuit = function(gas, cost) {
     // return -1;
 };
 
+
+/**
+ * Brute Force
+ * Time O(n^2) | Space O(n);
+ * https://leetcode.com/problems/gas-station/
+ * @param {number[]} gas
+ * @param {number[]} cost
+ * @return {number}
+ */
+var canCompleteCircuit0 = function(gas, cost) {
+
+    // so you don't have to worry about remainders and all.
+    const cycleGas = [...gas, ...gas];
+    const cycleCost = [...cost, ...cost]; 
+
+    const tryToCompleteFromIdx = (startingPos) => {
+        let gasStatus = 0;
+        let mySwitch = false;
+
+        for(let i = startingPos; i <= startingPos + gas.length; i++) {
+            if(gasStatus < 0 && mySwitch) return false;
+            mySwitch = true;
+            gasStatus += cycleGas[i];
+            if(gasStatus < 0) return false;
+            gasStatus -= cycleCost[i];
+        }
+
+        return true;
+    }
+
+    for(let i = 0; i < gas.length; i++) {
+        const isPossible = tryToCompleteFromIdx(i);
+        console.log(isPossible, i); 
+        if(isPossible) return i;
+    }
+    return -1;
+};
