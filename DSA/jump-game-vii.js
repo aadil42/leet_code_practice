@@ -122,4 +122,44 @@ var canReach = function(s, minJump, maxJump) {
 
 
 
+/**
+ * BFS 
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/jump-game-vii/
+ * @param {string} s
+ * @param {number} minJump
+ * @param {number} maxJump
+ * @return {boolean}
+ */
 
+var canReach0 = function(s, minJump, maxJump) {
+
+    const bfs = (idx) => {
+
+        const queue = new Dequeue();
+
+        queue.addBack(idx);
+        let longest = 0;
+
+        while(!queue.isEmpty()) {
+
+            const parent = queue.removeFront();
+
+            let child = Math.max(parent + minJump, longest);
+
+            while(child <= Math.min(parent + maxJump, s.length - 1)) {
+                if(s[child] === "0") {
+                    queue.addBack(child);
+                    if(child === s.length - 1) return true;
+                }
+                child++;
+            }
+
+            longest = child;
+        }
+
+        return false;
+    }
+
+    return bfs(0);
+};
