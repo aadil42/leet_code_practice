@@ -1,5 +1,5 @@
 /**
- * Time O(n) | Space O(n)
+ * Time O(n*log(n)) | Space O(n)
  * More code for better understanding.
  * https://leetcode.com/problems/eliminate-maximum-number-of-monsters
  * 
@@ -35,7 +35,7 @@ var eliminateMaximum = function(dist, speed) {
 
 /**
  * Greedy.
- * Time O(n) | Space O(1)
+ * Time O(n*log(n)) | Space O(n)
  * @param {number[]} dist
  * @param {number[]} speed
  * @return {number}
