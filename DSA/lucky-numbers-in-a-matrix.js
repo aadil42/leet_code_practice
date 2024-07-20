@@ -1,7 +1,7 @@
 /**
  * Hashing
  * Time O(n*m) | Space  O(n+m)
- * https://leetcode.com/problems/lucky-numbers-in-a-matrix
+ * https://leetcode.com/problems/lucky-numbers-in-a-matrix/?envType=daily-question&envId=2024-07-19
  * @param {number[][]} matrix
  * @return {number[]}
  */
