@@ -1,22 +1,50 @@
+// MonotonicStack
 var StockSpanner = function() {
+  this.stack = [[Infinity, -1]];
+  this.count = 0;
+};
+
+/** 
+* Time O(n) |  Space O(1)
+* @param {number} price
+* @return {number}
+*/
+StockSpanner.prototype.next = function(price) {
+  while(this.stack && this.stack[this.stack.length - 1][0] <= price) {
+      this.stack.pop();
+  }
+  this.stack.push([price, this.count]);
+  this.count++;
+  return this.stack[this.stack.length-1][1] - this.stack[this.stack.length-2][1];
+};
+
+/** 
+* Your StockSpanner object will be instantiated and called as such:
+* var obj = new StockSpanner()
+* var param_1 = obj.next(price)
+*/
+
+////////////////////////////////////////////////////////////////////////
+
+var StockSpanner0 = function() {
     this.stack  = [];
 };
 
 
-StockSpanner.prototype.isEmpty = function() {
+StockSpanner0.prototype.isEmpty = function() {
     return this.stack.length === 0 ? true : false;
 }
-StockSpanner.prototype.peek = function() {
+StockSpanner0.prototype.peek = function() {
     return this.stack[this.stack.length - 1];
 }
-StockSpanner.prototype.push = function(val) {
+StockSpanner0.prototype.push = function(val) {
     return this.stack.push(val);
 }
-StockSpanner.prototype. pop = function() {
+StockSpanner0.prototype. pop = function() {
     return this.stack.pop();
 }
 
-StockSpanner.prototype.next = function(price) {
+StockSpanner0.prototype.next = function(price) {
     let currunt = 1;
     while(this.peek() && this.peek()[0] <= price) {
         currunt += this.pop()[1];
@@ -27,7 +55,7 @@ StockSpanner.prototype.next = function(price) {
 
 // class based code.
 //https://leetcode.com/problems/online-stock-span/description/
-class StockSpanner {
+class StockSpanner1 {
     constructor() {
       this.stack = [];
     }
