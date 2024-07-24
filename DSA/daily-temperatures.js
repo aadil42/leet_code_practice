@@ -2,11 +2,40 @@
  * Monotonic Stack
  * Time O(n) | Space O(n)
  * https://leetcode.com/problems/daily-temperatures/
- * 
  * @param {number[]} temperatures
  * @return {number[]}
  */
 var dailyTemperatures = function(temperatures) {
+    
+    const stack = [];
+    const warmerTempArr = [];
+
+    for(let i = temperatures.length - 1; i > -1; i--) {
+        
+        while(stack.length && stack[stack.length - 1][0] <= temperatures[i])  {
+            stack.pop();
+        }
+
+        if(!stack.length) {
+            warmerTempArr.push(0);
+        } else {
+            warmerTempArr.push(stack[stack.length - 1][1] - i);
+        }
+        stack.push([temperatures[i], i]);
+    }
+
+    return warmerTempArr.reverse();
+};
+
+/**
+ * Monotonic Stack
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/daily-temperatures/
+ * 
+ * @param {number[]} temperatures
+ * @return {number[]}
+ */
+var dailyTemperatures0 = function(temperatures) {
     
     const mds = []; // monotonic decreasing stack
     const result = [0]; 
