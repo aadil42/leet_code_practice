@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 /** 
  * @return {JSX.Element}
  */
-export const FormHandler = () => {
+export const FormHandler0 = () => {
     
     const inputStyle = {
     marginBottom: '15px',
@@ -100,5 +100,78 @@ export const FormHandler = () => {
             </form>
             <p>{msg}</p>
         </>
+    );
+}
+
+// second time solved.///////////////////////////////////////////////////////
+import React, { useState, useRef } from 'react';
+
+/** 
+ * @return {JSX.Element}
+ */
+
+export const FormHandler = () => {
+    
+    const nameInput = useRef();
+    const msgInput = useRef();
+    const [submitMsg, setSubmitMsg] = useState(null);
+
+    const submitHandler = (e) => {
+
+        e.preventDefault();
+
+        const name = nameInput.current.value;
+        const msg = msgInput.current.value;
+
+        const formData = {
+            name: name,
+            message:  msg
+        }
+
+        const p1 = new Promise((resolve, reject) => {
+            resolve(fetch("/contact-us", {
+                method: "POST",
+                headers: {
+                     'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            }));
+        })
+        
+        p1.then((response) => {
+                if(response["ok"]) {
+                    setSubmitMsg("Thank you");
+                } else {
+                    setSubmitMsg("Something went wrong");
+                }
+            });
+
+    }
+
+    const form = <form onSubmit={(e) => {submitHandler(e)}}>
+            <input 
+                ref={nameInput}
+                placeholder="Name"
+                name="name"
+            />
+            <input
+                ref={msgInput}
+                placeholder="Feedback message"
+                name="message"
+            />
+            <br/>
+            <br/>
+            <button type="submit">
+                Send
+            </button>
+        </form>
+
+    return (
+        (submitMsg === "Thank you" && <p>{submitMsg}</p>) 
+        ||
+        (<>
+            {form}
+            {submitMsg}
+        </>) 
     );
 }
