@@ -1,3 +1,31 @@
+/**
+ * Stack 
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/validate-stack-sequences/
+ * @param {number[]} pushed
+ * @param {number[]} popped
+ * @return {boolean}
+ */
+var validateStackSequences = function(pushed, popped) {
+    const stack = [];
+
+    let pushIdx = 0;
+    for(let i = 0; i < popped.length; i++) {
+
+        if(pushIdx === pushed.length && stack[stack.length - 1] !== popped[i]) return false;
+
+        while(pushIdx < pushed.length && stack[stack.length - 1] !== popped[i]) {
+            stack.push(pushed[pushIdx]);
+            pushIdx++;
+        }
+        if(stack[stack.length - 1] === popped[i]) {
+            stack.pop();
+        }
+    }
+    return true;
+};
+
+
 class Stack {
     constructor(){
         this.stack = [];
@@ -20,7 +48,7 @@ class Stack {
     }
 }
 
-var validateStackSequences = function(pushed, popped) {
+var validateStackSequences0 = function(pushed, popped) {
     
     const myStack = new Stack();
     let j = 0;
