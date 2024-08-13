@@ -35,52 +35,73 @@ var combinationSum2 = function(candidates, target) {
     return result;
 };
 
-// bad solution
-var combinationSumBad = function(candidates, target) {
+/// second time solved
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum20 = function(candidates, target) {
     
-    candidates.sort((a,b) => a - b);
-    const result = [];
-    function dfs(remaining, candidate, index) {
-        if(remaining === 0) {
-            result.push(candidate.slice(0));
+    candidates = candidates.sort((a,b) => a-b);
+    const combinations = []
+
+    const sum = (nums) => nums.reduce((acc, curr) => acc+curr, 0);
+
+    const dfs = (currSum, idx, currComb) => {
+        
+        if(currSum === target) {
+            console.log(currComb);
+            combinations.push(currComb.slice(0));
             return;
         }
-        if(remaining <= 0) return;
-        for(let i = index; i < candidates.length; i++) {
-            candidate.push(candidates[i]);
-            dfs(remaining - candidates[i], candidate, i+1);
-            candidate.pop();
-        }
+
+        if(currSum > target) return;
+        if(idx === candidates.length) return;
+
+        currComb.push(candidates[idx]);
+        dfs(currSum+candidates[idx], idx+1, currComb);
+
+        while(candidates[idx] === candidates[idx+1]) idx++;
+
+        currComb.pop();
+        dfs(currSum, idx+1, currComb);
     }
 
-    dfs(target, [], 0);
-
-    const unique = new Set();
-    for(let i = 0; i < result.length; i++) {
-        let hash = '';
-        for(let j = 0; j < result[i].length; j++) {
-            hash += result[i][j] + '#';
-        }
-        hash = hash.split('#');
-        hash.pop();
-        hash = hash.join('#');
-        unique.add(hash);
-    }
-    // console.log(unique);
-    const output = [];
-    for(hash of unique) {
-        hash = hash.split('#');
-        const temp = [];
-        for(let i = 0; i < hash.length; i++) {
-            temp.push(+hash[i]);
-        }
-        output.push(temp);
-    }
-
-    return output;
+    dfs(0, 0,[]);
+    return combinations;
 };
 
-const candidates = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
-const target = 30;
 
-console.log(combinationSum2(candidates, target));
+
+/**
+ * This solution will give time limit exceed. It's correct though.
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum21 = function(candidates, target) {
+    
+    candidates = candidates.sort((a,b) => a-b);
+    const combinations = new Set();
+
+    const sum = (nums) => nums.reduce((acc, curr) => acc+curr, 0);
+
+    const dfs = (idx, currComb) => {
+        if(sum(currComb) === target) {
+            console.log(currComb);
+            combinations.add(currComb.join("-"));
+            return;
+        }
+
+        for(let i = idx; i < candidates.length; i++) {
+            if(sum([...currComb, candidates[i]]) > target) return;
+            currComb.push(candidates[i]);
+            dfs(i+1, currComb);
+            currComb.pop();
+        }
+    }
+
+    dfs(0, []);
+    return [...combinations].map((comb) => comb.split("-").map((num) => +num));
+};
