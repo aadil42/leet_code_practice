@@ -1,4 +1,35 @@
+/**
+ * Stack 
+ * Time O(n) | space O(n)
+ * https://leetcode.com/problems/valid-parentheses/
+ * @param {string} s
+ * @return {boolean}
+ */
 var isValid = function(s) {
+    
+    const stack = [];
+    
+    for(let i = 0; i < s.length; i++) {
+        if(s[i] === ")" && stack[stack.length - 1] === "(") {
+            stack.pop();
+            continue;
+        }
+        if(s[i] === "}" && stack[stack.length - 1] === "{") {
+            stack.pop();
+            continue;
+        }
+        if(s[i] === "]" && stack[stack.length - 1] === "[") {
+            stack.pop();
+            continue;
+        }
+        stack.push(s[i]);
+    }
+
+    if(!stack.length) return true;
+    return false;
+};
+
+var isValid0 = function(s) {
     
     paranthesesMap = new Map();
     paranthesesMap.set(')', '(');
@@ -21,7 +52,7 @@ var isValid = function(s) {
 console.log(isValid("((())){[]}[()](())([])({}){()}"));
 
 // solved it second time
-var isValidR = function(s) {
+var isValidR1 = function(s) {
     const paranthesisPair = {
         ")": "(",
         "}": "{",
@@ -43,3 +74,4 @@ var isValidR = function(s) {
     if(validationStack.length) return false;
     return true;
 };
+
