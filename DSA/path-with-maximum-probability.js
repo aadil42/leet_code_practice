@@ -1,4 +1,64 @@
 /**
+ * Time O(n*log(n)) | Space O(n)
+ * Dijkstra's algorithm
+ * https://leetcode.com/problems/path-with-maximum-probability
+ * @param {number} n
+ * @param {number[][]} edges
+ * @param {number[]} succProb
+ * @param {number} start_node
+ * @param {number} end_node
+ * @return {number}
+ */
+var maxProbability = function(n, edges, succProb, start_node, end_node) {
+    
+  const graph = {};
+
+  for(let i = 0; i < edges.length; i++) {
+      const from = edges[i][0];
+      const to = edges[i][1];
+      const prob = succProb[i];
+
+      if(!graph[from]) {
+          graph[from] = [];
+      }
+      if(!graph[to]) {
+          graph[to] = [];
+      }
+
+      graph[from].push([to, prob]);
+      graph[to].push([from, prob]);
+  }
+
+  const maxHeap = new MaxPriorityQueue({
+      compare: (a,b) => {
+          return b[1] - a[1];
+      }
+  });
+
+  const visited = new Set();
+  maxHeap.enqueue([start_node, 1]);
+
+  let maxProb = 0;
+  while(!maxHeap.isEmpty()) {
+      const [node, currProb] = maxHeap.dequeue();
+      if(node === end_node) {
+          maxProb = Math.max(maxProb, currProb);
+          continue;
+      }
+      visited.add(node);
+
+      const neighbors = graph[node] || [];
+      for(let i = 0; i < neighbors.length; i++) {
+          const [nextNode, nextProb] = neighbors[i];
+          if(visited.has(nextNode)) continue;
+          maxHeap.enqueue([nextNode, nextProb * currProb]);
+      }
+  }
+
+  return maxProb;
+};
+
+/**
  * 
  * Djikstra's Algorithm
  * Time O(n) | Space O(n^2)
@@ -9,7 +69,7 @@
  * @param {number} end
  * @return {number}
  */
-var maxProbability = function(n, edges, succProb, start, end) {
+var maxProbability0 = function(n, edges, succProb, start, end) {
 
     // create graph
     const graph = {};
