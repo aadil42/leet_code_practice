@@ -94,3 +94,67 @@ var countSubIslands2 = function(grid1, grid2) {
 
     return subIslandCount;
 };
+
+
+/**
+ * Brute Force | DFS
+ * Time O(n*m) | Space O(n*m)
+ * https://leetcode.com/problems/count-sub-islands/
+ * @param {number[][]} grid1
+ * @param {number[][]} grid2
+ * @return {number}
+ */
+var countSubIslands3 = function(grid1, grid2) {
+    
+    const ROW = grid1.length;
+    const COL = grid1[0].length;
+
+    const outOfBound = (row, col) => {
+        if(row < 0) return true;
+        if(row === ROW) return true;
+        if(col < 0) return true;
+        if(col === COL) return true;
+        return false;
+    }
+    const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+
+    const visited = new Set();
+
+    const check = (r,c) => {
+
+        let isSubGraph = true;
+
+        const dfs = (r,c) => {
+            if(outOfBound(r,c)) return true;
+            if(!grid1[r][c] && grid2[r][c]) {
+                isSubGraph = false;
+            }
+            if(!grid2[r][c]) return true;
+
+            const hash = `${r}-${c}`;
+            if(visited.has(hash)) return true;
+            visited.add(hash);
+
+            for(let i  = 0; i < directions.length;  i++) {
+                const [row, col] = directions[i];
+                const nextRow = r+row;
+                const nextCol = c+col;
+                dfs(nextRow, nextCol);
+            }
+
+            return true;
+        }
+
+        dfs(r,c);
+        return isSubGraph;
+    }
+
+    let count = 0;
+    for(let i = 0; i < ROW;  i++) {
+        for(let j = 0; j < COL; j++) {
+            if(grid2[i][j] && !visited.has(`${i}-${j}`) && check(i,j)) count++;
+        }
+    }
+
+    return count;
+};
