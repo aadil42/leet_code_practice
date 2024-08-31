@@ -14,10 +14,9 @@ var maxProbability = function(n, edges, succProb, start_node, end_node) {
   const graph = {};
 
   for(let i = 0; i < edges.length; i++) {
-      const from = edges[i][0];
-      const to = edges[i][1];
+      const [from, to] = edges[i];
       const prob = succProb[i];
-
+      
       if(!graph[from]) {
           graph[from] = [];
       }
@@ -29,33 +28,38 @@ var maxProbability = function(n, edges, succProb, start_node, end_node) {
       graph[to].push([from, prob]);
   }
 
-  const maxHeap = new MaxPriorityQueue({
-      compare: (a,b) => {
-          return b[1] - a[1];
-      }
-  });
+  const dijkstra = (source, target) => {
+      console.log(source, target);
+      const minQ = new MaxPriorityQueue({
+          compare: (a,b) => {
+              return b[1] - a[1];
+          }
+      });
 
-  const visited = new Set();
-  maxHeap.enqueue([start_node, 1]);
+      const visited = new Set();
+      minQ.enqueue([source, 1]);
 
-  let maxProb = 0;
-  while(!maxHeap.isEmpty()) {
-      const [node, currProb] = maxHeap.dequeue();
-      if(node === end_node) {
-          maxProb = Math.max(maxProb, currProb);
-          continue;
-      }
-      visited.add(node);
+      while(!minQ.isEmpty()) {
 
-      const neighbors = graph[node] || [];
-      for(let i = 0; i < neighbors.length; i++) {
-          const [nextNode, nextProb] = neighbors[i];
-          if(visited.has(nextNode)) continue;
-          maxHeap.enqueue([nextNode, nextProb * currProb]);
+          const [node, weight] = minQ.dequeue();
+
+          if(node === target) return weight;
+
+          visited.add(node);
+          const neighbors = graph[node] || [];
+
+          for(let i = 0; i < neighbors.length; i++) {
+              const [nextNode, nextWeight] = neighbors[i];
+              if(visited.has(nextNode)) continue;
+              minQ.enqueue([nextNode, weight*nextWeight]);
+          }
       }
+      
+      // can't find shortest path.
+      return 0;
   }
 
-  return maxProb;
+  return dijkstra(start_node, end_node);
 };
 
 /**
