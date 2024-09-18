@@ -1,3 +1,4 @@
+// 1st time
 /**
  * Hashing
  * Time O(n) | Space O(n)
@@ -27,6 +28,7 @@ var findDifferentBinaryString = function(nums) {
 
 };
 
+//// 2nd time
 /**
  * Recursion/Backtracking
  * 
@@ -34,7 +36,7 @@ var findDifferentBinaryString = function(nums) {
  * @param {string[]} nums
  * @return {string}
  */
-var findDifferentBinaryString = function(nums) {
+var findDifferentBinaryString0 = function(nums) {
     
     const numsSet = new Set(nums);
     function dfs(i, binaryString) {
@@ -60,3 +62,47 @@ var findDifferentBinaryString = function(nums) {
     // console.log(zeros);
     return dfs(0, zeros);
 };
+
+//////// 3rd time.
+/**
+ * Brute force | Backtracking
+ * Time O(2^n) | Space O(n)
+ * https://leetcode.com/problems/find-unique-binary-string/
+ * @param {string[]} nums
+ * @return {string}
+ */
+var findDifferentBinaryString1 = function(nums) {
+    const numsSet = new Set(nums);
+    const binaryArr = [];
+
+    for(let i = 0; i < nums.length; i++) {
+        binaryArr.push(0);
+    }
+
+    return dfs(0, binaryArr, numsSet);
+};
+
+const flipBit = (idx, binaryArr) => {
+
+    if(binaryArr[idx] === 0) {
+        binaryArr[idx] = 1;
+        return;
+    } 
+
+    binaryArr[idx] = 0;
+    return;
+}
+
+const dfs = (idx, binaryArr, set) => {
+
+    if(idx === binaryArr.length) {
+        if(!set.has(binaryArr.join(""))) return true;
+        return false;
+    }
+
+    flipBit(idx, binaryArr);
+    if(dfs(idx+1, binaryArr, set)) return binaryArr.join("");
+    flipBit(idx, binaryArr);
+    if(dfs(idx+1, binaryArr, set)) return binaryArr.join("");
+    return false;
+}
