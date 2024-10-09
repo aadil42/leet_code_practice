@@ -1,4 +1,32 @@
+/**
+ * Array
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/minimum-add-to-make-parentheses-valid 
+ * @param {string} s
+ * @return {number}
+ */
 var minAddToMakeValid = function(s) {
+    
+
+    let opening = 0;
+    let closing = 0;
+
+    for(let i = 0; i < s.length; i++) {
+        const par = s[i];
+        if(par === "(") {
+            opening++;
+        } else if(par === ")" && opening > 0) {
+            opening--;
+        } else {
+            closing++;
+        }
+    }
+
+    return opening+closing;
+};
+
+
+var minAddToMakeValid0 = function(s) {
     
     
     const myMap = new Map();
