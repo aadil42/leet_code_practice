@@ -1,6 +1,6 @@
 /**
  * Recursion with memoization
- * Time O(n*m) | Space (n);
+ * Time O(n*m) | Space (n*m);
  * @param {number[][]} grid
  * @return {number}
  */
