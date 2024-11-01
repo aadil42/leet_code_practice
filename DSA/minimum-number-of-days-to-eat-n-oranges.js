@@ -1,6 +1,6 @@
 /**
  * BFS | Queue
- * Time O(3^log(n)) | Space O(3^log(n))
+ * Time O(log(n)) | Space O(log(n))
  * https://leetcode.com/problems/minimum-number-of-days-to-eat-n-oranges/
  * @param {number} n
  * @return {number}
