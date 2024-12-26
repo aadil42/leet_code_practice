@@ -25,3 +25,28 @@ var findTargetSumWays = function(nums, target) {
 
     return dfs(0,0);
 };
+
+/**
+ * BackTrack | Brute Force
+ * Time O(2^n) | Space O(n)
+ * https://leetcode.com/problems/target-sum
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var findTargetSumWays0 = function(nums, target) {    
+    let total = 0;
+    const dfs = (i, currTotal) =>  {
+        if(i === nums.length && currTotal === target) {
+            total += 1;
+            return;
+        }
+        if(i === nums.length) return;
+
+        dfs(i+1, currTotal+nums[i]);
+        dfs(i+1, currTotal-nums[i]);
+    }
+
+    dfs(0,0);
+    return total;
+};
