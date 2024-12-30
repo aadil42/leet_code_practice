@@ -32,3 +32,39 @@ var restoreIpAddresses = function(s) {
     return result;
 };
 
+/**
+ * BackTracking | Recursion
+ * Time O(n^4) | Space O(n^4) 
+ * https://leetcode.com/problems/restore-ip-addresses/
+ * @param {string} s
+ * @return {string[]}
+ */
+var restoreIpAddresses0 = function(s) {
+    
+    const digits = s.split("");
+
+    const dfsBackTrack = (splits, idx, ipAddress, ans) => {
+        if(splits === 4 && idx === digits.length) {
+            ans.push(ipAddress.join("."));
+            return ans;
+        }
+
+        if(splits === 4) return ans;
+        if(idx === digits.length) return ans;
+
+        for(let i = idx+1; i < digits.length + 1; i++) {
+            const num = digits.slice(idx,i).join("");
+            if(+num > 255) break;
+            // takes care of leading zeros
+            if(digits[idx] === "0" && i > idx+1) break;
+
+            ipAddress.push(num);
+            dfsBackTrack(splits+1, i, ipAddress, ans);
+            ipAddress.pop();
+        }
+
+        return ans;
+    }
+
+    return dfsBackTrack(0,0,[],[]);
+};
