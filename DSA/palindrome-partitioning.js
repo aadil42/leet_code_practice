@@ -2,7 +2,7 @@
  * Time O(n^n) | Space O(2^n) | (I was confused between n^n and 2^n for time-complexity. But I think it's n^n)
  * Recursion | Backtracking
  * https://leetcode.com/problems/palindrome-partitioning
- * @param {string} s
+ * @param {string} s    
  * @return {string[][]}
  */
 var partition = function(s) {
@@ -75,3 +75,47 @@ function isPalindrome(s,i,j) {
 
 const s = "aab";
 console.log(partition(s));
+
+
+/**
+ * BackTrack | Brute Force
+ * @param {string} s
+ * @return {string[][]}
+ */
+var partition1 = function(s) {
+    
+    const ans = [];
+
+    const isPalindrome = (str) => {
+
+        let left = 0;
+        let right = str.length - 1;
+        while(left < right) {
+            if(str[left] !== str[right]) return false;
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    const dfsBackTrack = (idx, currArr) => {
+        if(idx === s.length) {
+            ans.push(currArr.slice(0));
+            return;
+        }
+
+        for(let i = idx+1; i < s.length+1; i++) {
+            const str = s.slice(idx, i);
+            if(isPalindrome(str)) {
+                currArr.push(str);
+                dfsBackTrack(i, currArr);
+                currArr.pop();
+            }
+        }
+    }
+
+    dfsBackTrack(0,[]);
+
+    return ans;
+};
