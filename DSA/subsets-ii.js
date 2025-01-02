@@ -25,11 +25,51 @@ var subsetsWithDup = function(nums) {
       dfs(0, []);
       // console.log(result);
       return result;
-  };
+};
 
+/**
+ * BackTracking | Brute Force | HashSet
+ * Time O(2^n) | Space O(2^n)
+ * https://leetcode.com/problems/subsets-ii/
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsetsWithDup0 = function(nums) {
+    
+    let ans = [];
 
-const nums = [1,2,2];
-subsetsWithDup(nums);
+    const makeUnique = (ans) => {
+    
+        ans = ans.map((arr) => arr.sort((a,b) => a-b));
+    
+        ans = ans.map((subSet) => subSet.join("#"));
+        unique = [...new Set(ans)];
+    
+        return unique
+               .map((arr) => arr.split("#"))
+               .map((arr) => arr.map((strA) => +strA));
+    }
+    
+    const dfs = (idx, currSubSet) => {
+        if (idx === nums.length) {
+            if(currSubSet.length) {
+                ans.push(currSubSet.slice(0));
+            }
+            return;
+        }
+
+        currSubSet.push(nums[idx]);
+        dfs(idx+1, currSubSet);
+        currSubSet.pop();
+        dfs(idx+1, currSubSet);
+    }
+
+    dfs(0,[]);
+    ans = makeUnique(ans);
+    ans.push([]);
+    return ans;
+};
+
 //  bad solution
 var subsetsWithDup1 = function(nums) {
     
