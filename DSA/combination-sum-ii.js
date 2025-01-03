@@ -105,3 +105,36 @@ var combinationSum21 = function(candidates, target) {
     dfs(0, []);
     return [...combinations].map((comb) => comb.split("-").map((num) => +num));
 };
+
+/**
+ *  Same as the above one but the above one combinationSum21 will give time limit exceed because we're not skipping same values.
+ * BruteForce | Recursion
+ * Time O(n^n) |  Space O(n^n)
+ * https://leetcode.com/problems/combination-sum-ii/
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum22 = function(candidates, target) {
+    
+    candidates.sort((a,b) => a-b);
+
+    const dfs = (idx, currSum, currCombo, allCombo) => {
+        if (currSum > target) return allCombo;
+        if (currSum === target) {
+            allCombo.add(currCombo.join("#"));
+            return allCombo;
+        }
+
+        for (let i = idx; i < candidates.length; i++) {
+            currCombo.push(candidates[i]);
+            dfs(i+1, currSum+candidates[i], currCombo, allCombo);
+            while(candidates[i+1] === candidates[i]) i++;
+            currCombo.pop();
+        }
+
+        return allCombo;
+    }   
+
+    return [...dfs(0, 0, [], new Set())].map((combo) => combo.split("#").map((num) => +num)); // just mapping the returned set to appropriate return type.
+};
