@@ -90,4 +90,41 @@ var countPalindromicSubsequence1 = function(s) {
     
     return resSet.size;
     
-    };
+};
+
+/**
+ * Hashing | Counting
+ * Time O(n) | Space O(1) (we can't have more then 26^2 palindrome of len 3)
+ * https://leetcode.com/problems/unique-length-3-palindromic-subsequences
+ * @param {string} s
+ * @return {number}
+ */
+var countPalindromicSubsequence2 = function(s) {
+    
+    const leftHash = new Set();
+    const rightFreq = {};
+    const uniquePalindromes = new Set();
+
+    for (let i = 0; i < s.length; i++) {
+        const char = s[i];
+        rightFreq[char] = (rightFreq[char] && rightFreq[char] + 1) || 1;
+    }
+
+    for (let i = 0; i < s.length; i++) {
+        
+        const middleChar = s[i];
+        
+        if (rightFreq[middleChar]) rightFreq[middleChar] -= 1;
+
+        for (let i = 0; i < 26; i++) {
+            const char = String.fromCharCode(i+97);
+            if (leftHash.has(char) && rightFreq[char]) {
+                uniquePalindromes.add(char+middleChar+char);
+            }
+        }
+
+        leftHash.add(middleChar);
+    }
+
+    return uniquePalindromes.size;
+};
