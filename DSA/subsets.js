@@ -46,3 +46,27 @@ var subsets0 = function(nums) {
     dfs(0, []);
     return result;
 };
+
+/**
+ * BruteForce | Backtracking | Recursion
+ * Time O(2^n) | Space O(2^n) 
+ * https://leetcode.com/problems/subsets/
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var subsets1 = function(nums) {
+    
+    const dfs = (idx, currSubSet, subsets) => {
+
+        if (idx === nums.length) return subsets;
+        
+        currSubSet.push(nums[idx]);
+        subsets.push([...currSubSet]);
+        dfs(idx+1, currSubSet, subsets);
+        currSubSet.pop();
+        dfs(idx+1, currSubSet, subsets);
+        return subsets;
+    }
+
+    return dfs(0, [], [[]]); // you  can have an empty set as valid set that is why we're adding an empty array into subsets.
+};
