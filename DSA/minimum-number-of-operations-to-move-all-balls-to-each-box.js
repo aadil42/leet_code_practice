@@ -55,3 +55,34 @@ var minOperations = function(boxes) {
     return ans;
 };
 
+
+/**
+ * Time O(n^2) | Space O(n)
+ * BruteForce | Array | String | Counting
+ * https://leetcode.com/problems/minimum-number-of-operations-to-move-all-balls-to-each-box
+ * @param {string} boxes
+ * @return {number[]}
+ */
+var minOperationsBF = function(boxes) {
+    
+
+    const ans = [];
+
+    boxes = boxes.split("").map((bit) => +bit);
+
+    for (let i = 0; i < boxes.length; i++) {
+
+        let currOp = 0;
+
+        for (let j = 0; j < boxes.length; j++) {
+            if (i === j) continue;
+            if (boxes[j] === 1) {
+                currOp += Math.abs(i-j);
+            }
+        }
+
+        ans.push(currOp);
+    }
+
+    return ans;
+};
