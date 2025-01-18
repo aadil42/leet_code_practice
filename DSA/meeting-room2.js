@@ -1,4 +1,37 @@
-function   minMeetingRooms(intervals) {
+/**
+ * Sorting | Two Pointers
+ * Time O(n*log(n)) | Space O(1)
+ * https://neetcode.io/problems/meeting-schedule-ii (This is premium problem on leetcode)
+ * @param {Interval[]} intervals
+ * @returns {number}
+ */
+const minMeetingRooms = (intervals) => {
+
+    const starts = intervals.map((interval) => interval.start).sort((a,b) => a-b);
+    const ends = intervals.map((interval) => interval.end).sort((a,b) => a-b);
+
+    let s = 0;
+    let e = 0;
+    let count = 0;
+    let maxCount = 0;
+
+    while (s < starts.length) {
+
+        if (starts[s] >= ends[e]) {
+            count--;
+            e++;
+        }
+        if (starts[s] < ends[e]) {
+            count = count+1;
+        };
+        maxCount = Math.max(maxCount, count);
+        s++;
+    }
+
+    return maxCount;
+}
+
+function   minMeetingRooms1(intervals) {
 
     if(intervals.length == 1) return 1;
 
