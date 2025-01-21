@@ -1,4 +1,38 @@
-var merge = function(intervals) {
+/**
+ * Sorting | Array
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/merge-intervals/
+ * This is simpler than 1st one.
+ * @param {number[][]} intervals
+ * @return {number[][]}
+ */
+var merge2nd = function(intervals) {
+    
+    intervals.sort((a,b) => a[0]-b[0]);
+
+    let i = 0; 
+    const merged = [];
+
+    while (i < intervals.length) {
+
+        let [left, right] = intervals[i];
+
+        while (i + 1 < intervals.length 
+              && intervals[i+1][0] >= left
+              && intervals[i+1][0] <= right) {
+
+              right = Math.max(right, intervals[i+1][1]);
+              i++;
+        }
+
+        merged.push([left, right]);
+        i++;
+    }
+
+    return merged;
+};
+
+var merge1st = function(intervals) {
     const result = [];
     // sorting the intervals;
     intervals = intervals.sort((a,b) => {
