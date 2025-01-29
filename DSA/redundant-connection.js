@@ -1,8 +1,62 @@
-    /**
+/**
+ * UnionFind | Graph
+ * Time O(n^2) | Space O(n)
+ * https://leetcode.com/problems/redundant-connection/
  * @param {number[][]} edges
  * @return {number[]}
  */
-var findRedundantConnection = function(edges) {
+var findRedundantConnection2nd = function(edges) {
+    
+    const rankArr = [];
+    const parentArr = [];
+    const n = edges.length;
+
+    for (let i = 0; i < n+1; i++) {
+        rankArr.push(1);
+    }
+
+    for (let i = 0; i < n+1; i++) {
+        parentArr.push(i);
+    }
+
+    const getParent = (node) => {
+        while (node != parentArr[node]) {
+            node = parentArr[node];
+        }
+        return node;
+    }
+
+    const isRedundent = (node1, node2) => {
+
+        const node1Parent = getParent(node1);
+        const node2Parent = getParent(node2);
+
+        if (node1Parent === node2Parent) return true;
+
+        if (rankArr[node1Parent] > rankArr[node2Parent]) {
+            rankArr[node1Parent] += rankArr[node2Parent];
+            parentArr[node2Parent] = node1;
+        } else {
+            rankArr[node2Parent] += rankArr[node1Parent];
+            parentArr[node1Parent] = node2;
+        }
+
+        return false;
+    }
+    
+
+    for (let i = 0; i < edges.length; i++) {
+        const [node1, node2] = edges[i];
+        if (isRedundent(node1, node2)) return edges[i];
+    }
+};
+
+
+/**
+ * @param {number[][]} edges
+ * @return {number[]}
+ */
+var findRedundantConnection1st = function(edges) {
     
     const parent = [];
     const rank = new Array(edges.length + 1).fill(1);
