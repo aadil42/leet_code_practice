@@ -1,4 +1,36 @@
 /**
+ * Sliding Window | Hash map
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency/
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var maxSubarrayLength2nd = function(nums, k) {
+    
+    const numFreq = {};
+
+    let left = 0;
+    let right = 0;
+    let maxSubArr = 0;
+
+    while (right < nums.length) {
+        
+        numFreq[nums[right]] = (numFreq[nums[right]] && numFreq[nums[right]] + 1)  || 1;
+
+        while (left < right && numFreq[nums[right]] > k) {
+            numFreq[nums[left]] -= 1;
+            left++;
+        }
+
+        maxSubArr = Math.max(maxSubArr, right - left + 1);
+        right++;
+    }
+
+    return maxSubArr;
+};
+
+/**
  * Hashing | Sliding Window
  * Time O(n) | Space O(n)
  * https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency
@@ -7,7 +39,7 @@
  * @param {number} k
  * @return {number}
  */
-var maxSubarrayLength = function(nums, k) {
+var maxSubarrayLength1st = function(nums, k) {
     
     const frequencies = {};
 
