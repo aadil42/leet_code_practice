@@ -1,11 +1,45 @@
 /**
+ * Stack | HashSet
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/clear-digits
+ * @param {string} s
+ * @return {string}
+ */
+var clearDigits = function(s) {
+
+    const stack = [];
+    const digitSet = new Set();
+    s = s.split("");
+
+    for (let i = 0; i < 10; i++) {
+        digitSet.add(i.toString());
+    }
+
+    for (let i = 0; i < s.length; i++) {
+        
+        if (digitSet.has(s[i])) {
+            
+            const nearestNonDigitLeftIdx = stack.pop();
+            s[nearestNonDigitLeftIdx] = "#";
+            s[i] = "#";
+            continue;
+        }
+
+        stack.push(i);
+    }
+
+    return s.filter((char) => char != "#").join("");
+
+};
+
+/**
  * Priority Queue | HashSet
  * Time O(n*log(n)) | Space O(n)
  * https://leetcode.com/problems/clear-digits
  * @param {string} s
  * @return {string}
  */
-var clearDigits = function(s) {
+var clearDigits1 = function(s) {
     
     const maxQ = new MaxPriorityQueue({
         compare: (a,b) => {
@@ -43,7 +77,7 @@ var clearDigits = function(s) {
  * @param {string} s
  * @return {string}
  */
-var clearDigits1 = function(s) {
+var clearDigits0 = function(s) {
     
     const digitSet = new Set();
 
