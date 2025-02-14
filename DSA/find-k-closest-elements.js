@@ -89,3 +89,70 @@ var findClosestElements = function(arr, k, x) {
     // return [...left.reverse(), ...right];
 };
 
+/**
+ * Two Pointer | Sliding Window
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/find-k-closest-elements/
+ * @param {number[]} arr
+ * @param {number} k
+ * @param {number} x
+ * @return {number[]}
+ */
+var findClosestElements0 = function(arr, k, x) {
+    
+    let indexOfx = arr.indexOf(x);
+
+    if (indexOfx === -1) {
+        indexOfx = getTheSmallestDiffIdex(arr, x);
+    }
+
+    // return;
+    let left = indexOfx - 1;
+    let right = indexOfx + 1;
+    let len = 1;
+    while (len < k) {
+        
+        const leftAbs = Math.abs(arr[left] - x);
+        const rightAbs = Math.abs(arr[right] - x);
+
+        if (leftAbs < rightAbs) {
+            left--;
+            len++;
+            continue;
+        }
+
+        if (rightAbs < leftAbs) {
+            right++;
+            len++;
+            continue;
+        }
+        
+        if (left-1 >= -1) {
+            left--;
+        } else {
+            right++;
+        }
+
+        len++;
+    }
+
+    return arr.slice(left+1, right);
+};
+
+const getTheSmallestDiffIdex = (arr, x) => {
+
+    let currDiff = 0;
+    let minDiff = Infinity;
+    let idx = undefined;
+
+    for (let i = 0; i < arr.length; i++) {
+        
+        currDiff = Math.abs(arr[i] - x);
+        if (currDiff < minDiff) {
+            idx = i;
+            minDiff = currDiff;
+        }
+    }
+
+    return idx;
+}
