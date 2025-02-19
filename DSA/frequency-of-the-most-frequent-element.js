@@ -1,11 +1,45 @@
 /**
+ * Sliding Window | Sorting | Math
+ * Time O(n*log(n)) | Space O(1)
+ * https://leetcode.com/problems/frequency-of-the-most-frequent-element/
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var maxFrequency = function(nums, k) {
+
+    let left = 0;
+    let right = 0;
+    let currSum = 0;
+    let maxFreq = 0;
+
+    nums  = nums.sort((a,b) => a-b);
+
+    while (right < nums.length) {
+        
+        const currMax = nums[right];
+        currSum += nums[right];
+
+        while (left < right && currSum + k < currMax*(right-left+1)) {
+            currSum -= nums[left];
+            left++;
+        }
+        
+        maxFreq = Math.max(maxFreq, right-left+1);
+        right++;
+    }
+
+    return maxFreq;
+};
+
+/**
  * Brute Force 
  * Time O(n^2) | Space O(1)
  * @param {number[]} nums
  * @param {number} k
  * @return {number}
  */
- var maxFrequency = function(nums, k) {
+ var maxFrequencyBF = function(nums, k) {
 
     nums.sort((a,b) => a-b);
   
@@ -36,14 +70,14 @@
       return max;
   }
   
-  /**
- * Two Pointer
- * Time O(n) | Space O(1)
+/**
+ * Two Pointer | Sorting
+ * Time O(n*log(n)) | Space O(1)
  * @param {number[]} nums
  * @param {number} k
  * @return {number}
  */
-var maxFrequency = function(nums, k) {
+var maxFrequency0 = function(nums, k) {
 
     nums.sort((a,b) => a-b);
   
