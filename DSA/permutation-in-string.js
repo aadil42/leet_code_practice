@@ -1,4 +1,54 @@
 /**
+ * HashMap | SlidingWindow
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/permutation-in-string/
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
+var checkInclusion = function(s1, s2) {
+
+    const originalFreq = getFreq(s1);
+    let freq = {...originalFreq};
+
+    let right = 0;
+    let left = 0;
+
+    while (right < s2.length + 1) {
+        if ((right - left) === s1.length) return true;
+
+        if (freq[s2[right]] > 0) {
+            freq[s2[right]] -= 1;
+            right++;
+            continue;
+        }
+
+        if (freq[s2[right]] !== undefined) {
+            freq[s2[left]] += 1;
+            left++;
+            continue;
+        }
+
+        right++;
+        left = right;
+        freq = {...originalFreq};
+    }
+
+    return false;
+};
+
+const getFreq = (s1) => {
+
+    const freq = {};
+    for (let i = 0; i < s1.length; i++) {
+        const char = s1[i];
+        freq[char] = (freq[char] && freq[char] + 1) || 1;
+    }
+
+    return freq;
+}
+
+/**
  * Brute force
  * Time O(n*m) | Space O(m)
  * https://leetcode.com/problems/permutation-in-string/
@@ -7,7 +57,7 @@
  * @return {boolean}
  */
 
-var checkInclusion = function(s1, s2) {
+var checkInclusionBF = function(s1, s2) {
     const isValid = s1.length <= s2.length; 
     if(!isValid) return false;
 
@@ -47,11 +97,13 @@ var isPermutation = function(s, t) {
 
 
 /**
+ * HashMap | SlidingWindow
+ * Time O(n) | Space O(n)
  * @param {string} s1
  * @param {string} s2
  * @return {boolean}
  */
- var checkInclusion = function(s1, s2) {
+ var checkInclusion0 = function(s1, s2) {
     const isValid = s1.length <= s2.length; 
  if(!isValid) return false;
 
