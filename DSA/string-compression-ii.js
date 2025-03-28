@@ -1,4 +1,45 @@
 /**
+ * DP | Recursion | Memoization
+ * Time O(n^4) | Space O(n^4)
+ * https://leetcode.com/problems/string-compression-ii/
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+function getLengthOfOptimalCompression(s, k) {
+    const cache = new Map();
+
+    const dfs = (i, pre, freqOfSameChar, leftK) => {
+
+        const hash = `${i},${pre},${freqOfSameChar},${leftK}`;
+        if (cache.has(hash)) return cache.get(hash);
+
+        if (leftK < 0) return Infinity;
+        if (i === s.length) return 0;
+
+        const deleteChar = dfs(i+1, pre, freqOfSameChar, leftK-1);
+
+        let keepChar;
+
+        if (s[i] === pre) {
+
+            const addOneOrZero = (freqOfSameChar === 1 || freqOfSameChar === 9 || freqOfSameChar === 99) ? 1 : 0;
+            keepChar = addOneOrZero + dfs(i+1, pre, freqOfSameChar + 1, leftK);
+        } else {
+
+            keepChar = 1 + dfs(i+1, s[i], 1, leftK);
+        }
+
+        cache.set(hash, Math.min(deleteChar, keepChar));
+
+        return cache.get(hash);
+    }
+
+    return dfs(0, -1, 0, k);
+}
+
+
+/**
  * Brute force.
  * Time O(2^n) | Space O(n)
  * https://leetcode.com/problems/string-compression-ii
@@ -6,7 +47,7 @@
  * @param {number} k
  * @return {number}
  */
-var getLengthOfOptimalCompression = function(s, k) {
+var getLengthOfOptimalCompressionBF = function(s, k) {
     
     const runLengthEncoded = (str) => {
         const encodedStr = [];
