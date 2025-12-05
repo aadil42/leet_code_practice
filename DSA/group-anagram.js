@@ -197,3 +197,49 @@ var groupAnagramsR = function(strs) {
       
       return result;    
   };
+
+/**
+ * Hash
+ * Time O(strs*strs[i]) | Space O(strs)
+ * https://leetcode.com/problems/group-anagrams/submissions/1847599876/
+ * @param {string[]} strs
+ * @return {string[][]}
+ */
+
+//  solved again for revision purpose
+var groupAnagramsR1 = function(strs) {
+    
+    const getHash = (str) => {
+    let hash = new Array(26).fill(0);
+
+    str.split('').forEach((char) => {
+        const idxValOfChar = char.charCodeAt(0) - 97;
+        hash[idxValOfChar] += 1;
+    });
+
+    return hash.join('-');
+}
+
+    const hashToWords = {};
+    strs = strs.map((str) => {
+        return {
+            hash: getHash(str),
+            str: str
+        }
+    });
+
+    strs.forEach((strObj) => {
+        const {hash, str} = strObj;
+        if(hashToWords[hash]) {
+            hashToWords[hash].push(str);
+        } else {
+            hashToWords[hash] = [str];
+        }
+    });
+
+    return Object.keys(hashToWords).map((key) =>  {
+        return hashToWords[key];
+    });
+
+    
+};
