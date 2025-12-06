@@ -81,3 +81,27 @@ var topKFrequent1 = function(nums, k) {
     
     return result;
 };
+
+/**
+ * Hashing 
+ * Time O(n*log(n)) | Space O(n)
+ * https://leetcode.com/problems/top-k-frequent-elements/submissions/1848212162/
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
+ */
+// for revision purpose
+var topKFrequentR = function(nums, k) {
+    
+    const numFreq = {};
+
+    nums.forEach((num) => {
+        numFreq[num] = (numFreq[num] && numFreq[num] + 1) || 1;
+    });
+
+    return Object.keys(numFreq)
+    .map((key) => [key, numFreq[key]])
+    .sort((a, b) => b[1] - a[1])
+    .splice(0, k)
+    .map((numArr) => Number(numArr[0]));
+};
