@@ -31,3 +31,38 @@ const nums =   [100,4,200,1,3,2];
 
 console.log(longestConsecutive(nums));
 
+
+/**
+ * Hash
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/longest-consecutive-sequence/submissions/1849248811/
+ * @param {number[]} nums
+ * @return {number}
+ */
+
+//  for revision
+var longestConsecutiveR = function(nums) {
+
+    const numSet = new Set(nums);
+    nums = [...new Set(nums)];
+    let max = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+
+        const num = nums[i];
+        let start = num;
+
+        while (numSet.has(start-1)) start--;
+
+        let currMax = 0;
+        while (numSet.has(start)) {
+            currMax++;
+            numSet.delete(start);
+            start++;
+        }
+
+        max = Math.max(currMax, max);
+    }
+
+    return max;
+};
