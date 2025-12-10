@@ -42,3 +42,39 @@ var maxArea = function(heights) {
 
 const heights = [1,8,6,2,5,4,8,3,7];
 console.log(maxArea(heights));
+
+
+/**
+ * Two Pointers
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/container-with-most-water/submissions/1851614183/
+ * @param {number[]} height
+ * @return {number}
+ */
+
+// for revision purpose.
+var maxAreaR = function(height) {
+    
+    let left = 0;
+    let right = height.length - 1;
+
+    let max = -Infinity;
+    while (left < right) {
+        const heightBottleNeck = Math.min(height[left], height[right]);
+        const horizontalLen = right - left;
+        max = Math.max(max, heightBottleNeck * horizontalLen);
+
+        if (height[left] < height[right]) {
+            left++;
+            continue;
+        }
+        if (height[right] < height[left]) {
+            right--;
+            continue;
+        }
+        left++;
+        right--;
+    }
+
+    return max;
+};
