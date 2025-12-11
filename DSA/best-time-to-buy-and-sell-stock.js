@@ -22,3 +22,37 @@ var maxProfit = function(prices) {
 
     return maxProfit;
 };
+
+
+/**
+ * Sliding Window
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/submissions/1852476715/
+ * @param {number[]} prices
+ * @return {number}
+ */
+//  for revesion purpose
+var maxProfitR = function(prices) {
+    
+    let buyingPricePointer = 0;
+    let sellingPricePointer = 1;
+    let max = 0;
+
+    while (sellingPricePointer < prices.length) {
+
+        const buyPrice = prices[buyingPricePointer];
+        const sellPrice = prices[sellingPricePointer];
+        const profit = prices[sellingPricePointer] - prices[buyingPricePointer];
+
+        if (sellPrice < buyPrice) {
+            buyingPricePointer = sellingPricePointer
+            sellingPricePointer++;
+            continue;
+        }
+
+        max = Math.max(max, profit);
+        sellingPricePointer++;
+    }
+
+    return max;
+};
