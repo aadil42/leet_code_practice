@@ -92,5 +92,41 @@ var productExceptSelfR = function(nums) {
     return result;
 };
 
+/**
+ * Array | prefix_product
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/product-of-array-except-self/
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+// solve it third time.
+var productExceptSelfR3 = function(nums) {
+    
+    const forward = nums.reduce((newArr, curr, idx) => {
+        const currProduct = (idx != 0) ? newArr[newArr.length - 1] : 1;
+
+        newArr.push(curr*currProduct);
+        return newArr;
+    }, []);
+
+    const backward = nums.reverse().reduce((newArr, curr, idx) => {
+        const currProduct = (idx != 0) ? newArr[newArr.length - 1] : 1;
+        newArr.push(curr*currProduct);
+        return newArr;
+    }, []).reverse();
+
+    forward.unshift(1);
+    forward.push(1);
+    backward.unshift(1);
+    backward.push(1);
+
+    const result = [];
+
+    for (let i = 1; i < forward.length - 1; i++) {
+        result.push(forward[i-1]*backward[i+1]);
+    }
+
+    return result;
+};
 
 console.log(productExceptSelfR(nums));
