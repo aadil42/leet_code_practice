@@ -74,3 +74,47 @@ var characterReplacementR = function(s, k) {
 };
 
 console.log(characterReplacementR(s,k));
+
+/**
+ * Sliding Window
+ * Time O(n) | Space O(1)
+ * https://leetcode.com/problems/longest-repeating-character-replacement/
+ * https://leetcode.com/problems/longest-repeating-character-replacement/submissions/1859154359/
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+const longestSubstring = (latter, s, k) => {
+
+    let left = 0;
+    let right = 0;
+    let max = 0;
+
+    while (right < s.length) {
+
+        if (s[right] !== latter) k--;
+
+        while (k === -1 && s[left] === latter) {
+            left++;
+        }
+
+        if (k === -1) {
+            k++;
+            left++;
+        }
+
+        right++;
+        max = Math.max(max, right-left);
+    }
+
+    return max;
+}
+
+var characterReplacementR2 = function(s, k) {
+    
+    const latters = [...new Set(s.split(""))];
+
+    return latters.reduce((max, latter) => {
+        return Math.max(max, longestSubstring(latter, s, k));
+    }, 0);
+};
