@@ -75,3 +75,33 @@ var isValidR1 = function(s) {
     return true;
 };
 
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid2 = function(s) {
+    
+    
+    const stack = [];
+    const hashSet = {
+        ")": "(",
+        "]": "[",
+        "}": "{"
+    }
+
+
+    for (let i = 0; i < s.length; i++) {
+        
+        if (s[i] in hashSet && stack[stack.length - 1] !== hashSet[s[i]]) return false;
+
+        if (s[i] in hashSet && stack[stack.length - 1] === hashSet[s[i]]) {
+            stack.pop();
+            continue;
+        }
+
+        stack.push(s[i]);
+    }
+
+    return !stack.length && true;
+};
