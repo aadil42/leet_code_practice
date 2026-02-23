@@ -184,3 +184,57 @@ var reorderListR2 = function(head) {
     return ref;
 
 };
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {void} Do not return anything, modify head in-place instead.
+ */
+
+const addPrePointer3 = (head) => {
+
+    let pre = null;
+
+    while (head) {
+        head.pre = pre;
+        pre = head;
+        head = head.next;
+    }
+} 
+
+const getRightPointer = (head) => {
+
+    while (head && head.next) {
+        head = head.next;
+    }
+
+    return head;
+}
+var reorderList = function(head) {
+    
+    addPrePointer(head);
+    let rightPointer = getRightPointer(head);
+    let leftPointer = head;
+    let curr = head;
+    let odd = true;
+
+    while (rightPointer !== leftPointer) {
+        if (odd) {
+            leftPointer = curr.next;
+            curr.next = rightPointer;
+        } else {
+            rightPointer = curr.pre;
+            curr.next = leftPointer;
+        }
+        curr = curr.next;
+        odd = !odd;
+    }
+
+    rightPointer.next = null;
+};
