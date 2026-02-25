@@ -93,3 +93,75 @@ var serializeR = function(root) {
   
     return  makeTree();
   };
+
+
+  // solved third time
+  /**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+
+/**
+ * Encodes a tree to a single string.
+ *
+ * @param {TreeNode} root
+ * @return {string}
+ */
+var serializeR1 = function(root) {
+    
+    const data = [];
+
+    const preOrder = (node) => {
+
+        if (!node) {
+            data.push("n");
+            return;
+        }
+        data.push(node.val);
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    preOrder(root);
+    return data.join("#");
+};
+
+/**
+ * Decodes your encoded data to tree.
+ *
+ * @param {string} data
+ * @return {TreeNode}
+ */
+var deserializeR2 = function(data) {
+    
+    data = data.split('#');
+    data = data.map((n) => {
+        if (n === 'n') return null;
+        return +n;
+    });
+
+    let idx = 0;
+
+    const constructBiTree = () => {
+
+        if (idx >= data.length || data[idx] === null) return null;
+
+        const node = new TreeNode(data[idx]);
+        idx += 1;
+        node.left = constructBiTree();
+        idx += 1;
+        node.right = constructBiTree();
+
+        return node;
+    }
+
+    return constructBiTree()
+};
+
+/**
+ * Your functions will be called as such:
+ * deserialize(serialize(root));
+ */
