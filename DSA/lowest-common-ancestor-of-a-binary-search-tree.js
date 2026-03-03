@@ -50,3 +50,50 @@ var lowestCommonAncestor = function(root, p, q) {
     }
 
 };
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * Time O(log(n)) | Space O(log(n))
+ * Binary Search
+ * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/submissions/1936545873/
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+var lowestCommonAncestor2 = function(root, p, q) {
+    
+    const pPath = [];
+    const qPath = [];
+
+    const bs = (node, path, target) => {
+
+        if (!node) return null;
+        path.push(node);
+        if (node === target) return null;
+
+        if (target.val > node.val) {
+            bs(node.right, path, target);
+        } else {
+            bs(node.left, path, target);
+        }
+    }
+
+    bs(root, pPath, p);
+    bs(root, qPath, q);
+
+    let idx = Math.min(pPath.length - 1, qPath.length - 1);
+
+    while (idx > -1) {
+        if (pPath[idx] === qPath[idx]) return pPath[idx];
+        idx--;
+    }
+
+};
