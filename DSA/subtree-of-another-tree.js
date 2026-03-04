@@ -15,7 +15,7 @@
  * @return {boolean}
  */
 var isSubtree = function(root, subRoot) {
-    
+
     const isSame = (node1, node2) => {
         if(!node1 && !node2) return true;
         if(!node1 && node2) return false;
@@ -39,39 +39,39 @@ var isSubtree = function(root, subRoot) {
 //  you need to have a proper  data structure for that. If you don't have a data structure paste code here https://leetcode.com/problems/subtree-of-another-tree/submissions/
 
 var isSameTree0 = function(p, q) {
-    
+
     function goRecursive(p, q) {
-        
+
         if((!p && q) || (p && !q)) return false;
         if(!p && !q) return true;
-        
+
         if(p.val !== q.val) {
             return false;
         }
-        
+
        return  (goRecursive(p.left, q.left) &&  goRecursive(p.right, q.right));
     }
-    
+
     return goRecursive(p, q);
 };
 
 // time complexity is (Numberof nodes in root * numberof nodes in subRoot)
 var isSubtree1 = function(root, subRoot) {
-    
+
   function goRecursive(root, subRoot) {
       if(!root) return false;
       if(isSameTree(root, subRoot)) return true;
-      
+
       return (goRecursive(root.left, subRoot) || goRecursive(root.right, subRoot));
-  } 
-    
+  }
+
     return goRecursive(root, subRoot);
 };
 
 
 // solved second time.
 var isSubtreeR = function(root, subRoot) {
-    
+
     function dfs(root, subRoot) {
         if(!root) return false;
         if(isSameTree(root, subRoot)) return true;
@@ -88,16 +88,16 @@ var isSubtreeR = function(root, subRoot) {
 
 // another method. aadil042 came up with it. time complexity is O(n). only the numberof nodes that are in (rootArr + subRootarr).
 var isSubtree2 = function(root, subRoot) {
-    
+
     const rootArr = [];
     const subRootArr = [];
 
     function dfs(root, currentArr) {
         root ? currentArr.push( "0" + root.val) : currentArr.push('n');
         if(!root) return;
-     
+
         dfs(root.left, currentArr);
-        dfs(root.right, currentArr); 
+        dfs(root.right, currentArr);
     }
 
     dfs(root, rootArr);
@@ -105,3 +105,81 @@ var isSubtree2 = function(root, subRoot) {
     console.log(rootArr, subRootArr);
     return rootArr.join('').includes(subRootArr.join(''));
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// solved another time
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * DFS
+ * Time O(n^2) | Space O(n)
+ * https://leetcode.com/problems/subtree-of-another-tree/
+ * @param {TreeNode} root
+ * @param {TreeNode} subRoot
+ * @return {boolean}
+ */
+
+const isThisSubTree = (root, subRoot) => {
+
+    let hasStarted = false;
+
+    const dfs = (node, subNode) => {
+
+
+        if (node && subNode && node.val === subNode.val) {
+            hasStarted = true;
+        }
+
+        if (hasStarted) {
+            if (!node && !subNode) return true;
+            if (!node) return false;
+            if (!subNode) return false;
+
+            if (node.val !== subNode.val) return false;
+
+            return dfs(node.left, subNode.left) && dfs(node.right, subNode.right);
+        }
+
+        if (!node) return false;
+
+        return dfs(node.left, subNode) || dfs(node.right, subNode);
+    }
+
+    return dfs(root, subRoot);
+}
+
+const doBruteForce = (root, subRoot) => {
+
+    const isSame = (node, subNode) => {
+
+        if (!node && !subNode) return true;
+        if (!node) return false;
+        if (!subNode) return false;
+
+        if (node.val !== subNode.val) return false;
+
+        return isSame(node.left, subNode.left) && isSame(node.right, subNode.right);
+    }
+
+    const dfs = (node, subNode) => {
+        if (!node) return false;
+        if (isSame(node, subNode)) return true;
+
+        return dfs(node.left, subNode) || dfs(node.right, subNode);
+    }
+
+    return dfs(root, subRoot);
+}
+
+var isSubtree4 = function(root, subRoot) {
+    if (isThisSubTree(root, subRoot)) return true; // because if true then we can be certain but if false then there is a one edge case which will still pass as true.
+    return doBruteForce(root, subRoot); // so for that edge case do brute force it will be still n^2 + n time complexity
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
