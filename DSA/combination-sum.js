@@ -68,3 +68,31 @@ const makeUnique = (combinations) => {
     combinations = [...combinations].map((combination) => combination.split("#"));
     return combinations.map((combination) => combination.map((num) => +num));
 }
+
+/**
+ * Backtracking | Brute Force
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum1 = function(candidates, target) {
+    
+    const result = [];
+    const dfs = (idx, currSum, comb) => {
+        if (currSum > target) return;
+
+        if (currSum === target) {
+            result.push(comb.slice(0));
+            return;
+        }
+
+        for (let i = idx; i < candidates.length; i++) {
+            comb.push(candidates[i]);
+            dfs(i, currSum + candidates[i], comb);
+            comb.pop();
+        }
+    }
+
+    dfs(0, 0, []);
+    return result;
+};
