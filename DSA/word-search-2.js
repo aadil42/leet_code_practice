@@ -17,7 +17,7 @@ Trie.prototype.addWord = function(word) {
             curr.set(word[i], new Trie());
             curr = curr.get(word[i]);
             curr.ref += 1;
-        }    
+        }
     }
     curr.endOfWord = true;
 };
@@ -41,7 +41,7 @@ function MakeString(r,c) {
 }
 
 var findWords = function(board, words) {
-    
+
     const root = new Trie();
     for(let i = 0; i < words.length; i++) {
         root.addWord(words[i]);
@@ -59,7 +59,7 @@ var findWords = function(board, words) {
         //    c == COLUMN ||
         //    visited.has(MakeString(r,c)) ||
         //    !node.children.has(board[r][c]) ||
-        //    node.ref < 1 
+        //    node.ref < 1
         // )  return;
 
         if(r < 0) return;
@@ -69,7 +69,7 @@ var findWords = function(board, words) {
         if(visited.has(MakeString(r,c))) return;
         if(!node.children.has(board[r][c])) return;
         if(node.ref < 1) return;
-        
+
         visited.add(MakeString(r,c));
         node = node.children.get(board[r][c]);
         word += board[r][c];
@@ -81,7 +81,7 @@ var findWords = function(board, words) {
             result.push(word);
             // return;
         }
-        
+
         dfs(r+1, c, node, word);
         dfs(r-1, c, node, word);
         dfs(r, c+1, node, word);
@@ -96,4 +96,68 @@ var findWords = function(board, words) {
     }
 
     return result;
+};
+
+//////////////////////////////////////////
+
+/**
+ * brute force
+ * DFS | Recursive search
+ * https://leetcode.com/problems/word-search-ii/submissions/1940014132/
+ * @param {character[][]} board
+ * @param {string[]} words
+ * @return {string[]}
+ */
+// helper function
+const outOfBound = (r, c, row, col) => {
+
+    if (r === row) return true;
+    if (c === col) return true;
+    if (r < 0) return true;
+    if (c < 0) return true;
+    return false;
+}
+
+// helper funciton
+const findWord = (r, c, word, idx, board, ROW, COL, visited, directions) => {
+
+    const hash = `${r}-${c}`;
+    if (visited.has(hash)) return false;
+    if (idx === word.length) return true;
+    if (outOfBound(r,c,ROW,COL)) return false;
+    if (board[r][c] !== word[idx]) return false;
+
+    visited.add(hash);
+    for (let i = 0; i < directions.length; i++) {
+        const [rowStep, colStep] = directions[i];
+        if (findWord(r+rowStep, c+colStep, word, idx+1, board, ROW, COL, visited, directions)) return true;
+    }
+    visited.delete(hash);
+    return false;
+}
+// helper function
+const search = (board, word) => {
+
+    const ROW = board.length;
+    const COL = board[0].length;
+    const directions = [
+        [1,0],
+        [-1,0],
+        [0,1],
+        [0,-1]
+    ];
+
+    for (let r = 0; r < ROW; r++) {
+        for (let c = 0; c < COL; c++) {
+            if (findWord(r,c,word,0,board, ROW, COL, new Set(), directions)) return true;
+        }
+    }
+}
+
+var findWords2 = function(board, words) {
+
+    return words.filter((word) => {
+        if (search(board, word)) return true;
+        return false;
+    });
 };
