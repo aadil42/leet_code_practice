@@ -161,3 +161,111 @@ var findWords2 = function(board, words) {
         return false;
     });
 };
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+class Trie1 {
+    
+    constructor () {
+
+        this.root = {
+            count: 0,
+            endOfTheWord: false
+        };
+    }
+
+    add (word) {
+        let curr = this;
+        for (let i = 0; i < word.length; i++) {
+            const letter = word[i];
+            if (curr[letter]) {
+                curr[letter].count += 1;
+                curr = curr[letter];
+            } else {
+                curr[letter] = {
+                    count: 1,
+                    endOfTheWord: false
+                };
+                curr = curr[letter];
+            }
+        }
+        curr.endOfTheWord = true;
+    }
+
+    remove (word) {
+        let curr = this;
+        for (let i = 0; i < word.length; i++) {  
+            const letter = word[i];
+            curr[letter].count -= 1;
+            curr = curr[letter];
+        }
+
+        curr.endOfTheWord = false;
+    }
+}
+
+const outOfBound1 = (r, c, board) => {
+
+    const ROW = board.length;
+    const COL = board[0].length;
+
+    if (r < 0) return true;
+    if (c < 0) return true;
+    if (r === ROW) return true;
+    if (c === COL) return true;
+
+    return false;
+}
+
+/**
+ * @param {character[][]} board
+ * @param {string[]} words
+ * @return {string[]}
+ */
+var findWords3 = function(board, words) {
+    
+    const root = new Trie1();
+    const result = [];
+
+    words.forEach((word) => {
+        root.add(word);
+    });
+
+    const dfs = (r, c, node, word, visited) => {
+
+
+        if (outOfBound1(r, c, board)) return;
+        if (node.count < 1) return;
+
+        const hash = `${r}-${c}`;
+        const letter = board[r][c];
+        if (visited.has(hash)) return;
+        if (!node[letter]) return;
+
+        visited.add(hash);
+
+        word += letter;
+
+        if (node[letter].endOfTheWord) {
+            console.log('haha', word)
+            result.push(word);
+            root.remove(word);
+        }
+
+        dfs(r+1, c, node[letter], word, visited);
+        dfs(r-1, c, node[letter], word, visited);
+        dfs(r, c+1, node[letter], word, visited);
+        dfs(r, c-1, node[letter], word, visited);
+        visited.delete(hash);
+    }
+
+    for (let r = 0; r < board.length; r++) {
+        for (let c = 0; c < board[0].length; c++) {
+            dfs(r,c,root,'',new Set());
+        }
+    }
+
+    return result;
+};
