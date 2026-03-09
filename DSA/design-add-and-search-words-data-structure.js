@@ -55,3 +55,75 @@ WordDictionary.prototype.search = function(word) {
  * obj.addWord(word)
  * var param_2 = obj.search(word)
  */
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+var WordDictionary0 = function() {
+    this.root = {
+        isEnd: false
+    };
+};
+
+/** 
+ * @param {string} word
+ * @return {void}
+ */
+WordDictionary0.prototype.addWord = function(word) {
+
+    let curr = this;
+    for (let i = 0; i < word.length; i++) {
+
+        const letter = word[i];
+        if (curr[letter]) {
+            curr = curr[letter];
+        } else {
+            curr[letter] = {
+                isEnd: false
+            };
+            curr = curr[letter];
+        }
+    }
+
+    curr.isEnd = true;
+};
+
+/** 
+ * @param {string} word
+ * @return {boolean}
+ */
+WordDictionary0.prototype.search = function(word) {
+    
+    const dfs = (node, idx) => {
+        
+        
+        for (let i= idx; i < word.length; i++) {
+            const letter = word[i];
+
+    
+            if (!node[letter] && letter !== ".") return false;
+
+            if (letter === ".") {
+
+                for (const key in node) {
+                    if (dfs(node[key], i+1)) return true;
+                }
+
+                return false;
+            }
+
+            node = node[letter];
+        }
+
+        return node.isEnd;
+    }
+
+    return dfs(this, 0);
+};
+
+/** 
+ * Your WordDictionary object will be instantiated and called as such:
+ * var obj = new WordDictionary()
+ * obj.addWord(word)
+ * var param_2 = obj.search(word)
+ */
