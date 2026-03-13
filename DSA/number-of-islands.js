@@ -35,12 +35,55 @@ var numIslands = function(grid) {
     return totalIsland;
 };
 
+/**
+ * DFS | Recursion
+ * Time O(n) | Space O(n)
+ * https://leetcode.com/problems/number-of-islands/submissions/1946928071/
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands0 = function(grid) {
+    
+    const ROW = grid.length;
+    const COL = grid[0].length;
 
-const grid  = [
-    ["1","1","0","0","0"],
-    ["1","1","0","0","0"],
-    ["0","0","1","0","0"],
-    ["0","0","0","1","1"]
-  ];
+    const visited = new Set();
+    
+    const outOfBound = (r, c) => {
 
-console.log(numIslands(grid));
+        if (r === ROW) return true;
+        if (c === COL) return true;
+        if (r < 0) return true;
+        if (c < 0) return true;
+        return false;
+    }
+    
+    const dfs = (r, c) => {
+        
+        const hash = `${r}-${c}`;
+        if (outOfBound(r, c)) return;
+        if (visited.has(hash)) return;
+        if (grid[r][c] === "0") return;
+
+        visited.add(hash);
+
+        dfs(r+1, c);
+        dfs(r-1, c);
+        dfs(r, c+1);
+        dfs(r, c-1);
+    }
+
+    let count = 0;
+    
+    for (let r = 0; r < ROW; r++) {
+        for (let c = 0; c < COL; c++) {
+            const hash = `${r}-${c}`;
+            if (grid[r][c] === "1" && !visited.has(hash)) {
+                dfs(r, c);
+                count++;
+            }
+        }
+    }
+
+    return count;
+};
