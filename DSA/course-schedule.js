@@ -99,3 +99,64 @@ var canFinish1 = function(numCourses, prerequisites) {
     }
     return true;
 };
+
+/**
+ * DFS | Recursion | Memoization
+ * Time O(n*m) | Space O(n*m)
+ * https://leetcode.com/problems/course-schedule/submissions/1950900127/
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+var canFinish2 = function(numCourses, prerequisites) {
+    
+    const makeGraph = (edges) => {
+
+        const graph = {};
+        for (let i = 0; i < edges.length; i++) {
+            const from = edges[i][0];
+            const to = edges[i][1];
+            if (graph[from]) {
+                graph[from].push(to);
+            } else {
+                graph[from] = [to];
+            }
+        }
+        return graph;        
+    }
+
+    const graph = makeGraph(prerequisites);
+    const checkForLoop = (startNode, cache) => {
+        
+        const visited = new Set();
+
+        const dfs = (node) => {
+            if (cache[node]) return cache[node];
+            if (visited.has(node)) {
+                cache[node] = false;
+                return false;
+            }
+            visited.add(node);
+            const neighbors = graph[node] || [];
+            for (let i = 0; i < neighbors.length; i++) {
+                const nextNode = neighbors[i];
+                if (!dfs(nextNode)) {
+                    cache[node] = false;
+                    return false;
+                }
+            }
+
+            cache[node] = true;
+            return true;
+        }
+
+        return dfs(startNode);
+    }
+
+    const cache = {};
+    for (let i = 0; i < numCourses; i++) {
+        if (!checkForLoop(i, cache)) return false;
+    }
+
+    return true;
+};
