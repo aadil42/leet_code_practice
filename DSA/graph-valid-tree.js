@@ -115,3 +115,59 @@ const validTree1 = (n, edges) => {
 
     return true;
   }
+
+
+/**
+ * DFS 
+ * Time O(n) | Space O(n^2) (for the space we make graph)(all nodes can be connected with all the other nodes)(making it n^2)
+ * https://neetcode.io/problems/valid-tree/history?submissionIndex=2
+ * @param {number} n
+ * @param {number[][]} edges
+ * @returns {boolean}
+ */
+const validTree2 = (n, edges) => {
+
+        const makeGraph = (edges) => {
+            const graph = {};
+
+            for (let i = 0; i < edges.length; i++) {
+                
+                const [from1, to] = edges[i];
+                if (graph[from1]) {
+                    graph[from1].push(to);
+                } else {
+                    graph[from1] = [to];
+                }
+
+                if (graph[to]) {
+                    graph[to].push(from1);
+                } else {
+                    graph[to] = [from1];
+                }
+            }
+
+            return graph;
+        }
+
+        const graph= makeGraph(edges);
+        
+        const visited = new Set();
+
+        const dfs = (node, parentNode) => {
+
+            if (visited.has(node)) return false;
+            visited.add(node);
+            const children = graph[node] || [];
+
+            for (let i = 0; i < children.length; i++) {
+                const nextChild = children[i];
+                if (nextChild === parentNode) continue;
+                if (!dfs(nextChild, node)) return false;
+            }
+            return true;
+        }
+
+        if(!dfs(0, null)) return false;
+        if (visited.size !== n) return false;
+        return true;
+}
