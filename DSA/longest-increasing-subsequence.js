@@ -62,3 +62,35 @@ var lengthOfLISR2 = function(nums) {
     
     return Math.max(...DpArra);
 };
+
+
+/**
+ * DFS | DP | Recursion
+ * Time O(n^2) | Space O(n^2)
+ * https://leetcode.com/problems/longest-increasing-subsequence/
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS2 = function(nums) {
+
+    const cache = new Map()
+    const dfs = (curr, pre) => {
+
+        if (curr === nums.length) return 0;
+        if (cache.has(`${curr}#${pre}`)) return cache.get(`${curr}#${pre}`);
+        if (pre === -1 || nums[curr] > nums[pre]) {
+
+            const res1 = 1 + dfs(curr+1, curr);
+            const res2 = dfs(curr+1, pre);
+
+            cache.set(`${curr}#${pre}`, Math.max(res1, res2));
+            return Math.max(res1, res2);
+        }
+
+        const res1 = dfs(curr+1, pre);
+        cache.set(`${curr}#${pre}`, res1);
+        return res1;
+    }
+
+    return dfs(0, -1);
+};
