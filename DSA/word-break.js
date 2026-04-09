@@ -112,3 +112,39 @@ var wordBreakR = function(s, wordDict) {
 
   return dpArray[0];
 };
+
+/**
+ * Time O(n^2) | Space O(n^2)
+ * DP | Recursion | Memoization | 0/1 knapsack
+ * https://leetcode.com/problems/word-break/
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {boolean}
+ */
+var wordBreak3 = function(s, wordDict) {
+    
+    wordDict = new Set(wordDict);
+    const cache = new Map();
+    const dfs = (b,e) => {
+
+        const hash = `${b}-${e}`;
+        if (cache.has(hash)) return cache.get(hash);
+
+        const word = s.slice(b, e+1);
+
+        if (wordDict.has(word) && e === s.length) return true;
+        if (e === s.length) return false;
+
+        if (wordDict.has(word)) {
+            const res = dfs(e+1, e+1) || dfs(b, e+1);
+            cache.set(hash, res);
+            return res;
+        }
+
+        const res = dfs(b, e+1);
+        cache.set(hash, res);
+        return res;
+    }
+
+    return dfs(0,0);
+};
